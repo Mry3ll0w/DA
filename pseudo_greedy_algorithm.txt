@@ -1,0 +1,24 @@
+ESQUEMA GENERAL:
+a) USO
+    Se utiliza para problemas de optimizacion de datos 
+b) Algoritmo    
+    devorador: C -> S
+    S -> 0 
+    mientras !(solucion(S)) y C!= 0
+        p <- seleccion(C)
+        C <- C - {p}
+        si factible(S u {p})
+            S <- S u {p}
+
+c) explicacion de variables:
+    C -> Conjunto de elementos dados por el problema (muestra de datos) siempre != 0 
+    
+    S -> Conjunto de soluciones factibles de C, no tiene que estar lleno, es decir, no tiene
+    necesariamente != 0 de vacio.
+    
+    funcion solucion(conjunto S)==> Comprueba que el conjunto S (candidatos posible solucion) es solucion
+
+    Funcion seleccion(C)==> Indica el candidato mas prometedor a lo buscado
+
+    Funcion factibilidad (conjunto)==> Comprueba que el conjunto de candidatos es factible insertar
+    alguno nuevo.

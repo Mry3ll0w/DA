@@ -18,11 +18,11 @@ std::list<moneda> greedy_moneda(std::list<moneda>& C,size_t c);
 std::list<moneda> poda_lista(std::list<moneda>&l, moneda m);
 moneda funcion_seleccion(std::list<moneda>& C);
 int main(){
-    std::list<moneda> C={{1,5},{5,4},{10,7},{12,6}};
+    std::list<moneda> C={{1,10},{5,4},{20,2},{50,4},{100,7}};
     std::list<moneda> S;
-    S=greedy_moneda(C,50);
+    S=greedy_moneda(C,675);
     for(auto i: S){
-        std::cout<<i.cantidad<<" de monedas de "<<i.valor<<std::endl;
+        std::cout<<i.cantidad<<" monedas de "<<i.valor<<std::endl;
     }
     
     return 0;
@@ -87,17 +87,27 @@ std::list<moneda> greedy_moneda(std::list<moneda>& C, size_t c){
    moneda temp_moneda;
    //para mejorar el algoritmo ordenamos el conjunto
    C.sort(); 
-   while (!C.empty()&& c!=0)//mientras que existan monedas en el conjunto o se cambie todo
+   while (!C.empty() && c!=0)//mientras que existan monedas en el conjunto o se cambie todo
    {
+        
         temp_moneda = funcion_seleccion(C);
         C=poda_lista(C, temp_moneda);//c <- c -{v,k}
-        temp_moneda.cantidad = std::min(temp_moneda.cantidad, (c / temp_moneda.valor)); // k<- min(k, c div d)
-        if (temp_moneda.cantidad >0 )
+        //algoritmo mio
+        size_t d;//divisor temporal
+        d= c/temp_moneda.valor;
+        if (d>temp_moneda.cantidad)
         {
-            S.insert(S.end(), temp_moneda);
-            c-=temp_moneda.cantidad*temp_moneda.valor;
+            S.insert(S.end(), temp_moneda);// S <- S U {v,k}
+            c-=(temp_moneda.cantidad*temp_moneda.valor);//c <- c - (cantidad * valor)
+        }
+        else{
+            moneda t;
+            t.cantidad = d;
+            t.valor = temp_moneda.valor;
+            S.insert(S.end(),t);
+            c-=(d*t.valor);
         }
         
    }
-    
+    return S;
 }

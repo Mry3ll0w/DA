@@ -93,7 +93,7 @@ std::vector<objeto>& greedy_mochila(mochila &m ,std::vector<objeto>& C){
     while (!C.empty()&& m.capacidad!=0 )//mientras el conjunto no este vacio
     {
         temp_obj = seleccion_objeto(C);//Obtenemos el "mejor candidato"
-        std::cout<<"mejor objeto (peso)= "<< temp_obj.peso<<std::endl;
+        //std::cout<<"mejor objeto (peso)= "<< temp_obj.peso<<std::endl;
         podar_conjunto(C,temp_obj);// C <- C - {v.p}
         if (temp_obj.peso<= m.capacidad)
         {

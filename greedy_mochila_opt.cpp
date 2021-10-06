@@ -114,6 +114,8 @@ void podar_conjunto(std::vector<objeto>& v,const objeto& o){
     }
     
 }
+
+//DEVORADOR DE MOCHILA
 std::vector<objeto>& greedy_mochila(mochila &m ,std::vector<objeto>& C){
     objeto temp_obj;
     C = funcion_ordenacion(C);//MEJORA con preordenacion para conseguir orden O(n* log n)

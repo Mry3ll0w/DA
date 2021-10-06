@@ -16,9 +16,15 @@ Donde:
 */
 std::list<moneda> greedy_moneda(std::list<moneda>& C,size_t c);
 std::list<moneda> poda_lista(std::list<moneda>&l, moneda m);
-
+moneda funcion_seleccion(std::list<moneda>& C);
 int main(){
-
+    std::list<moneda> C={{1,5},{5,4},{10,7},{12,6}};
+    std::list<moneda> S;
+    S=greedy_moneda(C,50);
+    for(auto i: S){
+        std::cout<<i.cantidad<<" de monedas de "<<i.valor<<std::endl;
+    }
+    
     return 0;
 }
 
@@ -48,8 +54,9 @@ de pares
 */
 
 //funcion de seleccion de monedas
-moneda& funcion_seleccion(std::list<moneda>& C){
+moneda funcion_seleccion(std::list<moneda>& C){
     moneda m;//m tiene el valor minimo de la moneda (-inf ~= 0 ) ya que el valor minimo de una moneda es 1 cts
+    m.cantidad = 0; m.valor =0;
     for (auto i:C)
     {
         if (m.valor<i.valor)
@@ -57,8 +64,8 @@ moneda& funcion_seleccion(std::list<moneda>& C){
             m.valor = i.valor;
             m.cantidad =i.cantidad;
         }
-        
     }
+    
     return m;
 }
 
@@ -66,7 +73,7 @@ moneda& funcion_seleccion(std::list<moneda>& C){
 std::list<moneda> poda_lista(std::list<moneda>& l, moneda m){
     std::list<moneda> t_list;
     for(auto i:l){
-        if(i.valor!= m.valor)
+        if(i.valor != m.valor)
             t_list.insert(t_list.end(),i);
     }
     return t_list;

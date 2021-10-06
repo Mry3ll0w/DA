@@ -1,5 +1,6 @@
 #include <iostream>
 #include <list>
+#include <algorithm>
 //CABECERAS DE FUNCIONES y demas
 struct moneda{
     size_t valor;
@@ -14,6 +15,7 @@ Donde:
     c==> es la cantidad a cambiar de monedas
 */
 std::list<moneda> greedy_moneda(std::list<moneda>& C,size_t c);
+std::list<moneda> poda_lista(std::list<moneda>&l, moneda m);
 
 int main(){
 
@@ -60,18 +62,35 @@ moneda& funcion_seleccion(std::list<moneda>& C){
     return m;
 }
 
+//algoritmo de poda para eliminar los elementos de los conjuntos
+std::list<moneda> poda_lista(std::list<moneda>& l, moneda m){
+    std::list<moneda> t_list;
+    for(auto i:l){
+        if(i.valor!= m.valor)
+            t_list.insert(t_list.end(),i);
+    }
+    return t_list;
+}
+
 //algoritmo devorador
 std::list<moneda> greedy_moneda(std::list<moneda>& C, size_t c){
    //C <- C de entrada
    std::list<moneda>S; //conjunto solucion S<-0
    //creamos una variable para almacenar la moneda candidata
    moneda temp_moneda;
-   //para mejorar el algoritmo ordenamos
-
+   //para mejorar el algoritmo ordenamos el conjunto
+   C.sort(); 
    while (!C.empty()&& c!=0)//mientras que existan monedas en el conjunto o se cambie todo
    {
-       temp_moneda = funcion_seleccion(C);
-       //PREGUNTAR SALGUERO 
+        temp_moneda = funcion_seleccion(C);
+        C=poda_lista(C, temp_moneda);//c <- c -{v,k}
+        temp_moneda.cantidad = std::min(temp_moneda.cantidad, (c / temp_moneda.valor)); // k<- min(k, c div d)
+        if (temp_moneda.cantidad >0 )
+        {
+            S.insert(S.end(), temp_moneda);
+            c-=temp_moneda.cantidad*temp_moneda.valor;
+        }
+        
    }
     
 }

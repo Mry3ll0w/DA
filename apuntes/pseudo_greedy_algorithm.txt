@@ -22,3 +22,5 @@ c) explicacion de variables:
 
     Funcion factibilidad (conjunto)==> Comprueba que el conjunto de candidatos es factible insertar
     alguno nuevo.
+
+    Funcion Objetivo==> Asocia un valor a una solucion y que queremos optimizar

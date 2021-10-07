@@ -1,0 +1,80 @@
+Clase 7/10/21 (Tema 1 algoritmos devoradores etc)
+
+NOTAS GENERALES DE CLASE:
+
+- Se ha visto horario y cambios, mucho texto.
+- Resumen de algoritmos devoradores (repaso clase anterior T1)
+- Kruskal y Prim son algoritmos devoradores
+- En examenes todo tiene que estar implemntado excepto el algoritmo de Ordenacion inicial
+
+CLASE: 
+
+-Algoritmos que calculan arboles de expansion de coste minimo
+
+    · ¿Que es un arbol de expansion de coste minimo?
+        Dado un grafo G con nodos {a,b,c,d,e,f}, consiste en un subcojunto de aristas tal que todos
+        los vertices estarian conectados directa o indirectamente (E al menos un camino que une todos
+        todos los nodos).
+        Estos no pueden formar un ciclo (un nodo con mutliples caminos/ramificaciones).
+
+    · Existen mas de un árbol de expansion mínimo, es decir, no tiene que existir una solucion única,
+      aun tratandose de arboles ponderados (E grafo ponderado con misma ponderacion)
+    
+    · Trata de evitar seleccionar nodos que forman un ciclo (cada nodo tiene un unica ramificacion).
+
+    · Con grafos Ponderados:
+        Devolvera un subcojunto de aristas cuya suma de peso (ponderacion) sea la minima posible.
+
+    · EJEMPLO FORMALIZACION CON GRAFOS PONDERADOS:
+        Conjunto de candidatos: aristas/vertices
+        Conjunto de candidatos seleccionados: aristas de menor coste/peso.
+        Funcion solucion deberia para cuando tengamos N-1 soluciones.
+    
+    · Algoritmo de Kruskal:
+        -Este genera un arbol de expansion minimo a partir de un bosque G inicialmente vacio.
+        
+        !!!!!!!!!!!!!!!!!!!!!COPIAR ALGORITMO GENERAL DE Kruskal(presentaciones)!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        -Implementacion: 
+            1)Calcular numero de nodos del grafo // n <- |V|
+            2)Crear una particion inicial con n (Una por cada nodo del grafo)
+            3)Ordenar aristas de menor a mayor
+            4)Mientras no genere un arbol de expansion, no paro
+                4.1)extrae-primero--> saca la primera arista (par de valores i e j), la de menor peso
+                (si se pone extraer se ELIMINA DEL CONJUNTO DENTRO DE LA FUNCION).
+                4.2)buscar donde esta el nodo i (en que particion)
+                4.3)buscar donde esta el nodo j
+                4.4) si ambos nodos estan en distintas particiones (NO PUEDEN FORMAR CICLO)
+                    4.4.1)Se unen las dos particiones, ya que no forman ciclo
+                    4.4.2)Se añaden al conjunto solucion el resultado de la union
+            5)Repetir paso 4 hasta no generar arbol de expansion
+        
+        - Analisis Temporal:
+            Generico:
+                Se ordenan las aristas
+                Se crea una particion inicial
+                Se ejecuta 2a busquedas como maximo
+                Se ejecutan n-1 uniones
+                Donde a es el numero de aristas y n el numero de nodos
+            Funcion:
+                t(n)= t_ordenar(a)+t_crear_particion(n)+2*buscar_particion_nodo(n)+(n-1)*total_uniones(n)
+                                                                                    ^
+                                                                                    |
+                                                                                bucle while
+                Todo depende de como esta implementada la tabla de pertenencia
+
+    ·Algoritmo de busqueda con bosuqe de control de altura
+
+        - Particiones representadas como árboles (generales o binarios, uso generales LOL), 
+            cada particion es un arbol.
+            ej:
+                a   b   c   d   e   f
+                fusion a y c 
+                a   b   d   e   f
+                c 
+                fusion de a y b
+                a           d   e   f
+            c       b
+
+        -Con esto bajamos el coste de la operacion de búsqueda a logaritmica pasa
+            a ser de orden O(a*log n)

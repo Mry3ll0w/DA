@@ -4,10 +4,10 @@ a) USO
 b) Algoritmo    
     devorador: C -> S
     S -> 0 
-    mientras !(solucion(S)) y C!= 0
+    mientras (!(solucion(S)) y C!= 0) //Bucle devorador 
         p <- seleccion(C)
-        C <- C - {p}
-        si factible(S u {p})
+        C <- C - {p} //poda del elemento seleccionado en p
+        si factible(S u {p}) // Es factible ese candidato en la solucion
             S <- S u {p}
 
 c) explicacion de variables:

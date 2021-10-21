@@ -92,8 +92,6 @@ bool **freeCells,float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeig
     }    
     else{//Si no cumple el primer requisito no sera necesario continuar, en cambio , si lo cumple entonces:
         //Comprobaremos que no colisionan con las defensas/obstaculos que ya estan colocadas
-        
-        
         for(auto i : obstacles){
             //Colisionara en caso de que las distancias entre puntos centrales de los obstaculos
             //sea menor que los radios de la defensa a colocar y el obstaculo
@@ -113,8 +111,8 @@ bool **freeCells,float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeig
 }
 
 
-void DEF_LIB_EXPORTED placeDefenses(bool** freeCells, int nCellsWidth, int nCellsHeight, float mapWidth, float mapHeight
-              , std::list<Object*> obstacles, std::list<Defense*> defenses) {
+void DEF_LIB_EXPORTED placeDefenses(bool** freeCells, int nCellsWidth, int nCellsHeight, 
+float mapWidth, float mapHeight, std::list<Object*> obstacles, std::list<Defense*> defenses) {
 
     float cellWidth = mapWidth / nCellsWidth;
     float cellHeight = mapHeight / nCellsHeight; 

@@ -1,13 +1,17 @@
 %Escriba aquí su respuesta al ejercicio 1. 
+Para realizar este ejercicio he determinado usar el criterio de cercania con respecto a los 
+obstaculos distribuidos en el mapa, es decir, cuanto mas cerca a los obstaculos
+este la celda dada mejor puntuacion.
+La puntuación se calcula en base a la suma de las distancias que separan a posicion creada a partir 
+de un objeto tipo Vector3 y la funcion cellCenterToPosition, con esto podremos calcular la distancia
+con respecto a la lista de obstaculos que se reciben como parametro.Por tanto la puntuación sera
+el inverso de la suma de las distancias.
+Anotación: El código de esta función esta "incrustado" en el ejercicio nº 5.
 
-% Elimine los símbolos de tanto por ciento para descomentar las siguientes instrucciones e 
-%incluir una imagen en su respuesta. La mejor ubicación de la imagen será determinada por 
-%el compilador de Latex. 
-%No tiene por qué situarse a continuación en el fichero en formato pdf resultante.
-%\begin{figure}
-%\centering
-%\includegraphics[width=0.7\linewidth]{./defenseValueCellsHead} 
-% no es necesario especificar la extensión del archivo que contiene la imagen
-%\caption{Estrategia devoradora para la mina}
-%\label{fig:defenseValueCellsHead}
-%\end{figure}
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{./defenseValueCellsHead} 
+ no es necesario especificar la extensión del archivo que contiene la imagen
+\caption{Estrategia devoradora para la mina}
+\label{fig:defenseValueCellsHead}
+\end{figure}

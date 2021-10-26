@@ -1,0 +1,47 @@
+Clase 21 de Octubre de 2021
+Nota:
+Devoradores ==> Evaluan una única vez las decisiones a tomar, sin tener en cuenta condiciones futuras.
+Si un nodo no esta conectado ==> peso = infinito
+
+Apuntes:
+
+    ·Algoritmo de Prim:
+        Heuristica ==> nodo mas cercano al nodo actual (menor peso de las aristas), es decir, 
+        al introducir un nodo en una particion ¿se ve la distancia reducida?.
+        variables:
+        D[] ==> distancias desde el conjunto de nodos conectados desde el nodo n
+        funcion_seleccion()==>busca el elemento de D mas pequeño (unicamente por conectar),
+        devuelve el nodo con menor distancia.
+        C[]==> representa desde donde se alcanza al nodo x
+        p==>matriz con las distancias desde x nodo a y nodo.
+
+        ejemplo de clase:
+            desde nodo 1)
+                     2 3 4 5 6  <==nodos 
+                d[]={3,2,i,i,i}
+                c[]={1,1,1,1,1,1}//se inicia conectados al uno
+                Seleccionamos el mas bajo ==> distancia al nodo 3   
+                y lo metemos en el conjunto del nodo 1 y actualizamos la distancia
+                comprobando si las distancias desde cada uno de los nodos 
+                     2 3 4 5 6  <==nodos 
+                d[]={3,2,2,i,1}
+                c[]={1,1,6,1,3} //padres de cada uno 
+    
+        Orden del algoritmo = tdesde(n)*tmientras(n)+tparatodo(n)+tf_sel(n)==> O(n^2)
+        Conclusion ==> si tiene pocas aristas usamos prim y si tiene muchos nodos kruskal.
+
+    · Algoritmo de Dijsktra:
+        Calcula las distancias minimas desde un nodo dado al resto, pero necesitamos recuperar
+        el "camino" para saber por donde pasa.
+
+TEMA 2: Programacion Dinámica
+    Aplicables en pocos casos, mayor uso de memoria y menor gasto de recursos.
+    Ejemplo:
+        sucesion de Fibonacci de 50:
+            necesitamos fibonacci de 48 y de 49 y viceversa, por lo que para calcular fibonacci de 
+            n tendremos que ir almacenando los 2 anteriores, es decir, para f50 = f49+f48.
+                                        fn = fn-1 + fn-2
+            necesitamos 3 varibles=> n-1,n-2, y la suma actual
+        
+        Numero Combinatorio:
+            si

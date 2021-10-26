@@ -40,11 +40,11 @@ void positionToCell(const Vector3 pos, int &i_out, int &j_out, float cellWidth, 
 
 float cellValue(int row, int col, bool** freeCells, int nCellsWidth, int nCellsHeight
 	, float mapWidth, float mapHeight, List<Object*> obstacles, List<Defense*> defenses) {
-	//De forma similar al ejercicio inferior
+	
+    //De forma similar al ejercicio inferior
     float cellWidth = mapWidth / nCellsWidth; //anchura de la celula
     float cellHeight = mapHeight / nCellsHeight;//altura de la celula
-    /*Aplicamos el criterio ==> cuanto mas cerca de un obstaculo mejor 
-    */
+    //Aplicamos el criterio ==> cuanto mas cerca de un obstaculo mejor 
     //Usamos el tipo vector 3 para una comparativa (si esta vacia o no de forma mas sencilla)
     Vector3 t_posicion = cellCenterToPosition(row,col,cellWidth,cellHeight);
     float value = 0;
@@ -53,10 +53,12 @@ float cellValue(int row, int col, bool** freeCells, int nCellsWidth, int nCellsH
         //value+=_distance(t_position,i.position); 
         //me da fallos a pesar de que esto representa lo mismo que arriba
     }
+    
     //el que tenga menor valor tendra mas obstaculos cerca ==> mayor puntuacion
     //por tanto lo invierto para tener mayor puntuacion
     return 1/value; // implemente aqui la funci�n que asigna valores a las celdas
 }
+
 
 /*
 FUNCION DE FACTIBILIDAD
@@ -77,7 +79,7 @@ FUNCION DE FACTIBILIDAD
     PREGUNTAR QUE SIGNIFICA QUE SEA UNA FUNCION DE FACTIBILIDAD EXPLICITA
 */
 bool funcion_factibilidad(int row, int col, List<Object*> obstacles, List<Defense*> defenses,
-bool **freeCells,float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeight, const Defense& d){
+bool **freeCells,float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeight, Defense* d){
     //definicion de variables
     float cellWidth = mapWidth / nCellsWidth; //anchura de la celula
     float cellHeight = mapHeight / nCellsHeight;//altura de la celula
@@ -85,28 +87,24 @@ bool **freeCells,float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeig
     bool token = true;
 
     //Primeiro comprobamos que la celda no esta en ninguna posicion limite
-    if(p.x + d.radio > mapWidth ||p.x - d.radio < 0 ||
-        p.y + d.radio > mapHeight ||p.y - d.radio < 0)
+    if(p.x + d->radio > mapWidth ||p.x - d->radio < 0 ||
+        p.y + d->radio > mapHeight ||p.y - d->radio < 0)
     {
         return false; //si se cumple alguna condicion la defensa no cabe al alcanzar posiciones limite del mapa
     }    
-    else{//Si no cumple el primer requisito no sera necesario continuar, en cambio , si lo cumple entonces:
         //Comprobaremos que no colisionan con las defensas/obstaculos que ya estan colocadas
         for(auto i : obstacles){
             //Colisionara en caso de que las distancias entre puntos centrales de los obstaculos
             //sea menor que los radios de la defensa a colocar y el obstaculo
-            if((d.radio + i->radio)>_distance(p,i->position))
+            if(_distance(p,i->position) < (d->radio + i->radio))
                 token = false;
         }
-        if(token){//si ya se ha detectado que no es posible colocarla en un obstaculo
-                  //para que comprobar las defensas
-            //Se comprobara de forma similar a los obstaculos con las defensas
-            for (auto i: defenses){
-                if((d.radio + i->radio)>_distance(p,i->position))
-                    token = false;
-            }
+        //Se comprobara de forma similar a los obstaculos con las defensas
+        for (auto i: defenses){
+            if(_distance(p,i->position)<(d->radio + i->radio))
+                token = false;
         }
-    }
+        
     return token;      
 }
 
@@ -120,11 +118,20 @@ float mapWidth, float mapHeight, std::list<Object*> obstacles, std::list<Defense
     int maxAttemps = 1000;
     List<Defense*>::iterator currentDefense = defenses.begin();
     while(currentDefense != defenses.end() && maxAttemps > 0) {
-
-        (*currentDefense)->position.x = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
-        (*currentDefense)->position.y = ((int)(_RAND2(nCellsHeight))) * cellHeight + cellHeight * 0.5f;
-        (*currentDefense)->position.z = 0; 
-        ++currentDefense;
+        //para no complicarnos con parametros
+        int row = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
+        int col = ((int)(_RAND2(nCellsHeight))) * cellHeight + cellHeight * 0.5f;
+        
+        
+        //FAlTA POR IMPLEMENTAR EL VORAZ DEL CENTRO DE EXTRACCION (DEFENSA 0)
+        
+        if(funcion_factibilidad(row,col,obstacles,defenses,freeCells,mapHeight,
+        mapWidth,nCellsWidth,nCellsHeight,(*currentDefense))){
+            (*currentDefense)->position.x = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
+            (*currentDefense)->position.y = ((int)(_RAND2(nCellsHeight))) * cellHeight + cellHeight * 0.5f;
+            (*currentDefense)->position.z = 0;
+            ++currentDefense;
+        }
     }
 
 #ifdef PRINT_DEFENSE_STRATEGY

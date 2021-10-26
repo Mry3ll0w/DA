@@ -1,1 +1,23 @@
 La defincion de esta funcion se halla en el ejercicio 1, ya que ambos usan la misma.
+El codigo en cuestion: 
+\begin{lstlisting}
+    float cellValue(int row, int col, bool** freeCells, int nCellsWidth, int nCellsHeight
+	, float mapWidth, float mapHeight, List<Object*> obstacles, List<Defense*> defenses) {
+	//De forma similar al ejercicio inferior
+    float cellWidth = mapWidth / nCellsWidth; //anchura de la celula
+    float cellHeight = mapHeight / nCellsHeight;//altura de la celula
+    /*Aplicamos el criterio ==> cuanto mas cerca de un obstaculo mejor 
+    */
+    //Usamos el tipo vector 3 para una comparativa (si esta vacia o no de forma mas sencilla)
+    Vector3 t_posicion = cellCenterToPosition(row,col,cellWidth,cellHeight);
+    float value = 0;
+    for(auto i: obstacles){
+        value+=i->position.subtract(t_posicion).length();
+        //value+=_distance(t_position,i.position); 
+        //me da fallos a pesar de que esto representa lo mismo que arriba
+    }
+    //el que tenga menor valor tendra mas obstaculos cerca ==> mayor puntuacion
+    //por tanto lo invierto para tener mayor puntuacion
+    return 1/value; // implemente aqui la funci�n que asigna valores a las celdas
+}
+\end{lstlisting}

@@ -78,12 +78,6 @@ float defense_value(Defense* d, List<Defense*> defenses)
     return value ; 
 }
 
-float extraction_value(int row, int col, bool **freeCells, int nCellsWidth, int nCellsHeight, 
-float mapWidth, float mapHeight, List<Object *> obstacles){
-    //El criterio para la puntuacion sera cuanto mas cercano al centro del mapa mejor
-    
-}
-
 
 /*
 FUNCION DE FACTIBILIDAD
@@ -136,12 +130,7 @@ bool funcion_factibilidad(int row, int col, List<Object*> obstacles, List<Defens
     return token;      
 }
 
-/* -------------------------------------------------------------------------- */
-/*        ALGORITMO DEVORADOR PARA IMPLEMENTAR LA COLOCACION DEL CENTRO       */
-/* -------------------------------------------------------------------------- */
-void place_extraction_center(std::list<Defense*> defenses){
 
-}
 
 void DEF_LIB_EXPORTED placeDefenses(bool** freeCells, int nCellsWidth, int nCellsHeight, 
 float mapWidth, float mapHeight, std::list<Object*> obstacles, std::list<Defense*> defenses) {
@@ -152,9 +141,9 @@ float mapWidth, float mapHeight, std::list<Object*> obstacles, std::list<Defense
     int maxAttemps = 1000;
     List<Defense*>::iterator currentDefense = defenses.begin();
     
-
+    int id =0;
     while(currentDefense != defenses.end() && maxAttemps > 0) {
-        //para no complicarnos lo hacemos con parametros
+        //para no complicarnos con parametros
         int row = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
         int col = ((int)(_RAND2(nCellsHeight))) * cellHeight + cellHeight * 0.5f;
         
@@ -167,7 +156,7 @@ float mapWidth, float mapHeight, std::list<Object*> obstacles, std::list<Defense
             (*currentDefense)->position.x = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
             (*currentDefense)->position.y = ((int)(_RAND2(nCellsHeight))) * cellHeight + cellHeight * 0.5f;
             (*currentDefense)->position.z = 0;
-            ++currentDefense;
+            ++currentDefense;id++;
         }
         
        

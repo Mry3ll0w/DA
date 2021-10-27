@@ -1,23 +1,19 @@
-La defincion de esta funcion se halla en el ejercicio 1, ya que ambos usan la misma.
-El codigo en cuestion: 
+Para la definicion de esta funcion compruebo como de cerca se encuentra este del 
+centro de extracción cuanto mas cerca mejor.
+Tendra los siguientes parametros:
+    · Defense* d ==> parametro de entrada al cual tendremos que evaluar.
+    · lista de defenses ==> Tendra la lista de todas la defensas, para 
+      obtener el centro de extracción.
 \begin{lstlisting}
-    float cellValue(int row, int col, bool** freeCells, int nCellsWidth, int nCellsHeight
-	, float mapWidth, float mapHeight, List<Object*> obstacles, List<Defense*> defenses) {
-	//De forma similar al ejercicio inferior
-    float cellWidth = mapWidth / nCellsWidth; //anchura de la celula
-    float cellHeight = mapHeight / nCellsHeight;//altura de la celula
-    /*Aplicamos el criterio ==> cuanto mas cerca de un obstaculo mejor 
-    */
-    //Usamos el tipo vector 3 para una comparativa (si esta vacia o no de forma mas sencilla)
-    Vector3 t_posicion = cellCenterToPosition(row,col,cellWidth,cellHeight);
-    float value = 0;
-    for(auto i: obstacles){
-        value+=i->position.subtract(t_posicion).length();
-        //value+=_distance(t_position,i.position); 
-        //me da fallos a pesar de que esto representa lo mismo que arriba
+    
+float defense_value(Defense* d, List<Defense*> defenses)
+{
+    float value=-1;//Por si acaso es la defensa[0], el centro devolvera -1
+    if(d != *defenses.begin()){
+        /* ----------- CRITERIO: cuanto mas cerca del centro de extraccion mejor ---------- */
+        Defense* centro_temp = *defenses.begin();
+        value = _distance(d->position,centro_temp->position);
     }
-    //el que tenga menor valor tendra mas obstaculos cerca ==> mayor puntuacion
-    //por tanto lo invierto para tener mayor puntuacion
-    return 1/value; // implemente aqui la funci�n que asigna valores a las celdas
+    return value ; 
 }
 \end{lstlisting}

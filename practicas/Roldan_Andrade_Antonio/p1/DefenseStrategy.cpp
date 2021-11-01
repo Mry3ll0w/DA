@@ -135,14 +135,95 @@ bool funcion_factibilidad(int row, int col, List<Object*> obstacles, List<Defens
         
     return token;      
 }
+/* -------------------------------------------------------------------------- */
+/*       ESTRUCTURA PARA LA VALORACION DE LAS DISTINTAS DEFENSAS Y DEMAS      */
+/* -------------------------------------------------------------------------- */
+//para realizar la seleccion deberemos crear una celda intermedia donde almacenaremos valoracion de celda
+//y el elemento a colocar
+struct defensa_valoracion{
+    Defense* d;
+    float valoracion;
+    defensa_valoracion(Defense *d_,float v=-1):d(d_),valoracion(v){}
+    bool operator <(defensa_valoracion & b){//para la ordenacion de la lista
+        return valoracion < b.valoracion;
+    }
+};
 
 /* -------------------------------------------------------------------------- */
-/*        ALGORITMO DEVORADOR PARA IMPLEMENTAR LA COLOCACION DEL CENTRO       */
+/*        ALGORITMO DEVORADOR PARA COLOCACION DE DEFENSAS                     */
 /* -------------------------------------------------------------------------- */
-void place_extraction_center(std::list<Defense*> defenses){
 
+//asigna todas la valoracion de las defensas utilizando la funcion defValue previamente especializada
+std::list<defensa_valoracion> asignar_valoracion(std::list<Defense*> defenses){
+    std::list<defensa_valoracion> res;
+    for(auto i: defenses){
+        res.push_back(defensa_valoracion(i,defense_value(i,defenses)));//insertamos todas las valoraciones
+    }
+    return res;
 }
 
+std::list<Defense*> voraz_defensas(int row, int col, List<Object*> obstacles, List<Defense*> defenses,
+    float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeight){
+    std::list<defensa_valoracion> C = asignar_valoracion(defenses);//obtenemos la lista de 
+    std::list<Defense*> S; 
+    Defense* p;
+    //inicio del algoritmo
+    C.sort(); //ordena de menor a mayor por tanto obtenemos el frente
+    
+    while(C.size()>0){//tendremos que vaciar la lista en todo caso para poder comprobar su factibilidad
+        p = C.front().d; 
+        C.pop_front(); //podamos el frente
+
+        if(funcion_factibilidad(row,col,obstacles,defenses,mapHeight,
+        mapWidth,nCellsWidth,nCellsHeight,p)){
+            S.push_back(p);
+        }    
+    }
+    return S;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/*            ALGORTIMO VORAZ PARA COLOCAR EL CENTRO DE EXTRACCION            */
+/* -------------------------------------------------------------------------- */
+
+//Asigna valor a las celdas (mejor valor)
+std::list<defensa_valoracion> asignar_valoracion_celda(int row, int col, bool** freeCells, int nCellsWidth, int nCellsHeight
+	, float mapWidth, float mapHeight, List<Object*> obstacles, List<Defense*> defenses){
+    std::list<defensa_valoracion> res;
+    for(auto i: defenses){
+        res.push_back(defensa_valoracion(i,
+        cellValue(row,col,freeCells,nCellsWidth,nCellsHeight,mapWidth,mapHeight,obstacles,defenses)));//insertamos todas las valoraciones
+    }
+    return res;
+}
+
+//Algoritmo Voraz para el centro
+Defense* voraz_centro(int row, int col, List<Object*> obstacles, List<Defense*> defenses,
+    float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeight){
+    std::list<defensa_valoracion> C = asignar_valoracion(defenses);//obtenemos la lista de 
+    std::list<Defense*> S; 
+    Defense* p;
+    //inicio del algoritmo
+    C.sort(); //ordena de menor a mayor por tanto obtenemos el frente
+    
+    while(C.size()>0){//tendremos que vaciar la lista en todo caso para poder comprobar su factibilidad
+        p = C.front().d; 
+        C.pop_front(); //podamos el frente
+
+        if(funcion_factibilidad(row,col,obstacles,defenses,mapHeight,
+        mapWidth,nCellsWidth,nCellsHeight,p)){
+            S.push_back(p);
+        }    
+    }
+    return S.front();//devuelve el frente ya que tiene la mejor posicion defensiva, es decir, el centro
+}
+
+
+
+/* -------------------------------------------------------------------------- */
+/*       ALGORITMO PARA COLOCAR LOS ELEMENTOS (DEFENSAS, OBSTACULOS, ..)      */
+/* -------------------------------------------------------------------------- */
 void DEF_LIB_EXPORTED placeDefenses(bool** freeCells, int nCellsWidth, int nCellsHeight, 
 float mapWidth, float mapHeight, std::list<Object*> obstacles, std::list<Defense*> defenses) {
 

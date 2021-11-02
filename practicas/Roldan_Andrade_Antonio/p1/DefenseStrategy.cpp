@@ -78,11 +78,6 @@ float defense_value(Defense* d, List<Defense*> defenses)
     return value ; 
 }
 
-float extraction_value(int row, int col, bool **freeCells, int nCellsWidth, int nCellsHeight, 
-float mapWidth, float mapHeight, List<Object *> obstacles){
-    //El criterio para la puntuacion sera cuanto mas cercano al centro del mapa mejor
-    
-}
 
 
 /*
@@ -143,7 +138,8 @@ bool funcion_factibilidad(int row, int col, List<Object*> obstacles, List<Defens
 struct defensa_valoracion{
     Defense* d;
     float valoracion;
-    defensa_valoracion(Defense *d_,float v=-1):d(d_),valoracion(v){}
+    size_t id; //para controlar que no se esta evaluando a ella misma
+    defensa_valoracion(Defense *d_,float v=-1,size_t i=0):d(d_),valoracion(v),id(i){}
     bool operator <(defensa_valoracion & b){//para la ordenacion de la lista
         return valoracion < b.valoracion;
     }
@@ -156,8 +152,10 @@ struct defensa_valoracion{
 //asigna todas la valoracion de las defensas utilizando la funcion defValue previamente especializada
 std::list<defensa_valoracion> asignar_valoracion(std::list<Defense*> defenses){
     std::list<defensa_valoracion> res;
+    size_t id=0;
     for(auto i: defenses){
-        res.push_back(defensa_valoracion(i,defense_value(i,defenses)));//insertamos todas las valoraciones
+        res.push_back(defensa_valoracion(i,defense_value(i,defenses),id));//insertamos todas las valoraciones
+        ++id;
     }
     return res;
 }

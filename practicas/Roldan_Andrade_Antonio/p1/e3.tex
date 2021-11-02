@@ -1,17 +1,49 @@
 \begin{lstlisting}
 
-// sustituya este codigo por su respuesta
-//Para este algoritmo se tiene que tener en cuenta todas las celulas y la de mejor valoracion 
+//Para este algoritmo se tiene que tener en cuenta todas las celdas y la de mejor valoracion 
 //sera el centro de extracción  
-void placeDefenses(...) {
+//Asigna valor a las celdas (mejor valor, usando la funcion cellvalue)
 
-    List<Defense*>::iterator currentDefense = defenses.begin();
-    while(currentDefense != defenses.end() && maxAttemps > 0) {
-
-        (*currentDefense)->position.x = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
-        ...
-        ++currentDefense;
+//Estructura auxiliar para realizar la valoracion (se podria usar un map pero con esto podemos llamar al sort de la lista)
+struct defensa_valoracion{
+    Defense* d;
+    float valoracion;
+    defensa_valoracion(Defense *d_,float v=-1):d(d_),valoracion(v){}
+    bool operator <(defensa_valoracion & b){//para la ordenacion de la lista
+        return valoracion < b.valoracion;
     }
+};
+
+
+std::list<defensa_valoracion> asignar_valoracion_celda(int row, int col, bool** freeCells, int nCellsWidth, int nCellsHeight
+	, float mapWidth, float mapHeight, List<Object*> obstacles, List<Defense*> defenses){
+    std::list<defensa_valoracion> res;
+    for(auto i: defenses){
+        res.push_back(defensa_valoracion(i,
+        cellValue(row,col,freeCells,nCellsWidth,nCellsHeight,mapWidth,mapHeight,obstacles,defenses)));//insertamos todas las valoraciones
+    }
+    return res;
+}
+
+//Algoritmo Voraz para el centro (al devolver la mejor defensa para el centro de extr solo devuelve un objeto defensa)
+Defense* voraz_centro(int row, int col, List<Object*> obstacles, List<Defense*> defenses,
+    float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeight){
+    std::list<defensa_valoracion> C = asignar_valoracion(defenses);//obtenemos la lista de 
+    std::list<Defense*> S; 
+    Defense* p;
+    //inicio del algoritmo
+    C.sort(); //ordena de menor a mayor por tanto obtenemos el frente
+    
+    while(C.size()>0){//tendremos que vaciar la lista en todo caso para poder comprobar su factibilidad
+        p = C.front().d; 
+        C.pop_front(); //podamos el frente
+
+        if(funcion_factibilidad(row,col,obstacles,defenses,mapHeight,
+        mapWidth,nCellsWidth,nCellsHeight,p)){
+            S.push_back(p);
+        }    
+    }
+    return S.front();//devuelve el frente ya que tiene la mejor posicion defensiva, es decir, el centro
 }
 
 \end{lstlisting}

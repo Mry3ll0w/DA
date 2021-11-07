@@ -160,17 +160,23 @@ std::list<defensa_valoracion> asignar_valoracion(std::list<Defense*> defenses){
     return res;
 }
 
-std::list<Defense*> voraz_defensas(int row, int col, List<Object*> obstacles, List<Defense*> defenses,
+std::list<Defense*> voraz_defensas(List<Object*> obstacles, List<Defense*> defenses,
     float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeight){
     std::list<defensa_valoracion> C = asignar_valoracion(defenses);//obtenemos la lista de 
     std::list<Defense*> S; 
     Defense* p;
+    float cellWidth = mapWidth / nCellsWidth; //anchura de la celula
+    float cellHeight = mapHeight / nCellsHeight;//altura de la celula
+    
     //inicio del algoritmo
     C.sort(); //ordena de menor a mayor por tanto obtenemos el frente
     
     while(C.size()>0){//tendremos que vaciar la lista en todo caso para poder comprobar su factibilidad
         p = C.front().d; 
         C.pop_front(); //podamos el frente
+        int row = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
+        int col = ((int)(_RAND2(nCellsHeight))) * cellHeight + cellHeight * 0.5f;
+        
 
         if(funcion_factibilidad(row,col,obstacles,defenses,mapHeight,
         mapWidth,nCellsWidth,nCellsHeight,p)){
@@ -197,18 +203,21 @@ std::list<defensa_valoracion> asignar_valoracion_celda(int row, int col, bool** 
 }
 
 //Algoritmo Voraz para el centro
-Defense* voraz_centro(int row, int col, List<Object*> obstacles, List<Defense*> defenses,
+Defense* voraz_centro(List<Object*> obstacles, List<Defense*> defenses,
     float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeight){
     std::list<defensa_valoracion> C = asignar_valoracion(defenses);//obtenemos la lista de 
     std::list<Defense*> S; 
     Defense* p;
     //inicio del algoritmo
     C.sort(); //ordena de menor a mayor por tanto obtenemos el frente
-    
+    float cellWidth = mapWidth / nCellsWidth; //anchura de la celula
+    float cellHeight = mapHeight / nCellsHeight;//altura de la celula
+     
     while(C.size()>0){//tendremos que vaciar la lista en todo caso para poder comprobar su factibilidad
         p = C.front().d; 
         C.pop_front(); //podamos el frente
-
+        int row = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
+        int col = ((int)(_RAND2(nCellsHeight))) * cellHeight + cellHeight * 0.5f;
         if(funcion_factibilidad(row,col,obstacles,defenses,mapHeight,
         mapWidth,nCellsWidth,nCellsHeight,p)){
             S.push_back(p);
@@ -227,7 +236,8 @@ float mapWidth, float mapHeight, std::list<Object*> obstacles, std::list<Defense
 
     float cellWidth = mapWidth / nCellsWidth;
     float cellHeight = mapHeight / nCellsHeight; 
-
+    defenses = voraz_defensas(obstacles,defenses,mapHeight,mapWidth, nCellsWidth,nCellsHeight);
+    Defense * centro_temp = voraz_centro(obstacles,defenses,mapHeight,mapWidth, nCellsWidth,nCellsHeight);
     int maxAttemps = 1000;
     List<Defense*>::iterator currentDefense = defenses.begin();
     
@@ -242,10 +252,21 @@ float mapWidth, float mapHeight, std::list<Object*> obstacles, std::list<Defense
         
         if(funcion_factibilidad(row,col,obstacles,defenses,mapHeight,
         mapWidth,nCellsWidth,nCellsHeight,(*currentDefense))){
+            if (currentDefense == defenses.begin())
+            {
+                (*currentDefense)->position.x = centro_temp->position.x;
+                (*currentDefense)->position.y = centro_temp->position.y;
+                (*currentDefense)->position.z = 0;
+                    
+            }
+            else
+            {
+                (*currentDefense)->position.x = row;
+                (*currentDefense)->position.y = col;
+                (*currentDefense)->position.z = 0;
             
-            (*currentDefense)->position.x = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
-            (*currentDefense)->position.y = ((int)(_RAND2(nCellsHeight))) * cellHeight + cellHeight * 0.5f;
-            (*currentDefense)->position.z = 0;
+            }
+                
             ++currentDefense;
         }
         

@@ -33,16 +33,35 @@ std::vector<int> asignar_valoracion(std::vector<std::vector<char>> m, const size
             if(m[f][it_vec]=='a'){
                 ++v[it_vec];
             }
-        }
+        }   
+    }
+}
+
+//Movimiento de la matriz
+std::vector<std::vector<char>> mover(const char& mov, std::vector<std::vector<char>> mapa, std::pair<int, int> nave){
+    //actualizamos la nave
+    
+    //
+    nave.first-=1;
+
+    if (mov == 'd')
+    {
         
-        
+        nave.second+=1;
+        mapa[nave.first][nave.second] = 'a';
     }
 
+    if(mov == 'i'){
+
+    }
+    else{ // decide quieto
+
+    }
 
 }
 
 //funcion objetivo ==> selecciona cual seria el mejor movimiento siguiente
-std::pair<char,int> funcio_objetivo(std::vector<std::vector<char>> m, const int& d, std::pair<int,int> nave){
+std::pair<char,int> funcion_objetivo(std::vector<std::vector<char>> m, const int& d, std::pair<int,int> nave){
     std::vector<int>p_quieto, p_der, p_izq;
     
     //Comprobamos quieto
@@ -50,21 +69,21 @@ std::pair<char,int> funcio_objetivo(std::vector<std::vector<char>> m, const int&
         p_quieto = asignar_valoracion(m,d);
     }
     //Comprobamos derecha
-    if(nave.second+1 < d-1){//No se sale al aplicar el operador
-
+    if(nave.second+1 < d-1 && m[nave.first][nave.second+1]!='a'){//No se sale al aplicar el operador, ni choca
+        
     }
 
-    if(nave.second-1 > 0){
+    //Comprobamos izquierda
+    if(nave.second-1 > 0 && m[nave.first][nave.second-1]!='a'){
 
     }
-
 
 }
 
 
 std::list<char> voraz(std::vector<std::vector<char>> mapa, const size_t& dimensiones){
-    
+    std::list<char> S;
     std::vector<int>valoracion; // nos vale para valorar hacia donde movernos
 
-return pos_final;
+return S;
 }

@@ -1,13 +1,64 @@
 \begin{lstlisting}
-// sustituya este codigo por su respuesta
-void placeDefenses(...) {
+// Falla en la colocacion del algoritmo voraz
+void DEF_LIB_EXPORTED placeDefenses(bool** freeCells, int nCellsWidth, int nCellsHeight, 
+float mapWidth, float mapHeight, std::list<Object*> obstacles, std::list<Defense*> defenses) {
 
+    float cellWidth = mapWidth / nCellsWidth;
+    float cellHeight = mapHeight / nCellsHeight; 
+    defenses = voraz_defensas(obstacles,defenses,mapHeight,mapWidth, nCellsWidth,nCellsHeight);
+    Defense * centro_temp = voraz_centro(obstacles,defenses,mapHeight,mapWidth, nCellsWidth,nCellsHeight);
+    int maxAttemps = 1000;
     List<Defense*>::iterator currentDefense = defenses.begin();
-    while(currentDefense != defenses.end() && maxAttemps > 0) {
+    
 
-        (*currentDefense)->position.x = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
-        ...
-        ++currentDefense;
+    while(currentDefense != defenses.end() && maxAttemps > 0) {
+        //para no complicarnos lo hacemos con parametros
+        int row = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
+        int col = ((int)(_RAND2(nCellsHeight))) * cellHeight + cellHeight * 0.5f;
+        
+        
+        //FAlTA POR IMPLEMENTAR EL VORAZ DEL CENTRO DE EXTRACCION (DEFENSA 0)
+        
+        if(funcion_factibilidad(row,col,obstacles,defenses,mapHeight,
+        mapWidth,nCellsWidth,nCellsHeight,(*currentDefense))){
+            if (currentDefense == defenses.begin())
+            {
+                (*currentDefense)->position.x = centro_temp->position.x;
+                (*currentDefense)->position.y = centro_temp->position.y;
+                (*currentDefense)->position.z = 0;
+                    
+            }
+            else
+            {
+                (*currentDefense)->position.x = row;
+                (*currentDefense)->position.y = col;
+                (*currentDefense)->position.z = 0;
+            
+            }
+                
+            ++currentDefense;
+        }
+        
+       
     }
+
+#ifdef PRINT_DEFENSE_STRATEGY
+
+    float** cellValues = new float* [nCellsHeight]; 
+    for(int i = 0; i < nCellsHeight; ++i) {
+       cellValues[i] = new float[nCellsWidth];
+       for(int j = 0; j < nCellsWidth; ++j) {
+           cellValues[i][j] = ((int)(cellValue(i, j))) % 256;
+       }
+    }
+    dPrintMap("strategy.ppm", nCellsHeight, nCellsWidth, cellHeight, cellWidth, freeCells
+                         , cellValues, std::list<Defense*>(), true);
+
+    for(int i = 0; i < nCellsHeight ; ++i)
+        delete [] cellValues[i];
+	delete [] cellValues;
+	cellValues = NULL;
+
+#endif
 }
 \end{lstlisting}

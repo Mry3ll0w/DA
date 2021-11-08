@@ -1,1 +1,15 @@
-Escriba aquí su respuesta al ejercicio 2.
+La estructura necesaria para la representacion de la Tabla de subproblemas Resueltos
+sera creada con una estructura llamada TSP.
+Los elementos que compondran a la estructura seran:
+    1) Una matriz reprensentada con una variable de tipo vector (de alto nivel)
+    que a su vez tendrá un vector de enteros dentro, de la siguiente forma,
+    std::vector<std::vector<int>> m.
+    Esto nos permite tener los métodos y funciones de la clase vector y además
+    tener una mayor sencillez a la hora de reservar memoria y demas.
+
+    2) Una lista donde estan almacenadas una struct def_cost (que almacena las 
+    defensas con sus respectivos costes), aun no siendo necesaria por ser una varibles 
+    de una defensa, esta nos permite tener una ordenacion de menor coste , al cambio 
+    de sacrificar un poco de espacio en memoria.
+
+    3)Constructores de la struct TSP y struct def_cost

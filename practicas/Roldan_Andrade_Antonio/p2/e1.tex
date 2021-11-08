@@ -1,3 +1,12 @@
 $$ f(radio,rango,salud)=(radio+rango)-1+rango^2+3\frac{radio}{salud} $$
 
-Escriba aquí su respuesta al ejercicio 1.
+La funcion tomará como criterio para la valoración de las defensas en funcion a la suma 
+de sus respectivos daño, alcance y salud, a esto se le sustraerá el valor del coste en 
+ases de las mismas.
+Para la realizacion de la misma , he visto conveniente crear una estructura para el almacenado 
+de la valoracion que se le da y a la defensa en si, además , he sobrecargado el operador < para 
+poder usar la funcion sort de la lista de la STL de C++.
+
+El algoritmo en si es trivial, simplemente irá recorriendo la lista de defensas y les dara una 
+valoración, la cual se almacena en una lista de elementos defensa_valoracion (struct anteriormente
+mencionada), tras esto se devolverá la lista.

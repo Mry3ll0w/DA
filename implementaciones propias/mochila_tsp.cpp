@@ -11,7 +11,7 @@ std::vector<std::vector<int>> rellenar_tsp(std::vector<std::vector<int>> & TSP,
 const size_t& volumen_mochila, std::vector<std::pair<int,int>>elementos);
 
 //Calcula beneficio de los elementos
-const int calcula_benificio(const std::vector<std::pair<int,int>>&elementos,const int& capacidad,int tope_elemento);
+const int calcula_beneficio(const std::vector<std::pair<int,int>>&elementos,const int& capacidad,int tope_elemento);
 
 /* -------------------------------------------------------------------------- */
 /*                             MAIN PARA TRABAJAR                             */
@@ -35,14 +35,25 @@ return 0;
 /* -------------------------------------------------------------------------- */
 /*                              IMPLEMENTACIONES                              */
 /* -------------------------------------------------------------------------- */
-const int calcula_benificio(const std::vector<std::pair<int,int>>&elementos,const int& capacidad,int tope_elemento){
+const int calcula_beneficio(const std::vector<std::pair<int,int>>&elementos,const int& capacidad,int tope_elemento){
     int beneficio = 0;
     int capacidad_restante = capacidad; //controlamos la capacidad restante que queda al ir insertando elementos
     //Recorremos los elementos hasta el actual o termine el vector de elementos
-    for (size_t k = 0; k <= tope_elemento && capacidad_restante > 0; k++)
+    for (size_t k = tope_elemento; k < 1 && capacidad_restante > 0; --k)
     {
+        std::cout<<"entro calcula_benf con: "<<capacidad<<std::endl;
+        /*
         beneficio += elementos[k].second;//añadimos el beneficio 
         capacidad_restante-=elementos[k].first;//actualizamos la capacidad
+        */
+        if(elementos[k].second > elementos[k-1].second){
+            beneficio += elementos[k].second;
+            capacidad_restante-=elementos[k].first;
+        }
+        else{
+            beneficio += elementos[k-1].second;
+            capacidad_restante-=elementos[k-1].first;
+        }
     }
     return beneficio;
 }
@@ -65,9 +76,6 @@ const size_t& volumen_mochila, std::vector<std::pair<int,int>>elementos){
         TSP[i] = std::vector<int>(volumen_mochila+1); //El n de columnas viene dado por el numero de elementos que hay
     }
 
-    
-    
-    
 
 //2) Rellenamos la TSP conforme a los datos de entrada
     for (size_t i = 0; i < elementos.size(); i++)
@@ -80,14 +88,12 @@ const size_t& volumen_mochila, std::vector<std::pair<int,int>>elementos){
                 TSP[i][j] = 0; //no cabe nada ya que es de 0 capacidad
             }
             else { // cuando la capacidad no sea 0
-                
-                int benef_a = calcula_benificio(elementos,j,i);
-                int benef_b = calcula_benificio(elementos,j-1,i);
+
+                int benef_a = calcula_beneficio(elementos,j,i);
+                int benef_b = calcula_beneficio(elementos,j-1,i);
                 TSP[i][j] = std::max(benef_a,benef_b); //la tsp deb
-                
             }
-            
-            
+
         }
         
     }
@@ -96,5 +102,5 @@ const size_t& volumen_mochila, std::vector<std::pair<int,int>>elementos){
 
 int alg_mochila(const std::vector<std::vector<int>> & TSP, 
 const size_t& volumen_mochila, std::vector<std::pair<int,int>>elementos){
-
+return 0;
 }

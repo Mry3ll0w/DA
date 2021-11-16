@@ -63,13 +63,7 @@ std::vector<std::vector<int>> rellenar_tsp(std::vector<std::vector<int>> & TSP,
 const size_t& volumen_mochila, std::vector<std::pair<int,int>>elementos){
 
 //1)Realizar la reserva de espacios (en este caso es limitarlo para rellenar con valores predeterminados)
-   /* 
-    TSP = new int*[elementos.size()];//filas vienen dadas por el numero de elementos
-    for (size_t i = 0; i < elementos.size(); i++)
-    {
-        TSP[i]=new int [volumen_mochila+1];
-    }
-   */ 
+  
     TSP = std::vector<std::vector<int>>(elementos.size()); //el n de filas viene dado por la capacidad de la mochila + 1 
     for (size_t i = 0; i < elementos.size(); ++i)
     {
@@ -77,27 +71,36 @@ const size_t& volumen_mochila, std::vector<std::pair<int,int>>elementos){
     }
 
 
-//2) Rellenamos la TSP conforme a los datos de entrada
-    for (size_t i = 0; i < elementos.size(); i++)
-    {
-        for (size_t j = 0; j < volumen_mochila + 1; j++)
-        {
-            //meteremos ahora los beneficios posibles
-            
-            if(j == 0){//si esta en la primera posicion simplemente comprobamos cuanto cabe de cada elemento
-                TSP[i][j] = 0; //no cabe nada ya que es de 0 capacidad
-            }
-            else { // cuando la capacidad no sea 0
+//2) Rellenamos la TSP conforme a los datos de entrada PREGUNTAR SALGUERO 
+/*      ESTE ALGORITMO VIENE DADO EN LAS TRANSPARENCIAS
+mochila : v × p × n × c → r
+//desde j ← 0 hasta c (El numero columnas)
+//    si j < p[1]
+//        f [1, j] ← 0
+//    si no
+//        f [1, j] ← v[1]
+desde i ← 2 hasta n
+    desde j ← 0 hasta c 
+        si j < p[i]
+            f [i, j] ← f [i − 1, j]
+        si no
+            f [i, j] ← máx(f [i − 1, j],f [i − 1, j − p[i]] + v[i])
 
-                int benef_a = calcula_beneficio(elementos,j,i);
-                int benef_b = calcula_beneficio(elementos,j-1,i);
-                TSP[i][j] = std::max(benef_a,benef_b); //la tsp deb
-            }
-
-        }
-        
-    }
+r ← f [n, c]
     return TSP;
+*/
+    //Usamos este for para meter el primer elemento de la matriz (0) donde el peso es minimo
+    for(int j = 0; j < volumen_mochila+1; ++j){
+        if (j < elementos[1].first)
+        {
+            TSP[0][j]=0;
+        }
+        else{
+            TSP[0][j]=elementos[1].second; // metemos el valor del elemento que cabe en 0 
+        }
+    }
+
+return TSP;
 }
 
 int alg_mochila(const std::vector<std::vector<int>> & TSP, 

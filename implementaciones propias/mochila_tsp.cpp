@@ -10,9 +10,6 @@ int alg_mochila(const std::vector<std::vector<int>> & TSP, const size_t& volumen
 std::vector<std::vector<int>> rellenar_tsp(std::vector<std::vector<int>> & TSP, 
 const size_t& volumen_mochila, std::vector<std::pair<int,int>>elementos);
 
-//Calcula beneficio de los elementos
-const int calcula_beneficio(const std::vector<std::pair<int,int>>&elementos,const int& capacidad,int tope_elemento);
-
 /* -------------------------------------------------------------------------- */
 /*                             MAIN PARA TRABAJAR                             */
 /* -------------------------------------------------------------------------- */
@@ -35,28 +32,6 @@ return 0;
 /* -------------------------------------------------------------------------- */
 /*                              IMPLEMENTACIONES                              */
 /* -------------------------------------------------------------------------- */
-const int calcula_beneficio(const std::vector<std::pair<int,int>>&elementos,const int& capacidad,int tope_elemento){
-    int beneficio = 0;
-    int capacidad_restante = capacidad; //controlamos la capacidad restante que queda al ir insertando elementos
-    //Recorremos los elementos hasta el actual o termine el vector de elementos
-    for (size_t k = tope_elemento; k < 1 && capacidad_restante > 0; --k)
-    {
-        std::cout<<"entro calcula_benf con: "<<capacidad<<std::endl;
-        /*
-        beneficio += elementos[k].second;//añadimos el beneficio 
-        capacidad_restante-=elementos[k].first;//actualizamos la capacidad
-        */
-        if(elementos[k].second > elementos[k-1].second){
-            beneficio += elementos[k].second;
-            capacidad_restante-=elementos[k].first;
-        }
-        else{
-            beneficio += elementos[k-1].second;
-            capacidad_restante-=elementos[k-1].first;
-        }
-    }
-    return beneficio;
-}
 
 
 std::vector<std::vector<int>> rellenar_tsp(std::vector<std::vector<int>> & TSP, 
@@ -71,49 +46,34 @@ const size_t& volumen_mochila, std::vector<std::pair<int,int>>elementos){
     }
 
 
-//2) Rellenamos la TSP conforme a los datos de entrada PREGUNTAR SALGUERO 
-/*      ESTE ALGORITMO VIENE DADO EN LAS TRANSPARENCIAS
-mochila : v × p × n × c → r
-//desde j ← 0 hasta c (El numero columnas)
-//    si j < p[1]
-//        f [1, j] ← 0
-//    si no
-//        f [1, j] ← v[1]
-desde i ← 2 hasta n
-    desde j ← 0 hasta c 
-        si j < p[i]
-            f [i, j] ← f [i − 1, j]
-        si no
-            f [i, j] ← máx(f [i − 1, j],f [i − 1, j − p[i]] + v[i])
+//2) Rellenamos la TSP conforme a los datos de entrada (dados por elementos)
 
-r ← f [n, c]
-    return TSP;
-*/
     //Usamos este for para meter el primer elemento de la matriz (0) donde el peso es minimo
     for(int j = 0; j < volumen_mochila+1; ++j){
         
-        if (j < elementos[1].first)
+        if (j < elementos[0].first)
         {
             TSP[0][j]=0;
         }
         
         else{
-            TSP[0][j]=elementos[1].second; // metemos el valor del elemento que cabe en 0 
+            TSP[0][j]=elementos[0].second; // metemos el valor del elemento que cabe en 0 
         }
     }
 
     for ( int i=1; i<elementos.size() ;i++ ){
         
-        for ( int j=0; j<volumen_mochila+1; ++j){
-            
-            if (j < elementos[1].second)
+        for ( int j=0; j< volumen_mochila+1 ; ++j){
+        
+            if (j < elementos[i].second)
             {
                 TSP[i][j]= TSP[i-1][j];
             }
             
             else{
                 
-                TSP[i][j] = std::max(TSP[i-1][j], TSP[i-1][j-elementos[1].second]+elementos[1].first);
+                TSP[i][j] = std::max(TSP[i-1][j], TSP[i-1][j-elementos[i].second]+elementos[i].first);
+                
             }
             
         }

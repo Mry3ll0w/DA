@@ -91,12 +91,31 @@ r ← f [n, c]
 */
     //Usamos este for para meter el primer elemento de la matriz (0) donde el peso es minimo
     for(int j = 0; j < volumen_mochila+1; ++j){
+        
         if (j < elementos[1].first)
         {
             TSP[0][j]=0;
         }
+        
         else{
             TSP[0][j]=elementos[1].second; // metemos el valor del elemento que cabe en 0 
+        }
+    }
+
+    for ( int i=1; i<elementos.size() ;i++ ){
+        
+        for ( int j=0; j<volumen_mochila+1; ++j){
+            
+            if (j < elementos[1].second)
+            {
+                TSP[i][j]= TSP[i-1][j];
+            }
+            
+            else{
+                
+                TSP[i][j] = std::max(TSP[i-1][j], TSP[i-1][j-elementos[1].second]+elementos[1].first);
+            }
+            
         }
     }
 

@@ -1,15 +1,56 @@
 \begin{lstlisting}
-// sustituya este codigo por su respuesta
-void selectDefenses(...) {
+// Recibe la struct tsp (que tiene la lista de defensas a colocar etc) y el maximo numero de ases
+//Se asume que la TSP ya se ha creado e inicializado con exito
+std::pair<int,TSP> max_beneficio(TSP& tsp,const int& max_ases ){
+    
+    //Para poder trabajar con la matriz con comodidad usaremos un vector de pairs donde el primero sera el coste y el segundo la valoracion
+    std::vector<std::pair<int,int>> v_coste_valor;
 
-    unsigned int cost = 0;
-    std::list<Defense*>::iterator it = defenses.begin();
-    while(it != defenses.end()) {
-        if(cost + (*it)->cost <= ases) {
-            selectedIDs.push_back((*it)->id);
-            cost += (*it)->cost;
-        }
-        ++it;
+    for (auto i: tsp.def_val_list)//Lo subimos sin comprobar ordenacion, ya que esta viene ordenada
+    {
+        v_coste_valor.push_back(std::make_pair(i.d->cost,i.valoracion));    
     }
+    
+
+
+    //1) Inicializamos la fila inicial de la matriz_tsp
+
+    //comenzamos la insercion de la fila de 0 capacidad
+    for(int j = 0; j < max_ases+1; ++j){
+        
+        if (j < tsp.def_val_list.begin()->d->cost) //Comprobamos que la primera defensa se pueda pagar con 0 ases
+        {
+            tsp.matriz_tsp[0][j]=0;
+        }
+        
+        else{ //En caso de poder pagarla guardamos la valoracion de la misma
+            tsp.matriz_tsp[0][j]=tsp.def_val_list.begin()->valoracion; // metemos el valor del elemento que cabe en 0 
+        }
+    }
+    
+    //2) Rellenamos el resto de filas
+    
+    //comenzaremos en el segundo elemento ya que el primero la matriz ya esta relleno
+    for ( int i=1; i < tsp.def_val_list.size() ; i++ ){
+
+        for ( int j=0; j<max_ases+1; j++){
+          
+            if (j <  v_coste_valor[i].first)
+            {
+                tsp.matriz_tsp[i][j]=tsp.matriz_tsp[i-1][j]; //si el coste es mayor que el nº de ases, metemos el anterior  
+            }
+            else{
+                
+                tsp.matriz_tsp[i][j]=std::max(tsp.matriz_tsp[i-1][j],tsp.matriz_tsp[i-1][j-v_coste_valor[i].first]+v_coste_valor[i].second);
+            
+            }
+
+        }
+    
+    }
+
+    return std::make_pair(tsp.matriz_tsp[tsp.def_val_list.size()][max_ases],tsp);//devolvemos el ultimo elemento de la matriz que contiene el max valor
+
 }
+
 \end{lstlisting}

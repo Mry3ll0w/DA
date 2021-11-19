@@ -31,12 +31,20 @@ selected id ==> contiene el id de la defensa que se ha seleccionado
 /* -------------------------------------------------------------------------- */
 //para el almacenado de las defensas , usaremos un struct para hacer uso del metodo sort de list
 struct defensa_valoracion{
+
     Defense * d;
+
     float valoracion;
+
     defensa_valoracion(Defense * d_, float v):d(d_),valoracion(v){}
+
+    //ordenaremos segun el coste de la defensa (almacenado en defensa.cost) para una correcta ordenacion de los datos
     bool operator < (const defensa_valoracion& b){
-        return valoracion < b.valoracion;
+
+        return d->cost < b.d->cost;
+
     }
+
 };
 
 //asigna el valor de cada una de las defensas
@@ -61,38 +69,92 @@ std::list<defensa_valoracion> defense_value(std::list<Defense*>&defenses){
 
 //Aun teniendo el coste ya almacenado en defensa usaremos esta struct para poder llamar al sort de lista
 //permitiendo así una ordenacion más óptima (de orden logaritmica).
-struct def_cost{
-    Defense *d;
-    int cost;
-    def_cost(const Defense* d_):d(const_cast<Defense*>(d_)),cost(d->cost){}
-    bool operator <(const def_cost& d){return cost < d.cost;}
-};
-
 struct TSP{
     
+    //La matriz almacenara la tabla de subproblemas resueltos
     std::vector<std::vector<int>> matriz_tsp;
-    //filas = numero defensas 
-    //col = maximo numero de ases
-    TSP(const int& n_defensas, const int& max_ases, const std::list<def_cost>& valoraciones);
-
     
-    std::list<def_cost> def_cost_list;
+    //Constructor de struct (asigna un tamaño maximo a las filas y columnas de la TSP)
+    TSP(const int& max_ases, std::list<defensa_valoracion>& defensas_coste);
+    
+    //Contiene la lista de defensas junto con su valoracion para realizar el algortimo de la mochila
+    std::list<defensa_valoracion> def_val_list;
 
 };
 
-//constructor de clase
-TSP::TSP(const int& n_defensas, const int& max_ases,const std::list<def_cost>& valoraciones)
-:def_cost_list(const_cast<std::list<def_cost>&>(valoraciones)){
-        matriz_tsp = std::vector<std::vector<int>>(n_defensas);
-        //con esto reservaremos el espacio suficiente para una matriz [n_defensas] [max_ases]
-        for(size_t i = 0 ; i<n_defensas ; ++i){
-            matriz_tsp[i]= std::vector<int>(max_ases);
-        }
+TSP::TSP(const int& max_ases, std::list<defensa_valoracion>& list_defensas_coste){
+    //Realiza la reserva de espacios (en este caso es limitarlo para rellenar con valores predeterminados)
+    
+    matriz_tsp = std::vector<std::vector<int>>(list_defensas_coste.size()); //el n de filas viene dado por la capacidad de la mochila + 1 
+    for (size_t i = 0; i < list_defensas_coste.size(); i++)
+    {
+        matriz_tsp[i] = std::vector<int>(max_ases+1); //El n de columnas viene dado por el numero de elementos que hay
+    }
+
+    //ordenamos la lista de defensas_coste para poder tratarla con mayor optimizacion
+    list_defensas_coste.sort();
+
+
 }
 
 /* -------------------------------------------------------------------------- */
 /*                                 EJERCICIO 3                                */
 /* -------------------------------------------------------------------------- */
+
+// Recibe la struct tsp (que tiene la lista de defensas a colocar etc) y el maximo numero de ases
+//Se asume que la TSP ya se ha creado e inicializado con exito
+int max_beneficio(TSP& tsp,const int& max_ases ){
+    
+    //Para poder trabajar con la matriz con comodidad usaremos un vector de pairs donde el primero sera el coste y el segundo la valoracion
+    std::vector<std::pair<int,int>> v_coste_valor;
+
+    for (auto i: tsp.def_val_list)//Lo subimos sin comprobar ordenacion, ya que esta viene ordenada
+    {
+        v_coste_valor.push_back(std::make_pair(i.d->cost,i.valoracion));    
+    }
+    
+
+
+    //1) Inicializamos la fila inicial de la matriz_tsp
+
+    //comenzamos la insercion de la fila de 0 capacidad
+    for(int j = 0; j < max_ases+1; ++j){
+        
+        if (j < tsp.def_val_list.begin()->d->cost) //Comprobamos que la primera defensa se pueda pagar con 0 ases
+        {
+            tsp.matriz_tsp[0][j]=0;
+        }
+        
+        else{ //En caso de poder pagarla guardamos la valoracion de la misma
+            tsp.matriz_tsp[0][j]=tsp.def_val_list.begin()->valoracion; // metemos el valor del elemento que cabe en 0 
+        }
+    }
+    
+    //2) Rellenamos el resto de filas
+    
+    //comenzaremos en el segundo elemento ya que el primero la matriz ya esta relleno
+    for ( int i=1; i < tsp.def_val_list.size() ; i++ ){
+
+        for ( int j=0; j<max_ases+1; j++){
+          
+            if (j <  v_coste_valor[i].first)
+            {
+                tsp.matriz_tsp[i][j]=tsp.matriz_tsp[i-1][j]; //si el coste es mayor que el nº de ases, metemos el anterior  
+            }
+            else{
+                
+                tsp.matriz_tsp[i][j]=std::max(tsp.matriz_tsp[i-1][j],tsp.matriz_tsp[i-1][j-v_coste_valor[i].first]+v_coste_valor[i].second);
+            
+            }
+
+        }
+    
+    }
+
+    return tsp.matriz_tsp[tsp.def_val_list.size()][max_ases];//devolvemos el ultimo elemento de la matriz que contiene el max valor
+
+}
+
 
 
 void DEF_LIB_EXPORTED selectDefenses(std::list<Defense*> defenses, unsigned int ases, 
@@ -101,9 +163,11 @@ std::list<int> &selectedIDs, float mapWidth, float mapHeight, std::list<Object*>
     std::list<Defense*>::iterator it = defenses.begin() ;
     selectedIDs.push_back((*it)->id);
     ases -=(*it)->cost;
+    it++; //metemos la primera defensa siempre
+    std::cout<<"Entro en el bucle selected"<<std::endl;
 
     unsigned int cost = 0;
-    std::list<Defense*>::iterator it = defenses.begin();
+    //std::list<Defense*>::iterator it = defenses.begin();
     while(it != defenses.end()) {
         if(cost + (*it)->cost <= ases) {
             selectedIDs.push_back((*it)->id);

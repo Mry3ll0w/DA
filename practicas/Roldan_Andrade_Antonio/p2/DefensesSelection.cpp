@@ -160,15 +160,44 @@ TSP::TSP(const int& max_ases, std::list<defensa_valoracion>& list_defensas_coste
 /* -------------------------------------------------------------------------- */
 /*                                 EJERCICIO 4                                */
 /* -------------------------------------------------------------------------- */
+std::list<int> recupera_defensas(const std::vector<std::vector<int> >& tsp,
+const std::list<defensa_valoracion>& def_val,const int& filas, const int& cols,std::list<Defense*>defenses){
 
+    //Almacenara las defensas que se han usado
+    std::list<int>sol;
+
+    int i = filas - 2;
+    int j = cols - (*defenses.begin())->cost; //Tenemos que eliminar el coste de la primera defense (centro de extraccion), que ademas se añade en cualquier caso
+
+    List<Defense*>::iterator it = defenses.end();
+
+    it--;   //Iniciamos en la posicion anterior a la ultima defensa (seria fin - 1)
+    
+    //Se Recorrera inversamente ya que partimos del beneficio maximo que se encuentra en la ultima posicion de la matriz
+    while(i > 0)
+    {
+        if(tsp[i][j] != tsp[i-1][j])
+        {
+            j = j - (*it)->cost;
+            sol.push_back((*it)->id);
+        }
+        i--;
+        it--;
+    }
+    if(tsp[0][j] != 0) // En caso de que la primera posicion de la fila 0 sea != de 0 significa que la existe una defensa que tiene coste 0 y entrara en la lista
+        sol.push_back((*it)->id);//Insertamos dicha defensa
+
+    
+return sol; //Devolvemos el vector de defensas
+}
+
+
+/* -------------------------------------------------------------------------- */
+/*                     ALGORITMO DE SELECCION DE DEFENSAS                     */
+/* -------------------------------------------------------------------------- */
 
 void DEF_LIB_EXPORTED selectDefenses(std::list<Defense*> defenses, unsigned int ases, 
 std::list<int> &selectedIDs, float mapWidth, float mapHeight, std::list<Object*> obstacles) {
-    //es necesario comprar la primera defensa siempre
-    std::list<Defense*>::iterator it = defenses.begin() ;
-    selectedIDs.push_back((*it)->id);
-    ases -=(*it)->cost;
-    it++; //metemos la primera defensa siempre
     
     //Asignamos ahora a cada defensa una valoracion
     std::list<defensa_valoracion> def_v;
@@ -180,15 +209,8 @@ std::list<int> &selectedIDs, float mapWidth, float mapHeight, std::list<Object*>
     //Llamaremos ahora a la funcion que rellena la TSP y nos da el maximo beneficio
     int benef_max = max_beneficio(str_tsp,ases);
     
-    std::cout<<std::endl;
-    std::cout<<std::endl;
-    
-    std::cout<<benef_max<<std::endl;
-    
-    std::cout<<std::endl;
-    std::cout<<std::endl;
-    
-    
+    selectedIDs = recupera_defensas(str_tsp.matriz_tsp,def_v,def_v.size(),ases,defenses);
+    /* No sera necesario ya que se realiza la seleccion en la funcion recupera_defensas
     //algoritmo para la insercion y seleccion de las defensas a colocar
     unsigned int cost = 0;
     //std::list<Defense*>::iterator it = defenses.begin();
@@ -199,4 +221,5 @@ std::list<int> &selectedIDs, float mapWidth, float mapHeight, std::list<Object*>
         }
         ++it;
     }
+    */
 }

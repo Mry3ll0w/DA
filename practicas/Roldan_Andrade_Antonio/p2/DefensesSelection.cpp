@@ -85,12 +85,10 @@ struct TSP{
 TSP::TSP(const int& max_ases, std::list<defensa_valoracion>& list_defensas_coste):def_val_list(list_defensas_coste){
     //Realiza la reserva de espacios (en este caso es limitarlo para rellenar con valores predeterminados)
     
-    matriz_tsp = std::vector<std::vector<int>>(list_defensas_coste.size()); //el n de filas viene dado por la capacidad de la mochila + 1 
-    for (size_t i = 0; i < list_defensas_coste.size(); i++)
-    {
-        matriz_tsp[i] = std::vector<int>(max_ases+1); //El n de columnas viene dado por el numero de elementos que hay
-    }
-
+    matriz_tsp = std::vector<std::vector<int>>(list_defensas_coste.size(),std::vector<int>(max_ases+1)); 
+    //Mediante el constructor de cada uno de los vectores que compone la matriz inicializamos las filas y columnas
+    //el n de filas viene dado por la capacidad de la mochila + 1 y el numero de columnas viene dado por el nº de defensas 
+    
     //ordenamos la lista de defensas_coste para poder tratarla con mayor optimizacion
     def_val_list.sort();
 
@@ -105,7 +103,6 @@ TSP::TSP(const int& max_ases, std::list<defensa_valoracion>& list_defensas_coste
     }
     
 
-
     //1) Inicializamos la fila inicial de la matriz_tsp
 
     //comenzamos la insercion de la fila de 0 capacidad
@@ -115,13 +112,12 @@ TSP::TSP(const int& max_ases, std::list<defensa_valoracion>& list_defensas_coste
         {
             matriz_tsp[0][j]=0;
         }
-        
         else{ //En caso de poder pagarla guardamos la valoracion de la misma
             matriz_tsp[0][j]=def_val_list.begin()->valoracion; // metemos el valor del elemento que cabe en 0 
         }
     }
     
-    //2) Rellenamos el resto de filas
+    //2) Rellenamos el resto de filas y columnas 
     
     //comenzaremos en el segundo elemento ya que el primero la matriz ya esta relleno
     for ( int i=1; i < def_val_list.size() ; i++ ){
@@ -150,7 +146,7 @@ TSP::TSP(const int& max_ases, std::list<defensa_valoracion>& list_defensas_coste
 /* -------------------------------------------------------------------------- */
 
 // Recibe la struct tsp (que tiene la lista de defensas a colocar etc) y el maximo numero de ases
-//Se asume que la TSP ya se ha creado e inicializado con exito
+//Se asume que la TSP ya se ha creado e inicializado con exito (previamente en su constructor)
  int max_beneficio(TSP& tsp,const int& max_ases ){
     
     return tsp.matriz_tsp[tsp.def_val_list.size()-1][max_ases];//devolvemos el ultimo elemento de la matriz que contiene el max valor
@@ -160,11 +156,11 @@ TSP::TSP(const int& max_ases, std::list<defensa_valoracion>& list_defensas_coste
 /* -------------------------------------------------------------------------- */
 /*                                 EJERCICIO 4                                */
 /* -------------------------------------------------------------------------- */
-std::list<int> recupera_defensas(const std::vector<std::vector<int> >& tsp,
+std::list<Defense*> recupera_defensas(const std::vector<std::vector<int> >& tsp,
 const std::list<defensa_valoracion>& def_val,const int& filas, const int& cols,std::list<Defense*>defenses){
 
     //Almacenara las defensas que se han usado
-    std::list<int>sol;
+    std::list<Defense*>sol;
 
     int i = filas - 2;
     int j = cols - (*defenses.begin())->cost; //Tenemos que eliminar el coste de la primera defense (centro de extraccion), que ademas se añade en cualquier caso
@@ -173,19 +169,20 @@ const std::list<defensa_valoracion>& def_val,const int& filas, const int& cols,s
 
     it--;   //Iniciamos en la posicion anterior a la ultima defensa (seria fin - 1)
     
-    //Se Recorrera inversamente ya que partimos del beneficio maximo que se encuentra en la ultima posicion de la matriz
+    //Se Recorrera inversamente ya que partimos del beneficio maximo que se encuentra en 
+    //la ultima posicion de la matriz
     while(i > 0)
     {
         if(tsp[i][j] != tsp[i-1][j])
         {
             j = j - (*it)->cost;
-            sol.push_back((*it)->id);
+            sol.push_back(*(it));
         }
         i--;
         it--;
     }
     if(tsp[0][j] != 0) // En caso de que la primera posicion de la fila 0 sea != de 0 significa que la existe una defensa que tiene coste 0 y entrara en la lista
-        sol.push_back((*it)->id);//Insertamos dicha defensa
+        sol.push_back((*it));//Insertamos dicha defensa
 
     
 return sol; //Devolvemos el vector de defensas
@@ -209,11 +206,11 @@ std::list<int> &selectedIDs, float mapWidth, float mapHeight, std::list<Object*>
     //Llamaremos ahora a la funcion que rellena la TSP y nos da el maximo beneficio
     int benef_max = max_beneficio(str_tsp,ases);
     
-    selectedIDs = recupera_defensas(str_tsp.matriz_tsp,def_v,def_v.size(),ases,defenses);
-    /* No sera necesario ya que se realiza la seleccion en la funcion recupera_defensas
+    defenses = recupera_defensas(str_tsp.matriz_tsp,def_v,def_v.size(),ases,defenses);
+    // No sera necesario ya que se realiza la seleccion en la funcion recupera_defensas
     //algoritmo para la insercion y seleccion de las defensas a colocar
     unsigned int cost = 0;
-    //std::list<Defense*>::iterator it = defenses.begin();
+    std::list<Defense*>::iterator it = defenses.begin();
     while(it != defenses.end()) {
         if(cost + (*it)->cost <= ases) {
             selectedIDs.push_back((*it)->id);
@@ -221,5 +218,5 @@ std::list<int> &selectedIDs, float mapWidth, float mapHeight, std::list<Object*>
         }
         ++it;
     }
-    */
+    
 }

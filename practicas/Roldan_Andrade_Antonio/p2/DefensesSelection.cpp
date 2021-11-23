@@ -207,9 +207,8 @@ std::list<int> &selectedIDs, float mapWidth, float mapHeight, std::list<Object*>
     int benef_max = max_beneficio(str_tsp,ases);
     
     
-    // No sera necesario ya que se realiza la seleccion en la funcion recupera_defensas
-    //algoritmo para la insercion y seleccion de las defensas a colocar
-    unsigned int cost = 0;
+    /* ---- algoritmo para la insercion y seleccion de las defensas a colocar --- */
+    
     
     //Para colocar de forma correcta sin modificar el centro de extraccion creamos esta lista
     std::list<Defense*>ordered_defenses;
@@ -217,11 +216,14 @@ std::list<int> &selectedIDs, float mapWidth, float mapHeight, std::list<Object*>
     //Ordenamos las defensas
     ordered_defenses = recupera_defensas(str_tsp.matriz_tsp,def_v,def_v.size(),ases,defenses);
 
-    std::list<Defense*>::iterator it = ordered_defenses.begin();
+    //Metemos en la lista de IDs seleccionados la Defensa 0 , ya que siempre debe ser colocada
+    unsigned int cost = 0;
     selectedIDs.push_back((*defenses.begin())->id);
-    cost-=(*defenses.begin())->cost;
+    cost-=(*defenses.begin())->cost;//Actualizamos el coste de colocar esta misma
     
-
+    //Creamos el iterador de las defensas ordenadas y las colocamos
+    std::list<Defense*>::iterator it = ordered_defenses.begin();
+    
     while(it != ordered_defenses.end()) {
         if(cost + (*it)->cost <= ases) {
             selectedIDs.push_back((*it)->id);

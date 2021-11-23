@@ -185,7 +185,7 @@ const std::list<defensa_valoracion>& def_val,const int& filas, const int& cols,s
         sol.push_back((*it));//Insertamos dicha defensa
 
     
-return sol; //Devolvemos el vector de defensas
+return sol; //Devolvemos la lista de defensas
 }
 
 

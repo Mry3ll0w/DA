@@ -1,15 +1,33 @@
 \begin{lstlisting}
-// sustituya este codigo por su respuesta
-void selectDefenses(...) {
+std::list<Defense*> recupera_defensas(const std::vector<std::vector<int> >& tsp,
+const std::list<defensa_valoracion>& def_val,const int& filas, const int& cols,std::list<Defense*>defenses){
 
-    unsigned int cost = 0;
-    std::list<Defense*>::iterator it = defenses.begin();
-    while(it != defenses.end()) {
-        if(cost + (*it)->cost <= ases) {
-            selectedIDs.push_back((*it)->id);
-            cost += (*it)->cost;
+    //Almacenara las defensas que se han usado
+    std::list<Defense*>sol;
+
+    int i = filas - 2;
+    int j = cols - (*defenses.begin())->cost; //Tenemos que eliminar el coste de la primera defense (centro de extraccion), que ademas se añade en cualquier caso
+
+    List<Defense*>::iterator it = defenses.end();
+
+    it--;   //Iniciamos en la posicion anterior a la ultima defensa (seria fin - 1)
+    
+    //Se Recorrera inversamente ya que partimos del beneficio maximo que se encuentra en 
+    //la ultima posicion de la matriz
+    while(i > 0)
+    {
+        if(tsp[i][j] != tsp[i-1][j])
+        {
+            j = j - (*it)->cost;
+            sol.push_back(*(it));
         }
-        ++it;
+        i--;
+        it--;
     }
+    if(tsp[0][j] != 0) // En caso de que la primera posicion de la fila 0 sea != de 0 significa que la existe una defensa que tiene coste 0 y entrara en la lista
+        sol.push_back((*it));//Insertamos dicha defensa
+
+    
+return sol; //Devolvemos la lista de defensas
 }
 \end{lstlisting}

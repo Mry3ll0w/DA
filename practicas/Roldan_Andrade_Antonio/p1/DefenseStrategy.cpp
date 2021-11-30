@@ -41,6 +41,22 @@ void positionToCell(const Vector3 pos, int &i_out, int &j_out, float cellWidth, 
 Da el valor de una celda
 */
 
+float defaultCellValue(int row, int col, bool** freeCells, int nCellsWidth, int nCellsHeight
+    , float mapWidth, float mapHeight, List<Object*> obstacles, List<Defense*> defenses) {
+    	
+    float cellWidth = mapWidth / nCellsWidth;
+    float cellHeight = mapHeight / nCellsHeight;
+
+    Vector3 cellPosition((col * cellWidth) + cellWidth * 0.5f, (row * cellHeight) + cellHeight * 0.5f, 0);
+    	
+    float val = 0;
+    for (List<Object*>::iterator it=obstacles.begin(); it != obstacles.end(); ++it) {
+	    val += _distance(cellPosition, (*it)->position);
+    }
+
+    return val;
+}
+
 float cellValue(int row, int col, bool** freeCells, int nCellsWidth, int nCellsHeight
 	, float mapWidth, float mapHeight, List<Object*> obstacles, List<Defense*> defenses) {
 	

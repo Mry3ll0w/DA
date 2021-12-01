@@ -79,10 +79,12 @@ bool funcion_factibilidad(int row, int col, List<Object*> obstacles, List<Defens
     bool token = true;
 
     //Primero comprobamos que la celda no esta en ninguna posicion limite
-    if(p.x + d->radio > mapWidth ||p.x - d->radio < 0 ||
-        p.y + d->radio > mapHeight ||p.y - d->radio < 0)
+    if(p.x + d->radio > mapWidth ||  //Se sale por la derecha
+        p.x - d->radio < 0 ||         //Se sale por la izquierda
+        p.y + d->radio > mapHeight || //Se sale por abajo
+        p.y - d->radio < 0)           //Se sale por arriba
     {
-        return false; //si se cumple alguna condicion la defensa no cabe al alcanzar posiciones limite del mapa
+        token = false; //si se cumple alguna condicion la defensa no cabe al alcanzar posiciones limite del mapa
     }    
         //Comprobaremos que no colisionan con las defensas/obstaculos que ya estan colocadas
         for(auto i : obstacles){
@@ -107,6 +109,9 @@ bool funcion_factibilidad(int row, int col, List<Object*> obstacles, List<Defens
 //EN CASO DE NO ENCONTRAR CELDA FACTIBLE SE PASA A LA SIGUIENTE CELDA
 //SI ES FACTIBLE ==> SE COLOCA Y SE ELIMINA CELDA DE LA LISTA
 //COMPROBAR PARA TODAS LAS DEFENSAS Y YA
+
+
+
 
 /* -------------------------------------------------------------------------- */
 /*                          IMPLEMENTACIONES PROPIAS                          */
@@ -166,7 +171,18 @@ std::list<celda_valoracion> valora_celdas(bool** freeCells, int nCellsWidth, int
 
 }
 
-
+/* --------------------- Funcion para el max maxAttemps --------------------- */
+int count_free_cells(bool** freeCells, int nCellsWidth, int nCellsHeight){
+    size_t cont=0;
+    for ( int i=0; i< nCellsHeight; i++ ){
+        for ( int j=0; j< nCellsWidth; j++){
+          if (!freeCells[i][j])
+            ++cont;
+          
+        }
+    }
+return cont;
+}
 
 
 
@@ -174,6 +190,7 @@ void DEF_LIB_EXPORTED placeDefenses3(bool** freeCells, int nCellsWidth, int nCel
               , List<Object*> obstacles, List<Defense*> defenses) {
 
     
+
     float cellWidth = mapWidth / nCellsWidth;
     float cellHeight = mapHeight / nCellsHeight; 
     /* -------------------------------------------------------------------------- */
@@ -184,6 +201,9 @@ void DEF_LIB_EXPORTED placeDefenses3(bool** freeCells, int nCellsWidth, int nCel
     /* --------------------------- Variables Algortimo Principal -------------------------- */
 
     std::list<celda_valoracion>celdas_valoradas = valora_celdas(freeCells, nCellsWidth, nCellsHeight, mapWidth, mapHeight,obstacles,defenses); 
+    std::list<celda_valoracion>::iterator it_celdas_valoradas = celdas_valoradas.begin();
+    bool erase_pos=false;
+    bool placed = false;
     int maxAttemps = 1000;
 	cronometro c;
     long int r = 0;
@@ -193,18 +213,128 @@ void DEF_LIB_EXPORTED placeDefenses3(bool** freeCells, int nCellsWidth, int nCel
     /* -------------------------------------------------------------------------- */
     c.activar();
     do {	
-        
-		List<Defense*>::iterator currentDefense = defenses.begin();
-		while(currentDefense != defenses.end() && maxAttemps > 0) {
-    
-            
-			(*currentDefense)->position.x = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
-			(*currentDefense)->position.y = ((int)(_RAND2(nCellsHeight))) * cellHeight + cellHeight * 0.5f;
-			(*currentDefense)->position.z = 0; 
-			++currentDefense;
-
-		} 
+    /* ------------------------ NO TOCAR A PARTIR DE AQUI ----------------------- */
 		
+    
+    float cellWidth = mapWidth / nCellsWidth;
+    float cellHeight = mapHeight / nCellsHeight;
+
+    int maxAttemps = 1000;
+    std::vector<Cell> Cells;//cell es celda_valoracion
+    int i, j, k;
+    float aux;
+    Cell auxCell;
+
+    //Algoritmo centro extr
+    for (i = 0; i < nCellsHeight; i++)
+        for (j = 0; j < nCellsWidth; j++)
+        {
+            if (freeCells[i][j])
+                Cells.push_back(Cell(i, j, cellValueExtr(i, j, freeCells, nCellsWidth, nCellsHeight, mapWidth, mapHeight, obstacles)));
+        }
+
+    for (i = 0; i < Cells.size(); i++)
+        for (k = i + 1; k < Cells.size(); k++)
+        {
+            if (Cells[k].value < Cells[i].value)
+            {
+                auxCell = Cells[i];
+                Cells[i] = Cells[k];
+                Cells[k] = auxCell;
+            }
+        }
+
+    bool placed = false;
+    Cell solution;
+    List<Defense *>::iterator currentDefense = defenses.begin();
+
+    //Algoritmo devorador para centro de extraccion
+    while (!placed && !Cells.empty())
+    {
+        solution = Cells.back();
+        Cells.pop_back();
+        if (factible(defenses, *(*currentDefense), obstacles, mapHeight,
+                     cellWidth, cellHeight, mapWidth, solution.row, solution.col, freeCells))
+        {
+            placed = true;
+            freeCells[solution.row][solution.col] = false;
+            (*currentDefense)->position = cellCenterToPosition(solution.row, solution.col, cellWidth, cellHeight);
+        }
+    }
+    //Copia de los candidatos
+
+    std::vector<Cell> AuxCells;
+
+    for (i = 0; i < nCellsHeight; i++)
+        for (j = 0; j < nCellsWidth; j++)
+        {
+            if (freeCells[i][j])
+                AuxCells.push_back(Cell(i, j, cellValue(i, j, solution.row, solution.col, freeCells, nCellsWidth, nCellsHeight, mapWidth, mapHeight, obstacles, defenses)));
+        }
+
+    k = 0;
+
+    for (i = 0; i < AuxCells.size(); i++)
+        for (k = i + 1; k < AuxCells.size(); k++)
+        {
+            if (AuxCells[k].value < AuxCells[i].value)
+            {
+                auxCell = AuxCells[i];
+                AuxCells[i] = AuxCells[k];
+                AuxCells[k] = auxCell;
+            }
+        }
+
+    Cells.clear();
+    Cells = AuxCells;
+
+    std::vector<Cell>::iterator it;
+    int iterations;
+    currentDefense++;
+
+    while (currentDefense != defenses.end())
+    {
+        iterations = 0;
+        placed = false;
+        it = AuxCells.end();
+        while (!placed && !Cells.empty())
+        {
+            iterations++;
+            solution = Cells.back();
+            Cells.pop_back();
+            if (factible(defenses, *(*currentDefense), obstacles, mapHeight, cellWidth, cellHeight, mapWidth, solution.row, solution.col, freeCells))
+            {
+                placed = true;
+                (*currentDefense)->position = cellCenterToPosition(solution.row, solution.col, cellWidth, cellHeight);
+                while (iterations > 0)
+                {
+                    it--;
+                    iterations--;
+                }
+                AuxCells.erase(it);
+            }
+        }
+        Cells.clear();
+        Cells = AuxCells;
+        currentDefense++;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/* ------------------------ NO TOCAR A PARTIR DE AQUI ----------------------- */
 		++r;
 
     } while(c.tiempo() < 1.0);

@@ -56,7 +56,7 @@ float defaultCellValue(int row, int col, bool** freeCells, int nCellsWidth, int 
 
     return val;
 }
-/*
+
 float cellValue(int row, int col, bool** freeCells, int nCellsWidth, int nCellsHeight
 	, float mapWidth, float mapHeight, List<Object*> obstacles, List<Defense*> defenses) {
 	
@@ -77,9 +77,6 @@ float cellValue(int row, int col, bool** freeCells, int nCellsWidth, int nCellsH
     //por tanto lo invierto para tener mayor puntuacion
     return 1/value; // implemente aqui la funci�n que asigna valores a las celdas
 }
-*/
-
-
 
 
 /* -------------------------------------------------------------------------- */
@@ -125,7 +122,7 @@ bool funcion_factibilidad(int row, int col, List<Object*> obstacles, List<Defens
     Vector3 p = cellCenterToPosition(row,col,cellWidth,cellHeight); //Creamos la posicion con los datos dados
     bool token = true;
 
-    //Primero comprobamos que la celda no esta en ninguna posicion limite
+    //Primeiro comprobamos que la celda no esta en ninguna posicion limite
     if(p.x + d->radio > mapWidth ||p.x - d->radio < 0 ||
         p.y + d->radio > mapHeight ||p.y - d->radio < 0)
     {
@@ -149,8 +146,6 @@ bool funcion_factibilidad(int row, int col, List<Object*> obstacles, List<Defens
         
     return token;      
 }
-
-
 /* -------------------------------------------------------------------------- */
 /*       ESTRUCTURA PARA LA VALORACION DE LAS DISTINTAS DEFENSAS Y DEMAS      */
 /* -------------------------------------------------------------------------- */
@@ -183,7 +178,7 @@ std::list<defensa_valoracion> asignar_valoracion(std::list<Defense*> defenses){
 
 std::list<Defense*> voraz_defensas(List<Object*> obstacles, List<Defense*> defenses,
     float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeight){
-    std::list<defensa_valoracion> C = asignar_valoracion(defenses);//obtenemos la lista de defensas
+    std::list<defensa_valoracion> C = asignar_valoracion(defenses);//obtenemos la lista de 
     std::list<Defense*> S; 
     Defense* p;
     float cellWidth = mapWidth / nCellsWidth; //anchura de la celula
@@ -204,7 +199,6 @@ std::list<Defense*> voraz_defensas(List<Object*> obstacles, List<Defense*> defen
             S.push_back(p);
         }    
     }
-
     return S;
 }
 
@@ -219,7 +213,7 @@ std::list<defensa_valoracion> asignar_valoracion_celda(int row, int col, bool** 
     std::list<defensa_valoracion> res;
     for(auto i: defenses){
         res.push_back(defensa_valoracion(i,
-        defaultCellValue(row,col,freeCells,nCellsWidth,nCellsHeight,mapWidth,mapHeight,obstacles,defenses)));//insertamos todas las valoraciones
+        cellValue(row,col,freeCells,nCellsWidth,nCellsHeight,mapWidth,mapHeight,obstacles,defenses)));//insertamos todas las valoraciones
     }
     return res;
 }
@@ -258,9 +252,7 @@ float mapWidth, float mapHeight, std::list<Object*> obstacles, std::list<Defense
 
     float cellWidth = mapWidth / nCellsWidth;
     float cellHeight = mapHeight / nCellsHeight; 
-
     defenses = voraz_defensas(obstacles,defenses,mapHeight,mapWidth, nCellsWidth,nCellsHeight);
-    
     Defense * centro_temp = voraz_centro(obstacles,defenses,mapHeight,mapWidth, nCellsWidth,nCellsHeight);
     int maxAttemps = 1000;
     List<Defense*>::iterator currentDefense = defenses.begin();

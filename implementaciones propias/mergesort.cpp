@@ -21,82 +21,68 @@ el vector original en los dos subvectores que van a ser fusionados.
 
 Created by @Mry3ll0w, under © GPL2.0
 */
-
-//Funcion General de ordenacion
 template <class t>
-std::list<t> mergesort(std::list<t>& A, size_t i, size_t j);
-
-//funcion de union
-template <class t>
-std::list<t> merge(std::list<t>& A,size_t i, size_t k, size_t j);
-
-//Funcion para pasar a vector la lista
-template <class t>
-std::vector<t> list_to_vector(const std::list<t>& l){
-    std::vector<t> v;
-    for (auto i: l)
-    {
-        v.push_back(i);
-    }
-    return v;
-}
-
-int main() {
-    std::list<int> l ={1,2,5,-1,89,23,7};
-    mergesort(l,0,7);
-    for (auto i: l)
-        std::cout<<i<<", ";
-    std::cout<<std::endl;
-return 0;
-}
-
-
-template <class t>
-std::list<t> mergesort(std::list<t>& A, size_t i, size_t j ,size_t n) {
-    n = j - i + 1;
-    std::cout<<"n= "<<n<<"\tj= " << j <<"\ti= " << i<< std::endl;
-    if (n <= 3 )//n0 = 3 (dicho en clase)
-    {
-        A.sort();//Ordenamos la
-    }
-    size_t k = i - 1 + n/2;
-    mergesort(A,i,k);
-    mergesort(A,k+1,j);
-    return merge(A,i,k,j);
-    
-}
-
-template <class t>
-std::list<t> merge(std::list<t>& A,size_t i, size_t k, size_t j) {
-    
-    size_t n = j - i + 1;
-    size_t p = i;
-    size_t q = k + 1;
-    std::vector<t> a(A.size()),w(A.size());
-    a = list_to_vector(A);
-
-
-    for (size_t I = 0; I < n; I++)
-    {
-        if (p <= k && (q < j || a[p] <= a[q]))
-        {
-            w[I]=a[p];
-        }
-        else{
-            w[I]= a[q];
-            ++q;
-        }
+void merge(std::vector<t> &arr, size_t l, size_t m, size_t r)
+{
+    size_t n1 = m - l + 1;
+    size_t n2 = r - m;
         
+    std::vector<t>L(n1),R(n2);
+   
+    for (int i = 0; i < n1; i++){//copia la parte izquierda al centro
+        L[i] = arr[l + i];
+    }
+        
+    for (int j = 0; j < n2; j++){//copia la parte derecha al centro
+         R[j] = arr[m + 1 + j];
     }
 
-    for (size_t I = 0; I < n; I++)
-    {
-        a[i-1+I]=w[I];
+    int i = 0;
+    int j = 0;
+    int k = l;
+ 
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        }
+        else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+ 
+  
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+ 
+   
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
     }
 
-    //pasamos el vector a lista
-    std::list<t> dest(a.size());
-    for(auto I: a)
-        dest.push_back(I);
-    return dest ;
+}
+ 
+template <class t>
+void mergeSort(std::vector<t> &arr,size_t l,size_t r){
+    if(l>=r){
+        return;
+    }
+    size_t m = (l+r-1)/2;
+    mergeSort(arr,l,m);
+    mergeSort(arr,m+1,r);
+    merge(arr,l,m,r);
+}
+bool operator < (const std::string &a, const std::string &b){
+        return a.size()<b.size();
+}
+int main() {
+    
+
 }

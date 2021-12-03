@@ -163,22 +163,11 @@ float mapHeight, std::list<Object *> obstacles, std::list<Defense *> defenses)
 
     }
     
-    //Ordenacion de las celdas valoradas
-    /*
-    for (i = 0; i < celdas_valoradas.size(); i++){
-        for (k = i + 1; k < celdas_valoradas.size(); k++)
-        {
-            if (celdas_valoradas[k].value < celdas_valoradas[i].value)
-            {
-                auxCell = celdas_valoradas[i];
-                celdas_valoradas[i] = celdas_valoradas[k];
-                celdas_valoradas[k] = auxCell;
-            }
-        }
-
-    }
-    */
+    //Ordenacion de las celdas valoradas aplicando los constructores de vector y lista 
     
+    std::list<celda_valoracion>aux_lista(celdas_valoradas.begin(),celdas_valoradas.end());//Creo una lista con los elementos de celdas
+    aux_lista.sort();//Ordeno los elementos O(n) = n · log n
+    celdas_valoradas = std::vector<celda_valoracion>(aux_lista.begin(),aux_lista.end());//los copio a la lista
 
 
     bool placed = false;
@@ -197,62 +186,54 @@ float mapHeight, std::list<Object *> obstacles, std::list<Defense *> defenses)
             freeCells[solution.row][solution.col] = false;
             (*currentDefense)->position = cellCenterToPosition(solution.row, solution.col, cellWidth, cellHeight);
         }
+        
     }
     //Copia de los candidatos
 
-    std::vector<celda_valoracion> AuxCells;
+    std::vector<celda_valoracion> celdas_libres_aux;
 
+    //Insertamos las celdas aun libres en el vector 
     for (i = 0; i < nCellsHeight; i++)
         for (j = 0; j < nCellsWidth; j++)
         {
             if (freeCells[i][j])
-                AuxCells.push_back(celda_valoracion(i, j, defaultCellValue(i,j,freeCells,nCellsWidth,nCellsHeight,mapWidth,mapHeight,obstacles,defenses)));
+                celdas_libres_aux.push_back(celda_valoracion(i, j, defaultCellValue(i,j,freeCells,nCellsWidth,nCellsHeight,mapWidth,mapHeight,obstacles,defenses)));
         }
 
-    k = 0;
+    //Ordenamos los elementos de forma similar a lo hecho con anterioridad
+    std::list<celda_valoracion>aux_lista2(celdas_libres_aux.begin(),celdas_libres_aux.end());//Creo una lista con los elementos de celdas
+    aux_lista2.sort();//Ordeno los elementos O(n) = n · log n
+    celdas_libres_aux = std::vector<celda_valoracion>(aux_lista2.begin(),aux_lista2.end());//los copio a la lista
 
-    for (i = 0; i < AuxCells.size(); i++)
-        for (k = i + 1; k < AuxCells.size(); k++)
-        {
-            if (AuxCells[k].value < AuxCells[i].value)
-            {
-                auxCell = AuxCells[i];
-                AuxCells[i] = AuxCells[k];
-                AuxCells[k] = auxCell;
-            }
-        }
-
-    celdas_valoradas.clear();
-    celdas_valoradas = AuxCells;
+    //Copiamos el contenido a las celdas originales para la insercion en el mapa de las defensas
+    celdas_valoradas = celdas_libres_aux;
 
     std::vector<celda_valoracion>::iterator it;
-    int iterations;
-    currentDefense++;
+    
+    currentDefense++;//pasamos al segundo elemento ya que el primero ya se ha colocado (centro de extraccion)
 
     while (currentDefense != defenses.end())
     {
-        iterations = 0;
+        
         placed = false;
-        it = AuxCells.end();
+        it = celdas_libres_aux.end();
         while (!placed && !celdas_valoradas.empty())
         {
-            iterations++;
+            
             solution = celdas_valoradas.back();
             celdas_valoradas.pop_back();
             if (funcion_factibilidad(defenses, *(*currentDefense), obstacles, mapHeight, cellWidth, cellHeight, mapWidth, solution.row, solution.col, freeCells))
             {
                 placed = true;
                 (*currentDefense)->position = cellCenterToPosition(solution.row, solution.col, cellWidth, cellHeight);
-                while (iterations > 0)
-                {
+                
                     it--;
-                    iterations--;
-                }
-                AuxCells.erase(it);
+                
+                celdas_libres_aux.erase(it);
             }
         }
         celdas_valoradas.clear();
-        celdas_valoradas = AuxCells;
+        celdas_valoradas = celdas_libres_aux;
         currentDefense++;
     }
 }

@@ -18,28 +18,22 @@ RAND_TYPE SimpleRandomGenerator::a;
 #endif
 
 using namespace Asedio;
-// Devuelve la posición en el mapa del centro de la celda (i,j)
-// i - fila
-// j - columna
-// cellWidth - ancho de las celdas
-// cellHeight - alto de las celdas
-Vector3 cellCenterToPosition(int i, int j, float cellWidth, float cellHeight){ 
-    return Vector3((j * cellWidth) + cellWidth * 0.5f, (i * cellHeight) + cellHeight * 0.5f, 0); 
+
+/* -------------------------------------------------------------------------- */
+/*                        ALGORITMOS NECESARIOS (FORO)                        */
+/* -------------------------------------------------------------------------- */
+Vector3 cellCenterToPosition(int i, int j, float cellWidth, float cellHeight)
+{
+    return Vector3((j * cellWidth) + cellWidth * 0.5f, (i * cellHeight) + cellHeight * 0.5f, 0);
 }
 
-// Devuelve la celda a la que corresponde una posición en el mapa
-// pos - posición que se quiere convertir
-// i_out - fila a la que corresponde la posición pos (resultado)
-// j_out - columna a la que corresponde la posición pos (resultado)
-// cellWidth - ancho de las celdas
-// cellHeight - alto de las celdas
-void positionToCell(const Vector3 pos, int &i_out, int &j_out, float cellWidth, float cellHeight){ 
-    i_out = (int)(pos.y * 1.0f/cellHeight); j_out = (int)(pos.x * 1.0f/cellWidth); 
+void positionToCell(const Vector3 pos, int &i_out, int &j_out, float cellWidth, float cellHeight)
+{
+    i_out = (int)(pos.y * 1.0f / cellHeight);
+    j_out = (int)(pos.x * 1.0f / cellWidth);
 }
 
-/*
-Da el valor de una celda
-*/
+/* ------------------------- COMIENZO DE LA PRACTICA ------------------------ */
 
 float defaultCellValue(int row, int col, bool** freeCells, int nCellsWidth, int nCellsHeight
     , float mapWidth, float mapHeight, List<Object*> obstacles, List<Defense*> defenses) {
@@ -57,9 +51,9 @@ float defaultCellValue(int row, int col, bool** freeCells, int nCellsWidth, int 
     return val;
 }
 
-float cellValue(int row, int col, bool** freeCells, int nCellsWidth, int nCellsHeight
-	, float mapWidth, float mapHeight, List<Object*> obstacles, List<Defense*> defenses) {
-	
+float cellValueExtractionCenter(int row, int col, bool **freeCells, int nCellsWidth, int nCellsHeight, 
+float mapWidth, float mapHeight, List<Object *> obstacles)
+{
     
     float cellWidth = mapWidth / nCellsWidth; //anchura de la celula
     float cellHeight = mapHeight / nCellsHeight;//altura de la celula
@@ -79,52 +73,17 @@ float cellValue(int row, int col, bool** freeCells, int nCellsWidth, int nCellsH
 }
 
 
-/* -------------------------------------------------------------------------- */
-/*                           CELL VALUE DE DEFENSAS                           */
-/* -------------------------------------------------------------------------- */
-float defense_value(Defense* d, List<Defense*> defenses)
+bool funcion_factibilidad(List<Defense *> defenses, const Defense &d, List<Object *> obstacles, float mapHeight,
+              float cellWidth, float cellHeight, float mapWidth, int row, int col, bool **freeCells)
 {
-    float value=-1;
-    if(d != *defenses.begin()){
-        /* ----------- CRITERIO: cuanto mas cerca del centro de extraccion mejor ---------- */
-        Defense* centro_temp = *defenses.begin();
-        value = _distance(d->position,centro_temp->position);
-    }
-    
-    return value ; 
-}
 
-
-
-/*
-FUNCION DE FACTIBILIDAD
- Diseñe una funcion de factibilidad explicita y descrıbala a continuacion.
- Entiendo que la funcion sirve para comprobar si es posible que se coloque algo en una celda
- (una defensa en x lugar)
- Parametros: 
-    Row-> entero que representa una fila en la matriz del mapa
-    col-> entero que representa una col en la matriz del mapa
-    obstacles-> Recibe la lista de defensas colocadas en el mapa para iterar y comprobar que no coincidan
-    Defenses-> Recibe la lista de obstacles en el mapa para iterar y comprobar que no coincidan
-    freeCells -> Matriz con el numero de celdas libres
-    mapHeight -> altura del mapa (eje z)
-    mapWidth -> anchura del mapa (eje x)
-    int nCellsWidth-> numero de celdas en total del eje x
-    int nCellsHeight-> numero de celdas en total del eje z
-    Defense d ==> Recibe una referencia a la defensa a colocar en la celda
-    PREGUNTAR QUE SIGNIFICA QUE SEA UNA FUNCION DE FACTIBILIDAD EXPLICITA
-*/
-bool funcion_factibilidad(int row, int col, List<Object*> obstacles, List<Defense*> defenses,
-    float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeight, Defense* d){
     //definicion de variables
-    float cellWidth = mapWidth / nCellsWidth; //anchura de la celula
-    float cellHeight = mapHeight / nCellsHeight;//altura de la celula
     Vector3 p = cellCenterToPosition(row,col,cellWidth,cellHeight); //Creamos la posicion con los datos dados
     bool token = true;
 
     //Primeiro comprobamos que la celda no esta en ninguna posicion limite
-    if(p.x + d->radio > mapWidth ||p.x - d->radio < 0 ||
-        p.y + d->radio > mapHeight ||p.y - d->radio < 0)
+    if(p.x + d.radio > mapWidth ||p.x - d.radio < 0 ||
+        p.y + d.radio > mapHeight ||p.y - d.radio < 0)
     {
         return false; //si se cumple alguna condicion la defensa no cabe al alcanzar posiciones limite del mapa
     }    
@@ -132,179 +91,194 @@ bool funcion_factibilidad(int row, int col, List<Object*> obstacles, List<Defens
         for(auto i : obstacles){
             //Colisionara en caso de que las distancias entre puntos centrales de los obstaculos
             //sea menor que los radios de la defensa a colocar y el obstaculo
-            if(_distance(p,i->position) < (d->radio + i->radio ))
+            if(_distance(p,i->position) < (d.radio + i->radio ))
                 token = false;
         }
         if(token){
             //Se comprobara de forma similar a los obstaculos con las defensas
             for (auto i: defenses){
-                if(_distance(p,i->position) < (d->radio + i->radio ))
+                if(_distance(p,i->position) < (d.radio + i->radio ))
                     token = false;
             }
         }
         
         
     return token;      
+
 }
-/* -------------------------------------------------------------------------- */
-/*       ESTRUCTURA PARA LA VALORACION DE LAS DISTINTAS DEFENSAS Y DEMAS      */
-/* -------------------------------------------------------------------------- */
-//para realizar la seleccion deberemos crear una celda intermedia donde almacenaremos valoracion de celda
-//y el elemento a colocar
-struct defensa_valoracion{
-    Defense* d;
-    float valoracion;
-    size_t id; //para controlar que no se esta evaluando a ella misma
-    defensa_valoracion(Defense *d_,float v=-1,size_t i=0):d(d_),valoracion(v),id(i){}
-    bool operator <(defensa_valoracion & b){//para la ordenacion de la lista
-        return valoracion < b.valoracion;
+
+
+
+struct celda_valoracion
+{
+    int row, col;
+    float value;
+    celda_valoracion(int r = 0, int c = 0, float v = 0) : row(r), col(c), value(v) {}
+    
+    //Overload ctor de copia
+    celda_valoracion operator =(const celda_valoracion& c){
+        this->row = c.row; this->col = c.col;
+        return *this;
     }
+
+    //Overload operator < (En caso de ordencacion por lista)
+    bool operator <(const celda_valoracion& c){
+        return value < c.value;
+    }
+
 };
 
-/* -------------------------------------------------------------------------- */
-/*        ALGORITMO DEVORADOR PARA COLOCACION DE DEFENSAS                     */
-/* -------------------------------------------------------------------------- */
 
-//asigna todas la valoracion de las defensas utilizando la funcion defValue previamente especializada
-std::list<defensa_valoracion> asignar_valoracion(std::list<Defense*> defenses){
-    std::list<defensa_valoracion> res;
-    size_t id=0;
-    for(auto i: defenses){
-        res.push_back(defensa_valoracion(i,defense_value(i,defenses),id));//insertamos todas las valoraciones
-        ++id;
-    }
-    return res;
-}
-
-std::list<Defense*> voraz_defensas(List<Object*> obstacles, List<Defense*> defenses,
-    float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeight){
-    std::list<defensa_valoracion> C = asignar_valoracion(defenses);//obtenemos la lista de 
-    std::list<Defense*> S; 
-    Defense* p;
-    float cellWidth = mapWidth / nCellsWidth; //anchura de la celula
-    float cellHeight = mapHeight / nCellsHeight;//altura de la celula
-    
-    //inicio del algoritmo
-    C.sort(); //ordena de menor a mayor por tanto obtenemos el frente
-    
-    while(C.size()>0){//tendremos que vaciar la lista en todo caso para poder comprobar su factibilidad
-        p = C.front().d; 
-        C.pop_front(); //podamos el frente
-        int row = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
-        int col = ((int)(_RAND2(nCellsHeight))) * cellHeight + cellHeight * 0.5f;
-        
-
-        if(funcion_factibilidad(row,col,obstacles,defenses,mapHeight,
-        mapWidth,nCellsWidth,nCellsHeight,p)){
-            S.push_back(p);
-        }    
-    }
-    return S;
-}
-
-
-/* -------------------------------------------------------------------------- */
-/*            ALGORTIMO VORAZ PARA COLOCAR EL CENTRO DE EXTRACCION            */
-/* -------------------------------------------------------------------------- */
-
-//Asigna valor a las celdas (mejor valor)
-std::list<defensa_valoracion> asignar_valoracion_celda(int row, int col, bool** freeCells, int nCellsWidth, int nCellsHeight
-	, float mapWidth, float mapHeight, List<Object*> obstacles, List<Defense*> defenses){
-    std::list<defensa_valoracion> res;
-    for(auto i: defenses){
-        res.push_back(defensa_valoracion(i,
-        cellValue(row,col,freeCells,nCellsWidth,nCellsHeight,mapWidth,mapHeight,obstacles,defenses)));//insertamos todas las valoraciones
-    }
-    return res;
-}
-
-//Algoritmo Voraz para el centro
-Defense* voraz_centro(List<Object*> obstacles, List<Defense*> defenses,
-    float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeight){
-    std::list<defensa_valoracion> C = asignar_valoracion(defenses);//obtenemos la lista de 
-    std::list<Defense*> S; 
-    Defense* p;
-    //inicio del algoritmo
-    C.sort(); //ordena de menor a mayor por tanto obtenemos el frente
-    float cellWidth = mapWidth / nCellsWidth; //anchura de la celula
-    float cellHeight = mapHeight / nCellsHeight;//altura de la celula
-     
-    while(C.size()>0){//tendremos que vaciar la lista en todo caso para poder comprobar su factibilidad
-        p = C.front().d; 
-        C.pop_front(); //podamos el frente
-        int row = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
-        int col = ((int)(_RAND2(nCellsHeight))) * cellHeight + cellHeight * 0.5f;
-        if(funcion_factibilidad(row,col,obstacles,defenses,mapHeight,
-        mapWidth,nCellsWidth,nCellsHeight,p)){
-            S.push_back(p);
-        }    
-    }
-    return S.front();//devuelve el frente ya que tiene la mejor posicion defensiva, es decir, el centro
-}
-
-
-
-/* -------------------------------------------------------------------------- */
-/*       ALGORITMO PARA COLOCAR LOS ELEMENTOS (DEFENSAS, OBSTACULOS, ..)      */
-/* -------------------------------------------------------------------------- */
-void DEF_LIB_EXPORTED placeDefenses(bool** freeCells, int nCellsWidth, int nCellsHeight, 
-float mapWidth, float mapHeight, std::list<Object*> obstacles, std::list<Defense*> defenses) {
+void DEF_LIB_EXPORTED placeDefenses(bool **freeCells, int nCellsWidth, int nCellsHeight, float mapWidth, 
+float mapHeight, std::list<Object *> obstacles, std::list<Defense *> defenses)
+{
 
     float cellWidth = mapWidth / nCellsWidth;
-    float cellHeight = mapHeight / nCellsHeight; 
-    defenses = voraz_defensas(obstacles,defenses,mapHeight,mapWidth, nCellsWidth,nCellsHeight);
-    Defense * centro_temp = voraz_centro(obstacles,defenses,mapHeight,mapWidth, nCellsWidth,nCellsHeight);
-    int maxAttemps = 1000;
-    List<Defense*>::iterator currentDefense = defenses.begin();
-    
+    float cellHeight = mapHeight / nCellsHeight;
 
-    while(currentDefense != defenses.end() && maxAttemps > 0) {
-        //para no complicarnos lo hacemos con parametros
-        int row = ((int)(_RAND2(nCellsWidth))) * cellWidth + cellWidth * 0.5f;
-        int col = ((int)(_RAND2(nCellsHeight))) * cellHeight + cellHeight * 0.5f;
+    int maxAttemps = 1000;
+    std::vector<celda_valoracion> celdas_valoradas;
+    int i, j, k;
+    float aux;
+    celda_valoracion auxCell;
+
+    /* -------------------------------------------------------------------------- */
+    /*                 ASINGACION DEL CENTRO DE EXTRACCION (DEF 0)                */
+    /* -------------------------------------------------------------------------- */
+
+    //1) Obtenemos que celdas estan libres tras la colocacion de los obstaculos
+    for (int i = 0; i < nCellsHeight; i++){
         
-        
-        //FAlTA POR IMPLEMENTAR EL VORAZ DEL CENTRO DE EXTRACCION (DEFENSA 0)
-        
-        if(funcion_factibilidad(row,col,obstacles,defenses,mapHeight,
-        mapWidth,nCellsWidth,nCellsHeight,(*currentDefense))){
-            if (currentDefense == defenses.begin())
-            {
-                (*currentDefense)->position.x = centro_temp->position.x;
-                (*currentDefense)->position.y = centro_temp->position.y;
-                (*currentDefense)->position.z = 0;
-                    
-            }
-            else
-            {
-                (*currentDefense)->position.x = row;
-                (*currentDefense)->position.y = col;
-                (*currentDefense)->position.z = 0;
-            
+        for (int j = 0; j < nCellsWidth; j++)
+        {
+            if (freeCells[i][j] != false){
+                
+                celdas_valoradas.push_back(celda_valoracion(i, j, cellValueExtractionCenter(i, j, freeCells, nCellsWidth, nCellsHeight, 
+                mapWidth, mapHeight, obstacles)));
+
             }
                 
-            ++currentDefense;
+                
         }
-        
-       
+
     }
+    
+    //Ordenacion de las celdas valoradas
+    /*
+    for (i = 0; i < celdas_valoradas.size(); i++){
+        for (k = i + 1; k < celdas_valoradas.size(); k++)
+        {
+            if (celdas_valoradas[k].value < celdas_valoradas[i].value)
+            {
+                auxCell = celdas_valoradas[i];
+                celdas_valoradas[i] = celdas_valoradas[k];
+                celdas_valoradas[k] = auxCell;
+            }
+        }
+
+    }
+    */
+    
+
+
+    bool placed = false;
+    celda_valoracion solution;
+    List<Defense *>::iterator currentDefense = defenses.begin();
+
+    //Algoritmo devorador para centro de extraccion
+    while (!placed && !celdas_valoradas.empty())
+    {
+        solution = celdas_valoradas.back();
+        celdas_valoradas.pop_back();
+        if (funcion_factibilidad(defenses, *(*currentDefense), obstacles, mapHeight,
+                     cellWidth, cellHeight, mapWidth, solution.row, solution.col, freeCells))
+        {
+            placed = true;
+            freeCells[solution.row][solution.col] = false;
+            (*currentDefense)->position = cellCenterToPosition(solution.row, solution.col, cellWidth, cellHeight);
+        }
+    }
+    //Copia de los candidatos
+
+    std::vector<celda_valoracion> AuxCells;
+
+    for (i = 0; i < nCellsHeight; i++)
+        for (j = 0; j < nCellsWidth; j++)
+        {
+            if (freeCells[i][j])
+                AuxCells.push_back(celda_valoracion(i, j, defaultCellValue(i,j,freeCells,nCellsWidth,nCellsHeight,mapWidth,mapHeight,obstacles,defenses)));
+        }
+
+    k = 0;
+
+    for (i = 0; i < AuxCells.size(); i++)
+        for (k = i + 1; k < AuxCells.size(); k++)
+        {
+            if (AuxCells[k].value < AuxCells[i].value)
+            {
+                auxCell = AuxCells[i];
+                AuxCells[i] = AuxCells[k];
+                AuxCells[k] = auxCell;
+            }
+        }
+
+    celdas_valoradas.clear();
+    celdas_valoradas = AuxCells;
+
+    std::vector<celda_valoracion>::iterator it;
+    int iterations;
+    currentDefense++;
+
+    while (currentDefense != defenses.end())
+    {
+        iterations = 0;
+        placed = false;
+        it = AuxCells.end();
+        while (!placed && !celdas_valoradas.empty())
+        {
+            iterations++;
+            solution = celdas_valoradas.back();
+            celdas_valoradas.pop_back();
+            if (funcion_factibilidad(defenses, *(*currentDefense), obstacles, mapHeight, cellWidth, cellHeight, mapWidth, solution.row, solution.col, freeCells))
+            {
+                placed = true;
+                (*currentDefense)->position = cellCenterToPosition(solution.row, solution.col, cellWidth, cellHeight);
+                while (iterations > 0)
+                {
+                    it--;
+                    iterations--;
+                }
+                AuxCells.erase(it);
+            }
+        }
+        celdas_valoradas.clear();
+        celdas_valoradas = AuxCells;
+        currentDefense++;
+    }
+}
+
+
+
+/* -------------------------------------------------------------------------- */
+/*                             CODIGO PROFESORADO                             */
+/* -------------------------------------------------------------------------- */
 
 #ifdef PRINT_DEFENSE_STRATEGY
 
-    float** cellValues = new float* [nCellsHeight]; 
-    for(int i = 0; i < nCellsHeight; ++i) {
-       cellValues[i] = new float[nCellsWidth];
-       for(int j = 0; j < nCellsWidth; ++j) {
-           cellValues[i][j] = ((int)(cellValue(i, j))) % 256;
-       }
+float **cellValues = new float *[nCellsHeight];
+for (int i = 0; i < nCellsHeight; ++i)
+{
+    cellValues[i] = new float[nCellsWidth];
+    for (int j = 0; j < nCellsWidth; ++j)
+    {
+        cellValues[i][j] = ((int)(cellValue(i, j))) % 256;
     }
-    dPrintMap("strategy.ppm", nCellsHeight, nCellsWidth, cellHeight, cellWidth, freeCells
-                         , cellValues, std::list<Defense*>(), true);
+}
+dPrintMap("strategy.ppm", nCellsHeight, nCellsWidth, cellHeight, cellWidth, freeCells, cellValues, std::list<Defense *>(), true);
 
-    for(int i = 0; i < nCellsHeight ; ++i)
-        delete [] cellValues[i];
-	delete [] cellValues;
-	cellValues = NULL;
+for (int i = 0; i < nCellsHeight; ++i)
+    delete[] cellValues[i];
+delete[] cellValues;
+cellValues = NULL;
 
 #endif
-}

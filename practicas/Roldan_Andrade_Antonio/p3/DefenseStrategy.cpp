@@ -11,30 +11,23 @@
 #include "cronometro.h"
 
 using namespace Asedio;      
+using namespace Asedio;
 
-
-// Devuelve la posición en el mapa del centro de la celda (i,j)
-// i - fila
-// j - columna
-// cellWidth - ancho de las celdas
-// cellHeight - alto de las celdas
-Vector3 cellCenterToPosition(int i, int j, float cellWidth, float cellHeight){ 
-    return Vector3((j * cellWidth) + cellWidth * 0.5f, (i * cellHeight) + cellHeight * 0.5f, 0); 
+/* -------------------------------------------------------------------------- */
+/*                        ALGORITMOS NECESARIOS (FORO)                        */
+/* -------------------------------------------------------------------------- */
+Vector3 cellCenterToPosition(int i, int j, float cellWidth, float cellHeight)
+{
+    return Vector3((j * cellWidth) + cellWidth * 0.5f, (i * cellHeight) + cellHeight * 0.5f, 0);
 }
 
-// Devuelve la celda a la que corresponde una posición en el mapa
-// pos - posición que se quiere convertir
-// i_out - fila a la que corresponde la posición pos (resultado)
-// j_out - columna a la que corresponde la posición pos (resultado)
-// cellWidth - ancho de las celdas
-// cellHeight - alto de las celdas
-void positionToCell(const Vector3 pos, int &i_out, int &j_out, float cellWidth, float cellHeight){ 
-    i_out = (int)(pos.y * 1.0f/cellHeight); j_out = (int)(pos.x * 1.0f/cellWidth); 
+void positionToCell(const Vector3 pos, int &i_out, int &j_out, float cellWidth, float cellHeight)
+{
+    i_out = (int)(pos.y * 1.0f / cellHeight);
+    j_out = (int)(pos.x * 1.0f / cellWidth);
 }
 
-
-
-
+/* ------------------------- COMIENZO DE LA PRACTICA ------------------------ */
 
 float defaultCellValue(int row, int col, bool** freeCells, int nCellsWidth, int nCellsHeight
     , float mapWidth, float mapHeight, List<Object*> obstacles, List<Defense*> defenses) {
@@ -52,137 +45,84 @@ float defaultCellValue(int row, int col, bool** freeCells, int nCellsWidth, int 
     return val;
 }
 
-/*
-FUNCION DE FACTIBILIDAD
- Diseñe una funcion de factibilidad explicita y descrıbala a continuacion.
- Entiendo que la funcion sirve para comprobar si es posible que se coloque algo en una celda
- (una defensa en x lugar)
- Parametros: 
-    Row-> entero que representa una fila en la matriz del mapa
-    col-> entero que representa una col en la matriz del mapa
-    obstacles-> Recibe la lista de defensas colocadas en el mapa para iterar y comprobar que no coincidan
-    Defenses-> Recibe la lista de obstacles en el mapa para iterar y comprobar que no coincidan
-    freeCells -> Matriz con el numero de celdas libres
-    mapHeight -> altura del mapa (eje z)
-    mapWidth -> anchura del mapa (eje x)
-    int nCellsWidth-> numero de celdas en total del eje x
-    int nCellsHeight-> numero de celdas en total del eje z
-    Defense d ==> Recibe una referencia a la defensa a colocar en la celda
-    PREGUNTAR QUE SIGNIFICA QUE SEA UNA FUNCION DE FACTIBILIDAD EXPLICITA
-*/
-bool funcion_factibilidad(int row, int col, List<Object*> obstacles, List<Defense*> defenses,
-    float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeight, Defense* d){
-    //definicion de variables
+float cellValueExtractionCenter(int row, int col, bool **freeCells, int nCellsWidth, int nCellsHeight, 
+float mapWidth, float mapHeight, List<Object *> obstacles)
+{
+    
     float cellWidth = mapWidth / nCellsWidth; //anchura de la celula
     float cellHeight = mapHeight / nCellsHeight;//altura de la celula
+    //Aplicamos el criterio ==> cuanto mas cerca de un obstaculo mejor 
+    //Usamos el tipo vector 3 para una comparativa (si esta vacia o no de forma mas sencilla)
+    Vector3 t_posicion = cellCenterToPosition(row,col,cellWidth,cellHeight);
+    float value = 0;
+    for(auto i: obstacles){
+        value+=i->position.subtract(t_posicion).length();
+        //value+=_distance(t_position,i.position); 
+        //me da fallos a pesar de que esto representa lo mismo que arriba
+    }
+    
+    //el que tenga menor valor tendra mas obstaculos cerca ==> mayor puntuacion
+    //por tanto lo invierto para tener mayor puntuacion
+    return 1/value; // implemente aqui la funci�n que asigna valores a las celdas
+}
+
+
+bool funcion_factibilidad(List<Defense *> defenses, const Defense &d, List<Object *> obstacles, float mapHeight,
+              float cellWidth, float cellHeight, float mapWidth, int row, int col, bool **freeCells)
+{
+
+    //definicion de variables
     Vector3 p = cellCenterToPosition(row,col,cellWidth,cellHeight); //Creamos la posicion con los datos dados
     bool token = true;
 
-    //Primero comprobamos que la celda no esta en ninguna posicion limite
-    if(p.x + d->radio > mapWidth ||  //Se sale por la derecha
-        p.x - d->radio < 0 ||         //Se sale por la izquierda
-        p.y + d->radio > mapHeight || //Se sale por abajo
-        p.y - d->radio < 0)           //Se sale por arriba
+    //Primeiro comprobamos que la celda no esta en ninguna posicion limite
+    if(p.x + d.radio > mapWidth ||p.x - d.radio < 0 ||
+        p.y + d.radio > mapHeight ||p.y - d.radio < 0)
     {
-        token = false; //si se cumple alguna condicion la defensa no cabe al alcanzar posiciones limite del mapa
+        return false; //si se cumple alguna condicion la defensa no cabe al alcanzar posiciones limite del mapa
     }    
         //Comprobaremos que no colisionan con las defensas/obstaculos que ya estan colocadas
         for(auto i : obstacles){
             //Colisionara en caso de que las distancias entre puntos centrales de los obstaculos
             //sea menor que los radios de la defensa a colocar y el obstaculo
-            if(_distance(p,i->position) < (d->radio + i->radio ))
+            if(_distance(p,i->position) < (d.radio + i->radio ))
                 token = false;
         }
         if(token){
             //Se comprobara de forma similar a los obstaculos con las defensas
             for (auto i: defenses){
-                if(_distance(p,i->position) < (d->radio + i->radio ))
+                if(_distance(p,i->position) < (d.radio + i->radio ))
                     token = false;
             }
         }
         
         
     return token;      
-}//Necesito saltar a otra celda
 
-//NECESITO ORDENAR Y COLOCAR CELDAS
-//EN CASO DE NO ENCONTRAR CELDA FACTIBLE SE PASA A LA SIGUIENTE CELDA
-//SI ES FACTIBLE ==> SE COLOCA Y SE ELIMINA CELDA DE LA LISTA
-//COMPROBAR PARA TODAS LAS DEFENSAS Y YA
+}
 
 
 
-
-/* -------------------------------------------------------------------------- */
-/*                          IMPLEMENTACIONES PROPIAS                          */
-/* -------------------------------------------------------------------------- */
-//int nCellsWidth X int nCellsHeight Y
-//FREECELLS SE ITERA CON int [nCellsWidth] [nCellsHeight]
-
-struct celda_valoracion{
+struct celda_valoracion
+{
+    int row, col;
+    float value;
+    celda_valoracion(int r = 0, int c = 0, float v = 0) : row(r), col(c), value(v) {}
     
-    float valoracion;
-    
-    int pos_x;
-    
-    int pos_y;
-    
-    celda_valoracion(int a, int b, float v):pos_x(a), pos_y(b), valoracion(v) {}
-
-    //Para hacer el sort llamando a lista que es de O(n)= n* log n
-    bool operator < (const celda_valoracion & c){
-        return valoracion < c.valoracion;
+    //Overload ctor de copia
+    celda_valoracion operator =(const celda_valoracion& c){
+        this->row = c.row; this->col = c.col;
+        return *this;
     }
-    
-    //para hacer la comparacion
-    bool operator == (const celda_valoracion & c){
-        return (pos_x == c.pos_x && pos_y == c.pos_y);
+
+    //Overload operator < (En caso de ordencacion por lista)
+    bool operator <(const celda_valoracion& c){
+        return value < c.value;
     }
-    
+
 };
 
 
-/*
-    1   2   3 
-    4   5   6
-    7   8   9
-
-*/
-std::list<celda_valoracion> valora_celdas(bool** freeCells, int nCellsWidth, int nCellsHeight
-    , float mapWidth, float mapHeight, List<Object*> obstacles, List<Defense*> defenses){
-    std::list<celda_valoracion> S;
-
-    //Recorremos todas las posibles celdas del mapa para darle valoracion a cada una de ellas
-    for ( int i=0; i<nCellsHeight ;i++ ){
-        for ( int j=0; j<nCellsHeight; j++){
-            
-            if (freeCells[i][j])//Si esta libre -> valora la celda, si no para que 
-            {
-                float val = defaultCellValue(i,j,freeCells,nCellsWidth,nCellsHeight,mapWidth,mapHeight,obstacles,defenses);
-                S.push_back(celda_valoracion(i,j,val));
-            }
-            
-        }
-    }
-    //Ordenamos la lista S 
-    S.sort();
-
-    return S;
-
-}
-
-/* --------------------- Funcion para el max maxAttemps --------------------- */
-int count_free_cells(bool** freeCells, int nCellsWidth, int nCellsHeight){
-    size_t cont=0;
-    for ( int i=0; i< nCellsHeight; i++ ){
-        for ( int j=0; j< nCellsWidth; j++){
-          if (!freeCells[i][j])
-            ++cont;
-          
-        }
-    }
-return cont;
-}
 
 
 
@@ -193,19 +133,12 @@ void DEF_LIB_EXPORTED placeDefenses3(bool** freeCells, int nCellsWidth, int nCel
 
     float cellWidth = mapWidth / nCellsWidth;
     float cellHeight = mapHeight / nCellsHeight; 
-    /* -------------------------------------------------------------------------- */
-    /*                                   SANDBOX                                  */
-    /* -------------------------------------------------------------------------- */
-    //std::list<celda_valoracion>celdas_valoradas = valora_celdas(freeCells, nCellsWidth, nCellsHeight, mapWidth, mapHeight,obstacles,defenses); 
-    
-    /* --------------------------- Variables Algortimo Principal -------------------------- */
-
-    std::list<celda_valoracion>celdas_valoradas = valora_celdas(freeCells, nCellsWidth, nCellsHeight, mapWidth, mapHeight,obstacles,defenses); 
-    std::list<celda_valoracion>::iterator it_celdas_valoradas = celdas_valoradas.begin();
-    bool erase_pos=false;
-    bool placed = false;
-    int maxAttemps = 1000;
-	cronometro c;
+     int maxAttemps = 1000;
+    std::vector<celda_valoracion> celdas_valoradas;
+    int i, j, k;
+    float aux;
+    celda_valoracion auxCell;
+    cronometro c;
     long int r = 0;
 
     /* -------------------------------------------------------------------------- */
@@ -214,124 +147,105 @@ void DEF_LIB_EXPORTED placeDefenses3(bool** freeCells, int nCellsWidth, int nCel
     c.activar();
     do {	
     /* ------------------------ NO TOCAR A PARTIR DE AQUI ----------------------- */
-		
-    
-    float cellWidth = mapWidth / nCellsWidth;
-    float cellHeight = mapHeight / nCellsHeight;
 
-    int maxAttemps = 1000;
-    std::vector<Cell> Cells;//cell es celda_valoracion
-    int i, j, k;
-    float aux;
-    Cell auxCell;
+   
 
-    //Algoritmo centro extr
-    for (i = 0; i < nCellsHeight; i++)
-        for (j = 0; j < nCellsWidth; j++)
+    /* -------------------------------------------------------------------------- */
+    /*                 ASINGACION DEL CENTRO DE EXTRACCION (DEF 0)                */
+    /* -------------------------------------------------------------------------- */
+
+    //1) Obtenemos que celdas estan libres tras la colocacion de los obstaculos
+    for (int i = 0; i < nCellsHeight; i++){
+        
+        for (int j = 0; j < nCellsWidth; j++)
         {
-            if (freeCells[i][j])
-                Cells.push_back(Cell(i, j, cellValueExtr(i, j, freeCells, nCellsWidth, nCellsHeight, mapWidth, mapHeight, obstacles)));
-        }
+            if (freeCells[i][j] != false){
+                
+                celdas_valoradas.push_back(celda_valoracion(i, j, cellValueExtractionCenter(i, j, freeCells, nCellsWidth, nCellsHeight, 
+                mapWidth, mapHeight, obstacles)));
 
-    for (i = 0; i < Cells.size(); i++)
-        for (k = i + 1; k < Cells.size(); k++)
-        {
-            if (Cells[k].value < Cells[i].value)
-            {
-                auxCell = Cells[i];
-                Cells[i] = Cells[k];
-                Cells[k] = auxCell;
             }
+                
+                
         }
+
+    }
+    
+    //Ordenacion de las celdas valoradas aplicando los constructores de vector y lista CAMBIAR PARA QUICK SORT Y MERGESORT 
+    
+    std::list<celda_valoracion>aux_lista(celdas_valoradas.begin(),celdas_valoradas.end());//Creo una lista con los elementos de celdas
+    aux_lista.sort();//Ordeno los elementos O(n) = n · log n
+    celdas_valoradas = std::vector<celda_valoracion>(aux_lista.begin(),aux_lista.end());//los copio a la lista
+
 
     bool placed = false;
-    Cell solution;
+    celda_valoracion solution;
     List<Defense *>::iterator currentDefense = defenses.begin();
 
     //Algoritmo devorador para centro de extraccion
-    while (!placed && !Cells.empty())
+    while (!placed && !celdas_valoradas.empty())
     {
-        solution = Cells.back();
-        Cells.pop_back();
-        if (factible(defenses, *(*currentDefense), obstacles, mapHeight,
+        solution = celdas_valoradas.back();
+        celdas_valoradas.pop_back();
+        if (funcion_factibilidad(defenses, *(*currentDefense), obstacles, mapHeight,
                      cellWidth, cellHeight, mapWidth, solution.row, solution.col, freeCells))
         {
             placed = true;
             freeCells[solution.row][solution.col] = false;
             (*currentDefense)->position = cellCenterToPosition(solution.row, solution.col, cellWidth, cellHeight);
         }
+        
     }
     //Copia de los candidatos
 
-    std::vector<Cell> AuxCells;
+    std::vector<celda_valoracion> celdas_libres_aux;
 
-    for (i = 0; i < nCellsHeight; i++)
+    //Insertamos las celdas aun libres en el vector 
+    for (i = 0; i < nCellsHeight; i++){
+        
         for (j = 0; j < nCellsWidth; j++)
         {
             if (freeCells[i][j])
-                AuxCells.push_back(Cell(i, j, cellValue(i, j, solution.row, solution.col, freeCells, nCellsWidth, nCellsHeight, mapWidth, mapHeight, obstacles, defenses)));
+                celdas_libres_aux.push_back(celda_valoracion(i, j, defaultCellValue(i,j,freeCells,nCellsWidth,nCellsHeight,mapWidth,mapHeight,obstacles,defenses)));
         }
+    }
 
-    k = 0;
+    //Ordenamos los elementos de forma similar a lo hecho con anterioridad CAMBIAR PARA QUICK SORT Y MERGESORT
+    std::list<celda_valoracion>aux_lista2(celdas_libres_aux.begin(),celdas_libres_aux.end());//Creo una lista con los elementos de celdas
+    aux_lista2.sort();//Ordeno los elementos O(n) = n · log n
+    celdas_libres_aux = std::vector<celda_valoracion>(aux_lista2.begin(),aux_lista2.end());//los copio a la lista
 
-    for (i = 0; i < AuxCells.size(); i++)
-        for (k = i + 1; k < AuxCells.size(); k++)
-        {
-            if (AuxCells[k].value < AuxCells[i].value)
-            {
-                auxCell = AuxCells[i];
-                AuxCells[i] = AuxCells[k];
-                AuxCells[k] = auxCell;
-            }
-        }
+    //Copiamos el contenido a las celdas originales para la insercion en el mapa de las defensas
+    celdas_valoradas = celdas_libres_aux;
 
-    Cells.clear();
-    Cells = AuxCells;
-
-    std::vector<Cell>::iterator it;
-    int iterations;
-    currentDefense++;
+    std::vector<celda_valoracion>::iterator it;
+    
+    currentDefense++;//pasamos al segundo elemento ya que el primero ya se ha colocado (centro de extraccion)
 
     while (currentDefense != defenses.end())
     {
-        iterations = 0;
+        
         placed = false;
-        it = AuxCells.end();
-        while (!placed && !Cells.empty())
+        it = celdas_libres_aux.end();
+        while (!placed && !celdas_valoradas.empty())
         {
-            iterations++;
-            solution = Cells.back();
-            Cells.pop_back();
-            if (factible(defenses, *(*currentDefense), obstacles, mapHeight, cellWidth, cellHeight, mapWidth, solution.row, solution.col, freeCells))
+            
+            solution = celdas_valoradas.back();
+            celdas_valoradas.pop_back();
+            if (funcion_factibilidad(defenses, *(*currentDefense), obstacles, mapHeight, cellWidth, cellHeight, mapWidth, solution.row, solution.col, freeCells))
             {
                 placed = true;
                 (*currentDefense)->position = cellCenterToPosition(solution.row, solution.col, cellWidth, cellHeight);
-                while (iterations > 0)
-                {
+                
                     it--;
-                    iterations--;
-                }
-                AuxCells.erase(it);
+                
+                celdas_libres_aux.erase(it);
             }
         }
-        Cells.clear();
-        Cells = AuxCells;
+        celdas_valoradas.clear();
+        celdas_valoradas = celdas_libres_aux;
         currentDefense++;
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	/* ------------------------ NO TOCAR A PARTIR DE AQUI ----------------------- */

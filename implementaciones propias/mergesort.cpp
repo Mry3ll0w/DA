@@ -7,7 +7,7 @@
 /* -------------------------------------------------------------------------- */
 /*
 Implementacion del algoritmo mergesort / ordenacion por fusion
-recibira una std::list de tipo t, size_t i e size_t j, std::list<t>&B, std::list<t>& C, n = A.size()
+recibira una std::vector<t> &arr, size_t l, size_t m, size_t r
 
 Precondiciones==> Los elementos de la lista deben tener sobrecargado el operador <
 Postcondiciones ==> Devuelve la lista de los elementos t ordenados
@@ -82,6 +82,7 @@ void mergeSort(std::vector<t> &arr,size_t l,size_t r){
 bool operator < (const std::string &a, const std::string &b){
         return a.size()<b.size();
 }
+
 int main() {
     
 

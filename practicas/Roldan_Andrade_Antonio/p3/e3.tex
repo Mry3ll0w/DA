@@ -5,10 +5,10 @@
 /*                             DOCUMENTATION_BLOCK                            */
 /* -------------------------------------------------------------------------- */
 /*
-Preconditions: 
-    1)An initilized vector of t elements
-    2)size_t first : By default 0 (the first position of the vector to be sorted)
-    3)size_t last : Last position of the vector to be sorted (by default vector.size() - 1 )
+Precondiciones: 
+    1)Un vector de tipo t inicializado con n elementos (es decir no vacio)
+    2)size_t first : La primera posicio a partir de cuando se ordena el vector
+    3)size_t last : La ultima posicio a partir de cuando se ordena el vector ( arr.size() - 1 )
 
 Created by @Mry3ll0w, under © GPL2.0.
 */ 
@@ -34,7 +34,7 @@ t partition (std::vector<t> arr, size_t first, size_t last)
 }  
 
 /*
-RECURSIVE method to call partition
+Metodo recursivo para llamar a particion
 */
 template <class t>
 void quickSort(std::vector<t> arr, size_t first, size_t last)  

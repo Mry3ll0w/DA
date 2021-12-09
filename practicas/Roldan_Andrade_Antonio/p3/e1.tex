@@ -3,4 +3,25 @@ Creamos una estructura para almacenar:
 1) La posicion de la celda (con row y col), ambos de tipo enteros.
 2) La valoracion de la celda (con row y col), almacenado en un tipo float.
 3) Sobrecargas de operadores de copia y del operador < para ordenar de forma mas sencilla
+Codigo fuente:
 
+\begin{lstlisting}
+struct celda_valoracion
+{
+    int row, col;
+    float value;
+    celda_valoracion(int r = 0, int c = 0, float v = 0) : row(r), col(c), value(v) {}
+    
+    //Overload ctor de copia
+    celda_valoracion operator =(const celda_valoracion& c){
+        this->row = c.row; this->col = c.col;
+        return *this;
+    }
+
+    //Overload operator < (En caso de ordencacion por lista)
+    bool operator <(const celda_valoracion& c){
+        return value < c.value;
+    }
+
+};
+\end{lstlisting}

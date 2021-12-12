@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
-
+#include <algorithm> //std::Swap
+#include <random> //random_device
 /* -------------------------------------------------------------------------- */
 /*                           ALGORTIMO DE ORDENACION                          */
 /* -------------------------------------------------------------------------- */
@@ -18,46 +19,40 @@
 /*
 Preconditions: 
     1)An initilized vector of t elements
-    2)size_t first : By default 0 (the first position of the vector to be sorted)
-    3)size_t last : Last position of the vector to be sorted (by default vector.size() - 1 )
+    2)size_t low : By default 0 (the first position of the vector to be sorted)
+    3)size_t high : Last position of the vector to be sorted (by default vector.size() - 1 )
 
 Created by @Mry3ll0w, under © GPL2.0.
 */ 
-
 template <class t>
-t partition (std::vector<t> &arr, size_t first, size_t last)  
-{  
-    t pivot = arr[last];  
-    size_t i = (first - 1);  
-  
-    for (int j = first; j <= last - 1; j++)  
-    {  
-     
-        if (arr[j] < pivot)  
-        {  
-            i++;  
+t partition(std::vector<t>& array, int low, int high) {
     
-            std::swap(arr[i], arr[j]);  
-        }  
-    }  
-    std::swap(arr[i + 1], arr[last]);  
-    return (i + 1);  
-}  
+  t pivot = array[high];
+  
+  int i = (low - 1);
 
-/*
-RECURSIVE method to call partition
-*/
+  for (int j = low; j < high; j++) {
+    if (array[j] <= pivot) {
+      i++;  
+      std::swap(array[i], array[j]);
+    }
+  }
+  
+  std::swap(array[i + 1], array[high]);
+  
+  return (i + 1);
+}
+
 template <class t>
-void quickSort(std::vector<t>& arr, size_t first, size_t last)  
-{  
-    if (first < last)  
-    {  
-        
-        t pi = partition(arr, first, last);  
-   
-        quickSort(arr, first, pi - 1);  
-        quickSort(arr, pi + 1, last);  
-    }  
+void quickSort(std::vector<t>& array, int low, int high) {
+  if (low < high) {
+      
+    t pi = partition(array, low, high);
+
+    quickSort(array, low, pi - 1);
+
+    quickSort(array, pi + 1, high);
+  }
 }  
 
 
@@ -145,23 +140,19 @@ bool prueba_vec_dinamico();
 
 int main(){
     //std::shuffle(container.begin(), container.end(), std::random_device());
-    std::cout<<prueba_vec1()<<std::endl;
+    std::cout<<prueba_vec_dinamico()<<std::endl;
     return 0;
 }
 
 bool prueba_vec1(){
     
     bool ordenado = true; 
-    std::vector<int>v={9,7,1,12};
-    std::vector<int>v2={1,7,9,12};//Contiene el vector final ordenado
+    std::vector<int>v={9,7};
+    std::vector<int>v2={7,9};//Contiene el vector final ordenado
 
     
     //mergeSort(v,0,v.size()-1);
     quickSort(v,0,v.size()-1);
-    std::cout<<"termino quickSort"<<std::endl;
-    for (auto i:v){
-        std::cout<<i<<std::endl;
-    }
     for(size_t i=0;i<v.size();i++){
         if(v[i]!= v2[i]){
             ordenado= false;
@@ -170,4 +161,38 @@ bool prueba_vec1(){
     
     return ordenado;
 
+}
+
+bool prueba_vec_dinamico(){
+    std::vector<int>v,v_sorted;
+    bool ordered = true;
+    size_t tam = 10;//Empezamos con vectores de tamaño
+
+    while (tam < 1000 && ordered)
+    {   
+        //1)inicializamos el vector con los n primeros elementos
+        v= std::vector<int>(tam);
+        for (size_t i = 0; i < tam; i++)
+        {
+            v[i]=i+1;
+        }
+        v_sorted = v; // En ese momento v ya esta ordenado [1...tam]
+        
+        //2)Hacemos un shuffle de v
+        std::shuffle(v.begin(), v.end(), std::random_device());
+        //3)Llamaremos al sort que queramos y comprobamos  si falla o no
+        //quickSort(v,0,v.size()-1);
+        mergeSort(v,0,v.size()-1);
+        for(size_t i = 0; i < tam && ordered; i++){
+            if(v[i]!=v_sorted[i]){
+                ordered = false;
+            }
+        }
+
+
+        //Incrementamos tam para el siguiente vector
+        tam++;
+    }
+    
+return ordered;
 }

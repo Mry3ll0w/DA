@@ -121,6 +121,9 @@ struct celda_valoracion
     }
 
 };
+/* -------------------------------------------------------------------------- */
+/*                           ALGORTIMO DE ORDENACION                          */
+/* -------------------------------------------------------------------------- */
 
 /* -------------------------------------------------------------------------- */
 /*                          ALGORITMOS DE ORDENACION                          */
@@ -135,47 +138,41 @@ struct celda_valoracion
 /*
 Preconditions: 
     1)An initilized vector of t elements
-    2)size_t first : By default 0 (the first position of the vector to be sorted)
-    3)size_t last : Last position of the vector to be sorted (by default vector.size() - 1 )
+    2)size_t low : By default 0 (the first position of the vector to be sorted)
+    3)size_t high : Last position of the vector to be sorted (by default vector.size() - 1 )
 
 Created by @Mry3ll0w, under © GPL2.0.
 */ 
-
 template <class t>
-t partition (std::vector<t> arr, size_t first, size_t last)  
-{  
-    t pivot = arr[last];  
-    size_t i = (first - 1);  
-  
-    for (int j = first; j <= last - 1; j++)  
-    {  
-     
-        if (arr[j] < pivot)  
-        {  
-            i++;  
+t partition(std::vector<t>& array, int low, int high) {
     
-            std::swap(arr[i], arr[j]);  
-        }  
-    }  
-    std::swap(arr[i + 1], arr[last]);  
-    return (i + 1);  
-}  
+  t pivot = array[high];
+  
+  int i = (low - 1);
 
-/*
-RECURSIVE method to call partition
-*/
-template <class t>
-void quickSort(std::vector<t> arr, size_t first, size_t last)  
-{  
-    if (first < last)  
-    {  
-        
-        t pi = partition(arr, first, last);  
-   
-        quickSort(arr, first, pi - 1);  
-        quickSort(arr, pi + 1, last);  
-    }  
+  for (int j = low; j < high; j++) {
+    if (array[j] <= pivot) {
+      i++;  
+      std::swap(array[i], array[j]);
+    }
+  }
+  
+  std::swap(array[i + 1], array[high]);
+  
+  return (i + 1);
 }
+
+template <class t>
+void quickSort(std::vector<t>& array, int low, int high) {
+  if (low < high) {
+      
+    t pi = partition(array, low, high);
+
+    quickSort(array, low, pi - 1);
+
+    quickSort(array, pi + 1, high);
+  }
+}  
 
 
 /* -------------------- MERGESORT / ORDENACION POR FUSION ------------------- */

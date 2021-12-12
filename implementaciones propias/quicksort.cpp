@@ -82,11 +82,11 @@ int main() {
   int n = data.size() ;
   
   cout << "Unsorted Array: \n";
-  printArray(data, n);
+  printArray(data, data.size());
   
   // perform quicksort on data
-  quickSort(data, 0, n - 1);
+  quickSort(data, 0, data.size() - 1);
   
   cout << "Sorted array in ascending order: \n";
-  printArray(data, n);
+  printArray(data, data.size());
 }

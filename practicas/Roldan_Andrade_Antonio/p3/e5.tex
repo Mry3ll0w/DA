@@ -1,1 +1,63 @@
 Analisis Temporal de los Algoritmos usados para la ordenacion de las defensas:
+
+1)MERGESORT/Ordenacion Por Fusion
+
+    a) Uso de Mergesort en la seleccion del centro de extraccion:
+        Si consideramos que el algoritmo de ordenacion por fusion se aplica en una matriz de f filas y 
+        c columnas cuadradadas, entonces tendremos que algoritmo se aplicara sobre n celdas.
+        n = f x c (celdas)
+
+        Sabemos que se aplica la ordenacion por fusion la cual es de orden O(n^2-n/2),
+        este se aplica sobre las 2 mitades en las que se divide el vector de entrada, 
+        por lo que se realizan n comparaciones en las 2 mitades.
+
+        Por ultimo se fusionan los dos vectores, los cuales hacen n comparaciones.
+
+        En conclusion:(Se define como optimo el umbral n0)
+
+            |  si n <= n0  entonces se hacen n^2-n/2 llamadas a la operacion patron1 
+            |
+    t(n)=  |
+           |
+           |
+            | si n > n0 entonces se hacen 2xt(n/2)+n llamadas a la operacion patron
+            | 
+
+        Llegando a la conclusion (tras resolver la recurrencia ) de que para la 
+        ordenacion de las celdas para la seleccion del centro de extraccion es de
+        O(n log(n))) en el peor caso.
+
+    b) Ordenacion de las defensas
+        La conclusion es la misma que la expuesta de forma anterior, solo que esta vez
+        se aplicarian en vez de a n celdas a n defensas.
+
+    Por tanto: t(n)= 2x n log n
+
+2)QUICKSORT/Ordenacion Rapida
+
+    El algoritmo de ordenacio rapida consta de 2 funciones.
+    
+    a.1)Funcion de particion: Ordena los elementos hasta el pivote n ,este se coloca 
+    de forma "aleaotoria".
+    Llamando a la ordenacion con el pivote en la mitad izquierda y despues en la mitad
+    superior.
+
+    a.2) Funcion de ordenacion quicksort: llama n veces al algoritmo hasta que el vector 
+    este ordenado .
+
+    En conclusion:
+
+    
+            |  si high >= low  entonces se hacen n^2-n/2 llamadas a la operacion patron1 
+            |
+    t(n)=  |
+           |
+           |
+            | si low <= high entonces se hacen 2xt(n/2)+n llamadas a la operacion patron
+            | 
+    
+    
+        Llegando a la conclusion (tras resolver la recurrencia ) de que para la 
+        ordenacion de las celdas para la seleccion del centro de extraccion, al igual
+        que la ordenacion de las defensas es de O(n log(n))) en el peor caso.
+        Por tanto: t(n)= 2x n log n

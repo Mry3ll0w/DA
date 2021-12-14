@@ -284,8 +284,11 @@ void DEF_LIB_EXPORTED placeDefenses3(bool** freeCells, int nCellsWidth, int nCel
     /* -------------------------------------------------------------------------- */
     /*                                  ALGORITMO                                 */
     /* -------------------------------------------------------------------------- */
-    c.activar();
-    do {	
+    
+    //DESCOMENTAR PARA HACER CRONOMETRO
+    //c.activar();
+    //do {	
+    
     /* ------------------------ NO TOCAR A PARTIR DE AQUI ----------------------- */
 
    
@@ -406,7 +409,8 @@ void DEF_LIB_EXPORTED placeDefenses3(bool** freeCells, int nCellsWidth, int nCel
 	/* ------------------------ NO TOCAR A PARTIR DE AQUI ----------------------- */
 		++r;
 
-    } while(c.tiempo() < 1.0);
+    //DESCOMENTAR PARA HACER MEDIDAS DE MULTIPLES EJECUCIONES
+    //} while(c.tiempo() < 1.0);
     c.parar();
     std::cout << (nCellsWidth * nCellsHeight) << '\t' << c.tiempo() / r << '\t' << c.tiempo()*2 / r << '\t' << c.tiempo()*3 / r << '\t' << c.tiempo()*4 / r << std::endl;
 }

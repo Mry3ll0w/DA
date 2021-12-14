@@ -1,4 +1,74 @@
 Para hacer las pruebas de caja negra probaremos con:
 1) std::vector<int> v de 2 elementos
-2) std::vector<int> v de 10000 elementos
-3) Un std::vector<int> v de longitud cambiante de entre 10 y 1000 elementos 
+2) Un std::vector<int> v de longitud cambiante de entre 10 y 1000 elementos 
+
+A continuación adjunto el codigo usado en las pruebas del mismo:
+
+\begin{lstlisting}
+
+//Se corresponde a la prueba con el valor limite de 2 elementos a ordenar
+//Postcondicion==> Devuelve un booleano true si el vector se encuentra ordenado, en caso contrario sera falso
+
+bool prueba_vec1(){
+    
+    bool ordenado = true; 
+    std::vector<int>v={9,7};
+    std::vector<int>v2={7,9};//Contiene el vector final ordenado
+
+    
+    //mergeSort(v,0,v.size()-1);
+    quickSort(v,0,v.size()-1);
+    // ---------- descomentar/comentar el algoritmo que se desee testear ---------- 
+    
+    for(size_t i=0;i<v.size();i++){
+        if(v[i]!= v2[i]){
+            ordenado= false;
+        }
+    }
+    
+    return ordenado;
+
+}
+
+
+//Se corresponde a la comprobacion con todos los arrays dinamicos con los elementos del 1 a 1000
+//Postcondicion==> Devuelve un booleano true si el vector se encuentra ordenado, en caso contrario sera falso
+
+bool prueba_vec_dinamico(){
+    std::vector<int>v,v_sorted;
+    bool ordered = true;
+    size_t tam = 10;//Empezamos con vectores de tamaño
+
+    while (tam < 1000 && ordered)
+    {   
+        //1)inicializamos el vector con los n primeros elementos
+        v= std::vector<int>(tam);
+        for (size_t i = 0; i < tam; i++)
+        {
+            v[i]=i+1;
+        }
+        v_sorted = v; // En ese momento v ya esta ordenado [1...tam]
+        
+        //2)Hacemos un shuffle de v
+        std::shuffle(v.begin(), v.end(), std::random_device());
+        
+        //3)Llamaremos al sort que queramos y comprobamos  si falla o no
+        //quickSort(v,0,v.size()-1);
+        mergeSort(v,0,v.size()-1);
+        // ---------- descomentar/comentar el algoritmo que se desee testear ---------- 
+    
+
+        for(size_t i = 0; i < tam && ordered; i++){
+            if(v[i]!=v_sorted[i]){
+                ordered = false;
+            }
+        }
+
+
+        //Incrementamos tam para el siguiente vector
+        tam++;
+    }
+    
+return ordered;
+}
+\end{lstlisting}

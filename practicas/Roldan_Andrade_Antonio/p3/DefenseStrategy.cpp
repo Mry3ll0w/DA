@@ -120,6 +120,11 @@ struct celda_valoracion
         return value < c.value;
     }
 
+    //Overload operator <= (necesario para aplicar quicksort)
+    bool operator <= (const celda_valoracion& c){
+        return value <= c.value;
+    }
+
 };
 /* -------------------------------------------------------------------------- */
 /*                           ALGORTIMO DE ORDENACION                          */
@@ -144,7 +149,7 @@ Preconditions:
 Created by @Mry3ll0w, under © GPL2.0.
 */ 
 template <class t>
-t partition(std::vector<t>& array, int low, int high) {
+int partition(std::vector<t>& array, int low, int high) {
     
   t pivot = array[high];
   
@@ -166,7 +171,7 @@ template <class t>
 void quickSort(std::vector<t>& array, int low, int high) {
   if (low < high) {
       
-    t pi = partition(array, low, high);
+    int pi = partition(array, low, high);
 
     quickSort(array, low, pi - 1);
 
@@ -308,10 +313,17 @@ void DEF_LIB_EXPORTED placeDefenses3(bool** freeCells, int nCellsWidth, int nCel
     
     //Ordenacion de las celdas valoradas aplicando los constructores de vector y lista CAMBIAR PARA QUICK SORT Y MERGESORT 
     
-    std::list<celda_valoracion>aux_lista(celdas_valoradas.begin(),celdas_valoradas.end());//Creo una lista con los elementos de celdas
-    aux_lista.sort();//Ordeno los elementos O(n) = n · log n
-    celdas_valoradas = std::vector<celda_valoracion>(aux_lista.begin(),aux_lista.end());//los copio a la lista
+    /* --------------------------- ORDENACION ORIGINAL -------------------------- */
+    //std::list<celda_valoracion>aux_lista(celdas_valoradas.begin(),celdas_valoradas.end());//Creo una lista con los elementos de celdas
+    //aux_lista.sort();//Ordeno los elementos O(n) = n · log n
+    //celdas_valoradas = std::vector<celda_valoracion>(aux_lista.begin(),aux_lista.end());//los copio a la lista
+    
+    /* -------------------------- APLICAMOS QUICK SORT -------------------------- */
+    //Elijo quicksort para la ordenacion ya que en los casos pequeños tiene un menor coste
+    quickSort(celdas_valoradas,0,celdas_valoradas.size()-1);
 
+    /* --------------------------- APLICAMOS MERGESORT -------------------------- */
+    //mergeSort(celdas_valoradas,0,celdas_valoradas.size()-1);
 
     bool placed = false;
     celda_valoracion solution;
@@ -346,9 +358,17 @@ void DEF_LIB_EXPORTED placeDefenses3(bool** freeCells, int nCellsWidth, int nCel
     }
 
     //Ordenamos los elementos de forma similar a lo hecho con anterioridad CAMBIAR PARA QUICK SORT Y MERGESORT
-    std::list<celda_valoracion>aux_lista2(celdas_libres_aux.begin(),celdas_libres_aux.end());//Creo una lista con los elementos de celdas
-    aux_lista2.sort();//Ordeno los elementos O(n) = n · log n
-    celdas_libres_aux = std::vector<celda_valoracion>(aux_lista2.begin(),aux_lista2.end());//los copio a la lista
+    
+    /* --------------------------- ORDENACION ORIGINAL -------------------------- */
+    //std::list<celda_valoracion>aux_lista2(celdas_libres_aux.begin(),celdas_libres_aux.end());//Creo una lista con los elementos de celdas
+    //aux_lista2.sort();//Ordeno los elementos O(n) = n · log n
+    //celdas_libres_aux = std::vector<celda_valoracion>(aux_lista2.begin(),aux_lista2.end());//los copio a la lista
+
+    /* -------------------------- APLICAMOS QUICK SORT -------------------------- */
+    
+    quickSort(celdas_libres_aux,0,celdas_libres_aux.size()-1);
+    /* --------------------------- APLICAMOS MERGESORT -------------------------- */
+    //mergeSort(celdas_libres_aux,0,celdas_libres_aux.size()-1);
 
     //Copiamos el contenido a las celdas originales para la insercion en el mapa de las defensas
     celdas_valoradas = celdas_libres_aux;

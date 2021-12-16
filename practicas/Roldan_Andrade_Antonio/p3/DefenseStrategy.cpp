@@ -259,31 +259,8 @@ void mergeSort(std::vector<t> &arr,size_t l,size_t r){
     merge(arr,l,m,r);
 }
 
-/* -------------------------------------------------------------------------- */
-/*   FUNCION DE SELECCION DE METODO DE ORDENACION PARA CAMBIAR LAS DEFENSAS   */
-/* -------------------------------------------------------------------------- */
-void seleccion_ordenacion(std::vector<celda_valoracion> & defenses, int iterator){
 
-    //ordenacion original
-    if(iterator == 0){
-        std::list<celda_valoracion>aux_lista(defenses.begin(),defenses.end());//Creo una lista con los elementos de celdas
-        aux_lista.sort();//Ordeno los elementos O(n) = n · log n
-        defenses = std::vector<celda_valoracion>(aux_lista.begin(),aux_lista.end());//los copio a la lista
 
-    }
-    //ordenacion por quickSort
-    else if (iterator == 1)
-    {
-
-        quickSort(defenses,0,defenses.size()-1);
-
-    }
-    //ordenacion por mergesort
-    else if(iterator == 2){
-        mergeSort(defenses, 0, defenses.size()-1);
-    }
-    
-}
 
 /* -------------------------------------------------------------------------- */
 /*                           COLOCACION DE DEFENSAS                           */
@@ -308,16 +285,6 @@ void DEF_LIB_EXPORTED placeDefenses3(bool** freeCells, int nCellsWidth, int nCel
     /*                                  ALGORITMO                                 */
     /* -------------------------------------------------------------------------- */
     
-    /* -------------------------------------------------------------------------- */
-    /*                INICIO DEL BUCLE FOR PARA GENERAR LA GRAFICA                */
-    /* -------------------------------------------------------------------------- */
-    for (size_t iterador_for= 0; iterador_for < 3; ++iterador_for) {
-        
-        //activa el cronometro
-        c.activar();
-        
-
-
     //DESCOMENTAR PARA HACER CRONOMETRO
     //c.activar();
     //do {	
@@ -356,9 +323,8 @@ void DEF_LIB_EXPORTED placeDefenses3(bool** freeCells, int nCellsWidth, int nCel
     
     /* -------------------------- APLICAMOS QUICK SORT -------------------------- */
     //Elijo quicksort para la ordenacion ya que en los casos pequeños tiene un menor coste
-    //quickSort(celdas_valoradas,0,celdas_valoradas.size()-1);
-    seleccion_ordenacion(celdas_valoradas,iterador_for);
-    
+    quickSort(celdas_valoradas,0,celdas_valoradas.size()-1);
+
     /* --------------------------- APLICAMOS MERGESORT -------------------------- */
     //mergeSort(celdas_valoradas,0,celdas_valoradas.size()-1);
 
@@ -403,9 +369,7 @@ void DEF_LIB_EXPORTED placeDefenses3(bool** freeCells, int nCellsWidth, int nCel
 
     /* -------------------------- APLICAMOS QUICK SORT -------------------------- */
     
-    //quickSort(celdas_libres_aux,0,celdas_libres_aux.size()-1);
-    seleccion_ordenacion(celdas_libres_aux,iterador_for);
-    
+    quickSort(celdas_libres_aux,0,celdas_libres_aux.size()-1);
     /* --------------------------- APLICAMOS MERGESORT -------------------------- */
     //mergeSort(celdas_libres_aux,0,celdas_libres_aux.size()-1);
 
@@ -448,13 +412,5 @@ void DEF_LIB_EXPORTED placeDefenses3(bool** freeCells, int nCellsWidth, int nCel
     //DESCOMENTAR PARA HACER MEDIDAS DE MULTIPLES EJECUCIONES
     //} while(c.tiempo() < 1.0);
     //c.parar();
-    c.parar();
     std::cout << (nCellsWidth * nCellsHeight) << '\t' << c.tiempo() / r << '\t' << c.tiempo()*2 / r << '\t' << c.tiempo()*3 / r << '\t' << c.tiempo()*4 / r << std::endl;
-    
-
-    /* -------------------------------------------------------------------------- */
-    /*                  FINAL DEL BUCLE FOR PARA GENERAR GRAFICA                  */
-    /* -------------------------------------------------------------------------- */
-    }
-    
 }

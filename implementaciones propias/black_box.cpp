@@ -183,6 +183,8 @@ bool prueba_vec_dinamico(){
         //3)Llamaremos al sort que queramos y comprobamos  si falla o no
         //quickSort(v,0,v.size()-1);
         mergeSort(v,0,v.size()-1);
+
+        //4)Comprobamos que los elementos esten ordenados
         for(size_t i = 0; i < tam && ordered; i++){
             if(v[i]!=v_sorted[i]){
                 ordered = false;

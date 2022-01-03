@@ -411,6 +411,6 @@ void DEF_LIB_EXPORTED placeDefenses3(bool** freeCells, int nCellsWidth, int nCel
 
     //DESCOMENTAR PARA HACER MEDIDAS DE MULTIPLES EJECUCIONES
     //} while(c.tiempo() < 1.0);
-    c.parar();
+    //c.parar();
     std::cout << (nCellsWidth * nCellsHeight) << '\t' << c.tiempo() / r << '\t' << c.tiempo()*2 / r << '\t' << c.tiempo()*3 / r << '\t' << c.tiempo()*4 / r << std::endl;
 }

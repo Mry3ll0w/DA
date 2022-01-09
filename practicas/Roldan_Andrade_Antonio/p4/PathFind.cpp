@@ -89,17 +89,18 @@ bool existe_nodo(AStarNode *nodo, std::vector<AStarNode *> nodos)
     return found;
 }
 
-List<Vector3> recoverPath(AStarNode *begin, AStarNode *target)
+std::list<Vector3> recupera_camino(AStarNode *begin, AStarNode *destino)
 {
-    AStarNode *current = target;
-    List<Vector3> path;
+    AStarNode *actual = destino;
+    std::list<Vector3> path;
 
-    path.push_back(target->position);
-    while (current->parent != begin && target->parent != NULL)
-    {
-        current = current->parent;
-        path.push_front(current->position);
-    }
+    //Insertamos la posicion del destino ya que para la obtencion del camino se 
+    path.push_back(destino->position);
+
+    //Recorremos en orden inverso
+    for(;actual->parent != begin && destino->parent != NULL;actual=actual->parent)
+        path.push_front(actual->position);
+
     return path;
 }
 
@@ -200,5 +201,5 @@ void DEF_LIB_EXPORTED calculatePath(AStarNode *originNode, AStarNode *targetNode
             }
         }
     }
-    path = recoverPath(originNode, targetNode);
+    path = recupera_camino(originNode, targetNode);
 }

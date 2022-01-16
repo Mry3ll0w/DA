@@ -1,1 +1,32 @@
-Escriba aquí su respuesta al ejercicio 1.
+
+El algoritmo que usaremos sera el algoritmo de busqueda de soluciones A*, el cual 
+nos permite encontrar soluciones mediante comparaciones entre nodos, usando para 
+eso la funcion f(n)= h(n) + c(n), donde:
+
+    h(n)= Representa el valor heuristico dado a ese nodo, en nuestro caso para 
+    otorgar dicho valor usaremos la funcion Heuristica_Manhattan, la cual nos 
+    permite encontrar como de lejos se halla un nodo del nodo objetivo.
+
+    c(n)= Representa el coste necesario para transladarnos de un nodo A a un nodo B.
+
+Para el algoritmo A* tendremos que usar 3 variables (ademas del resto de auxiliares), 
+las cuales seran: 
+
+    Actual => El cual nos sirve como iterador, e irá almacenando el nodo que estamos 
+    comprobando, partiendo del nodo inicial/origen.
+
+    Abiertos=> Iremos guardando en esta lista que nodos se encuentran abiertos y listos 
+    para ser explorados, para obtener nuevos nodos hijos, etc.
+
+    Cerrados=> Guardaremos en esta lista los nodos ya visitados y que ya han sido explorados.
+
+Para un correcto funcionamiento iremos ordenando la lista de abiertos, para reducir el tiempo 
+necesario para encontrar el f(n) de menor valor, para esto he usado la clase monticulo 
+proporcionada por C++ de la std.
+Al usar esto se requiere de una sobrecarga del operador (), ya que sin este el monticulo 
+no podrá realizar una correcta ordenación de los nodos, dando lugar a un mayor tiempo 
+de ejecución y demas problemas.
+
+Tras la realizacion del algoritmo A* , necesitamos recuperar el camino a seguir para obtener
+la solución buscada, para esto usamos la funcion recupera_caminos, esta recibe el nodo inicial
+y el nodo final.

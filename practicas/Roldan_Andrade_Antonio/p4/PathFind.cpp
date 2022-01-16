@@ -77,16 +77,16 @@ std::pair<int,int> get_x_y(const Vector3 pos, float cellWidth, float cellHeight)
 //Nos sirve para comprobar si el nodo esta o no en la lista de visitados
 bool existe_nodo(AStarNode *nodo, std::vector<AStarNode *> nodos)
 {
-    bool found = false;
+    bool token = false;
     
-    for(auto i = nodos.begin(); i != nodos.end() && !found; ++i){
+    for(auto i = nodos.begin(); i != nodos.end() && !token; ++i){
         
         if (nodo == *i)
-            found = true;
+            token = true;
         
     }
     
-    return found;
+    return token;
 }
 
 std::list<Vector3> recupera_camino(AStarNode *begin, AStarNode *destino)
@@ -94,7 +94,7 @@ std::list<Vector3> recupera_camino(AStarNode *begin, AStarNode *destino)
     AStarNode *actual = destino;
     std::list<Vector3> path;
 
-    //Insertamos la posicion del destino ya que para la obtencion del camino se 
+    //Insertamos la posicion del destino ya que para la obtencion del camino se recorre en sentido contrario
     path.push_back(destino->position);
 
     //Recorremos en orden inverso
@@ -106,7 +106,7 @@ std::list<Vector3> recupera_camino(AStarNode *begin, AStarNode *destino)
 
 int Heuristica_Manhattan(AStarNode *begin, AStarNode *target, float cellWidth, float cellHeight)
 {
-    int o_x, o_y, d_x, d_y, dist = 0;
+    int o_x, o_y, d_x, d_y, distancia = 0;
     std::pair<int, int> parser;
     
     //Coordenadas de origen
@@ -117,83 +117,97 @@ int Heuristica_Manhattan(AStarNode *begin, AStarNode *target, float cellWidth, f
     parser = get_x_y(target->position, cellWidth, cellHeight);
     d_x = parser.first; d_y = parser.second;
 
-    dist = abs(o_x - d_x) + abs(o_y - d_y);
-    return dist;
+    distancia = abs(o_x - d_x) + abs(o_y - d_y);
+    return distancia;
 }
 
-struct greaterComparator
+struct sort_monticulo_nodo
 {
+    //Sobrecargamos el operador () para que el monticulo pueda ordenarlos correctamente 
+    //En funcion de la funcion f(n) = h(n) + coste(n) 
     bool operator()(AStarNode* a, AStarNode* b)
     {
         return a->F > b->F;
     }
 };
 
+
+
 void DEF_LIB_EXPORTED calculatePath(AStarNode *originNode, AStarNode *targetNode, int cellsWidth, int cellsHeight, float mapWidth, float mapHeight, float **additionalCost, std::list<Vector3> &path)
 {
     /* -------------------------------- VARIABLES ------------------------------- */
     std::pair<int, int> p;
+    
     int maxIter = 100;
-    AStarNode *current = originNode;
-    std::vector<AStarNode *> opened, closed;
-    bool found = false;
-    List<AStarNode *>::iterator it;
-    float dist;
+    
+    AStarNode *actual = originNode;
+    
+    std::vector<AStarNode *> abiertos, cerrados;
+    
+    bool token = false;
+    
+    std::list<AStarNode *>::iterator it;
+    
+    float distancia=0;
+    
     float cellWidth = mapWidth / cellsWidth;
+    
     float cellHeight = mapHeight / cellsHeight;
+
     /* -------------------------------- ALGORITMO ------------------------------- */
     
     targetNode->parent = NULL;
 
-    current->G = 0;
-    current->H = Heuristica_Manhattan(current, targetNode, cellWidth, cellHeight);
+    actual->G = 0;
+    actual->H = Heuristica_Manhattan(actual, targetNode, cellWidth, cellHeight);
     //Obtener posiciones dentro de la matriz
-    p = get_x_y(current->position,cellWidth, cellHeight);
-    current->F = current->G + current->H + additionalCost[p.first][p.second];
+    p = get_x_y(actual->position,cellWidth, cellHeight);
+    actual->F = actual->G + actual->H + additionalCost[p.first][p.second];
 
-    opened.push_back(current);
+    abiertos.push_back(actual);
 
-    while (!found && !opened.empty())
+    while (!token && !abiertos.empty())
     {
-        current = opened.front();
-        std::pop_heap(opened.begin(), opened.end(), greaterComparator());
-        opened.pop_back();
-        closed.push_back(current);
-        if (current == targetNode)
+        actual = abiertos.front();
+        
+        std::pop_heap(abiertos.begin(), abiertos.end(), sort_monticulo_nodo());
+
+        abiertos.pop_back();
+        cerrados.push_back(actual);
+        
+        if (actual == targetNode)
         {
-            found = true;
+            token = true;
         }
         else
         {
-            it = current->adjacents.begin();
-            while (it != current->adjacents.end())
+            it = actual->adjacents.begin();
+            while (it != actual->adjacents.end())
             {
-                if (!existe_nodo((*it), closed))
+                if (!existe_nodo((*it), cerrados))
                 {
-                    if (!existe_nodo((*it), opened))
+                    if (!existe_nodo((*it), abiertos))
                     {
-                        (*it)->parent = current;
-                        (*it)->G = current->G + _distance(current->position, (*it)->position);
+                        (*it)->parent = actual;
+                        (*it)->G = actual->G + _distance(actual->position, (*it)->position);
                         (*it)->H = Heuristica_Manhattan((*it), targetNode, cellWidth, cellHeight);
                         
                         p = get_x_y((*it)->position,cellWidth, cellHeight);
                         (*it)->F = (*it)->G + (*it)->H + additionalCost[p.first][p.second];
                         
-                        opened.push_back((*it));
-                        std::push_heap(opened.begin(), opened.end(), greaterComparator());
+                        abiertos.push_back((*it));
+                        std::push_heap(abiertos.begin(), abiertos.end(), sort_monticulo_nodo());
                     }
                     else
                     {
-                        dist = _distance(current->position, (*it)->position);
-                        if ((*it)->G > current->G + dist)
+                        distancia = _distance(actual->position, (*it)->position);
+                        if ((*it)->G > actual->G + distancia)
                         {
-                            (*it)->parent = current;
-                            (*it)->G += dist;
-
-                            p = get_x_y((*it)->position,cellWidth, cellHeight);
+                            (*it)->parent = actual;
+                            (*it)->G += distancia;
                             (*it)->F = (*it)->G + (*it)->H + + additionalCost[p.first][p.second];
-                            
-                            std::make_heap(opened.begin(), opened.end(), greaterComparator());
+                            p = get_x_y((*it)->position,cellWidth, cellHeight);
+                            std::make_heap(abiertos.begin(), abiertos.end(), sort_monticulo_nodo());
                         }
                     }
                 }

@@ -78,8 +78,7 @@ public:
 
         for(auto i : s){
 
-            if(
-                p.first == i.first && 
+            if( 
                 p.second.first == i.second.first &&
                 p.second.second == i.second.second
             )
@@ -137,19 +136,15 @@ particion KRUSKAL(grafo&g ){
 
     particion S;//vacia con 0, {0,0}
     auto lista_t = g.grafo_forma_lista();
-    lista_t.sort();
+    //lista_t.sort();
     list<pair<int, pair<int,int>>> C = lista_t;
-    
 
-    
-    
     while(S.size_partition() < g.n_vertices() && !C.empty()){
 
         particion e1 = particion(C.front()) ;//metemos 
         C.pop_front();
-        
 
-        //Comprobamos si no esta contenido
+        //Comprobamos si los nodos de la particion esta conectadas entre si
         for (auto i : e1.part()){
 
             if(!S.contained(i)){
@@ -168,3 +163,4 @@ particion KRUSKAL(grafo&g ){
 
 return S;
 }
+

@@ -196,7 +196,7 @@ void DEF_LIB_EXPORTED calculatePath(AStarNode *originNode, AStarNode *targetNode
                         (*it)->F = (*it)->G + (*it)->H + additionalCost[p.first][p.second];
                         
                         abiertos.push_back((*it));
-                        std::push_heap(abiertos.begin(), abiertos.end(), sort_monticulo_nodo());
+                        std::push_heap(abiertos.begin(), abiertos.end(), sort_monticulo_nodo());   
                     }
                     else
                     {

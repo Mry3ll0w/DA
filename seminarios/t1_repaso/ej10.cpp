@@ -18,9 +18,54 @@ cada punto de control.
 #include <iostream>
 #include <vector>
 
+std::vector<char> camino(std::vector<std::vector<char>>& m , const size_t& n_carriles);
+
 int main(){
 
+    std::vector<std::vector<char>> m= {
+        {'L','v','v','c'},
+        {'v','c','v','v'},
+        {'c','v','v','c'},
+        {'v','v','c','v'}
+    };
+    auto v = camino(m,4);
+    for (auto i: v){
+        std::cout << i << std::endl;
+    }
+
     return 0;
+}
+
+
+size_t cuenta_movimientos(const std::vector<std::vector<char>>& m , const size_t& n_carriles,std::pair<int,int> pos){
+
+    size_t movimientos=0;
+
+    while (pos.second<=n_carriles)
+    {
+        if (
+            m[pos.first][pos.second+1] == 'c' && 
+            m[pos.first+1][pos.second+1]!= 'c' 
+        )
+        {
+            movimientos++;
+            //desplaza hacia abajo
+            pos.first++;
+            pos.second++;
+        }
+        else if(
+            m[pos.first][pos.second+1] == 'c' && 
+            m[pos.first-1][pos.second+1] != 'c' 
+        ){
+            movimientos++;
+        }
+        else if(m[pos.first][pos.second+1] != 'c'){
+            pos.second++;
+        }
+        
+    }
+    
+    return movimientos;
 }
 
 //Devuelve arriba o abajo segun toque
@@ -28,55 +73,36 @@ char selecciona_movimiento(std::pair<int, int>& c ,const std::vector<std::vector
     //Filas = carril y columnas ncontroles ++> se mueve arriba o abajo
     //seleccionamos mejor movimiento
     size_t mov_arr=0,mov_abajo=0;
-    std::pair<int, int> ladron =c;
+    std::pair<int, int> ladron_a =c,ladron_ab =c;
     //caso arriba
-    while(ladron.second < n_carriles ){
-
-        if(ladron.first <= 0){
-            mov_arr=(size_t)-1;  break;//no puedes ir hacia arriba, maximo a mov arr
-        } 
-        else{
-            if(m[ladron.first][ladron.second+1] == 'c'&& m[ladron.first-1][ladron.second+1] != 'c'){
-                mov_arr++;
-                ladron.first--;
-                ladron.second++;
-            }
-            else{
-                ladron.second++;//no hay que mover hacia arriba por tanto sal
-            }
-        }
-
+    if(m[ladron_a.first-1][ladron_a.second+1] != 'c' && ladron_a.first < 1){
+        ladron_a.second++;
+        ladron_a.first--;
     }
-    ladron = c;//reset para comprobar los abajo
-
-    while(ladron.second < n_carriles ){
-
-        if(ladron.first >= n_carriles){
-            mov_arr=(size_t)-1;  break;//no puedes ir hacia abajo, maximo a mov arr
-        } 
-        else{
-            if(m[ladron.first][ladron.second+1] == 'c' && m[ladron.first+1][ladron.second+1] != 'c'){
-                mov_abajo++;
-                ladron.first++;
-                ladron.second++;
-            }
-            else{
-                ladron.second++;//no hay que mover hacia arriba por tanto sal
-            }
-        }
-
+    
+    if(m[ladron_a.first+1][ladron_a.second+1] != 'c' && ladron_a.second < n_carriles){
+        ladron_ab.second++;
+        ladron_ab.first++;
     }
+
+    mov_arr = cuenta_movimientos(m,n_carriles,ladron_a);
+    mov_abajo = cuenta_movimientos(m,n_carriles,ladron_ab);
 
     if(mov_arr > mov_abajo){
         return 'a';
     }
-    else{
+    else if(mov_arr > mov_abajo){
+        c = ladron_ab;
         return 'b';
+    }
+    else{
+        c = ladron_a;
+        return 'a';//En caso ser iguales de optimos sale arriba
     }
 
 }
 
-std::vector<char> camino(const std::vector<std::vector<char>>& m , const size_t& n_carriles){
+std::vector<char> camino(std::vector<std::vector<char>>& m , const size_t& n_carriles){
 
     std::vector<char>S;
     std::pair<int, int> c={0,0};
@@ -84,10 +110,10 @@ std::vector<char> camino(const std::vector<std::vector<char>>& m , const size_t&
     while (c.second < n_carriles)//mientras que no se salga se sigue
     {
         mov = selecciona_movimiento(c,m,n_carriles);
-        c.second++;
+        std::cout<<c.second<<std::endl;
+        m[c.first][c.second]='L';
     }
     
-
 
 return S;
 } 

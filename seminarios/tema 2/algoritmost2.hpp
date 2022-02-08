@@ -2,7 +2,19 @@
 #include <iostream>
 #include <algorithm>
 
+//Sobrecarga
+template <class t>
+std::ostream& operator<<(std::ostream&os, std::vector<std::vector<t>>m){
+    for(int i = 0; i < m[0].size() ; ++i){
+        for(int j = 0; j < m.size();++j){
+            os << m[i][j] <<"  ";
+        }
+        os<<std::endl;
+    }
+    return os;
+}
 
+//Rellenar la TSP
 std::vector<std::vector<int>> rellenar_tsp(std::vector<std::vector<int>> & TSP, 
 const size_t& volumen_mochila, std::vector<std::pair<int,int>>elementos){
 
@@ -78,3 +90,31 @@ std::vector<std::vector<int>> floyd (std::vector<std::vector<int>>g, int n_verti
 
 return sol;
 }
+
+
+/* -------------------------------------------------------------------------- */
+/*                            ALGORITMO DE WARSHALL                           */
+/* -------------------------------------------------------------------------- */
+
+//Recibe una matriz de adyancencia y crea su Clausura Reflexiva y transitiva, nos sirve para obtener desde una matriz de 
+//adyacencia, una matriz de accesibilidad
+
+std::vector<std::vector<int>> warshall(std::vector<std::vector<int>>m, int n_vertices){
+
+    for(size_t i = 0; i < n_vertices;++i){
+        m[i][i]= 1;
+    }
+
+    for(size_t k = 0; k < n_vertices; k++){
+        
+        for(size_t i = 0; i < n_vertices; i++){
+    
+            for (size_t j = 0; j < n_vertices; j++)
+            {
+                m[i][j] = (m[i][j] ||( m[i][k] && m[k][j]));
+            }
+        
+        }
+    }
+return m;
+} 

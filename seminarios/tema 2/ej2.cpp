@@ -59,3 +59,4 @@ std::vector<pair<int, int>> recupera_elementos (std::vector<std::vector<int>> TS
 return sol;
 }
 
+

@@ -23,7 +23,31 @@ int main(){
     }
 
     //Apartado b) obtener una matriz de adyancencia
+    auto matriz_adyacencia = g2;
+
+    for(size_t i = 0; i < 3; i++){
+        for(size_t j = 0 ; j < 3; j++){
+            
+            if (matriz_adyacencia[i][j] != 0 )
+            {
+                matriz_adyacencia[i][j]=1;//si es uno esta adyacente
+            }
+            
+        }
+    }
+
+    std::cout<<"-----------------------------------------------------------"<<std::endl;
+    
+    for(size_t i = 0; i < 3; i++){
+        
+        for (size_t j = 0; j < 3; j++)
+        {
+            cout<<matriz_adyacencia[i][j]<<" ";    
+        }
+        cout<<endl;
+    }
+
+   
 
 return 0;
 }
-

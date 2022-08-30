@@ -1,0 +1,28 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/antonioroldanandrade/Documents/DA/practicas/Roldan_Andrade_Antonio'
+cd p1; g++  -O2 -fPIC -ffloat-store  -shared  -DGREEDY_DEFENSE_STRATEGY -o libDefenseStrategy.default.so DefenseStrategy.cpp && cp libDefenseStrategy.default.so libDefenseStrategy.so; cd ..
+cd p1; g++  -O2 -fPIC -ffloat-store  -shared  -DRANDOM_DEFENSE_STRATEGY -o libDefenseStrategy.random.so DefenseStrategy.cpp; cd ..
+cd p1; g++  -O2 -fPIC -ffloat-store  -shared  -DNULL_DEFENSE_STRATEGY -o libDefenseStrategy.null.so DefenseStrategy.cpp; cd ..
+cd p2; g++  -O2 -fPIC -ffloat-store  -shared  -o libDefensesSelection.default.so DefensesSelection.cpp && cp libDefensesSelection.default.so libDefensesSelection.so; cd ..
+cd p3; g++  -O2 -fPIC -ffloat-store  -shared  -o libDefenseStrategy3.null.so DefenseStrategy.cpp && cp libDefenseStrategy3.null.so libDefenseStrategy3.so ; cd ..
+cd p4; g++  -O2 -fPIC -ffloat-store  -shared  -o libAttackStrategy.default.so PathFind.cpp && cp libAttackStrategy.default.so libAttackStrategy.so; cd ..
+make: Leaving directory `/Users/antonioroldanandrade/Documents/DA/practicas/Roldan_Andrade_Antonio'
+ 
+make: *** No rule to make target `p0/guion-p0.tex', needed by `p0/guion-p0.pdf'.
+make: *** No rule to make target `p1/guion-p1.tex', needed by `p1/guion-p1.pdf'.
+make: *** No rule to make target `p2/guion-p2.tex', needed by `p2/guion-p2.pdf'.
+make: *** No rule to make target `p3/guion-p3.tex', needed by `p3/guion-p3.pdf'.
+make: *** No rule to make target `p4/guion-p4.tex', needed by `p4/guion-p4.pdf'.
+make: *** No rule to make target `simulador/CodingManager.cpp', needed by `simulador/simulador'.
+make: *** No rule to make target `simulador/ppm.cpp', needed by `simulador/simulador'.
+make: *** No rule to make target `simulador/Defense.cpp', needed by `simulador/simulador'.
+make: *** No rule to make target `simulador/Game.cpp', needed by `simulador/simulador'.
+make: *** No rule to make target `simulador/Unit.cpp', needed by `simulador/simulador'.
+make: *** No rule to make target `simulador/Map.cpp', needed by `simulador/simulador'.
+make: *** No rule to make target `simulador/CodingManager.h', needed by `simulador/simulador'.
+make: *** No rule to make target `simulador/ppm.h', needed by `simulador/simulador'.
+make: *** No rule to make target `simulador/ezOptionParser.h', needed by `simulador/simulador'.
+make: *** No rule to make target `simulador/Unit.h', needed by `simulador/simulador'.
+make: *** No rule to make target `simulador/Game.h', needed by `simulador/simulador'.
+make: *** No rule to make target `simulador/Map.h', needed by `simulador/simulador'.
+

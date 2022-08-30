@@ -1,49 +1,130 @@
 \begin{lstlisting}
 
-//Para este algoritmo se tiene que tener en cuenta todas las celdas y la de mejor valoracion 
-//sera el centro de extracción  
-//Asigna valor a las celdas (mejor valor, usando la funcion cellvalue)
-
-//Estructura auxiliar para realizar la valoracion (se podria usar un map pero con esto podemos llamar al sort de la lista)
-struct defensa_valoracion{
-    Defense* d;
-    float valoracion;
-    defensa_valoracion(Defense *d_,float v=-1):d(d_),valoracion(v){}
-    bool operator <(defensa_valoracion & b){//para la ordenacion de la lista
-        return valoracion < b.valoracion;
+struct celda_valoracion
+{
+    int row, col;
+    float value;
+    celda_valoracion(int r = 0, int c = 0, float v = 0) : row(r), col(c), value(v) {}
+    
+    //Overload ctor de copia
+    celda_valoracion operator =(const celda_valoracion& c){
+        this->row = c.row; this->col = c.col;
+        return *this;
     }
+
+    //Overload operator < (En caso de ordencacion por lista)
+    bool operator <(const celda_valoracion& c){
+        return value < c.value;
+    }
+
 };
 
+void DEF_LIB_EXPORTED placeDefenses(bool **freeCells, int nCellsWidth, int nCellsHeight, float mapWidth, 
+float mapHeight, std::list<Object *> obstacles, std::list<Defense *> defenses)
+{
 
-std::list<defensa_valoracion> asignar_valoracion_celda(int row, int col, bool** freeCells, int nCellsWidth, int nCellsHeight
-	, float mapWidth, float mapHeight, List<Object*> obstacles, List<Defense*> defenses){
-    std::list<defensa_valoracion> res;
-    for(auto i: defenses){
-        res.push_back(defensa_valoracion(i,
-        cellValue(row,col,freeCells,nCellsWidth,nCellsHeight,mapWidth,mapHeight,obstacles,defenses)));//insertamos todas las valoraciones
+    float cellWidth = mapWidth / nCellsWidth;
+    float cellHeight = mapHeight / nCellsHeight;
+
+    int maxAttemps = 1000;
+    std::vector<celda_valoracion> celdas_valoradas;
+    int i, j, k;
+    float aux;
+    celda_valoracion auxCell;
+
+    /* -------------------------------------------------------------------------- */
+    /*                 ASINGACION DEL CENTRO DE EXTRACCION (DEF 0)                */
+    /* -------------------------------------------------------------------------- */
+
+    //1) Obtenemos que celdas estan libres tras la colocacion de los obstaculos
+    for (int i = 0; i < nCellsHeight; i++){
+        
+        for (int j = 0; j < nCellsWidth; j++)
+        {
+            if (freeCells[i][j] != false){
+                
+                celdas_valoradas.push_back(celda_valoracion(i, j, cellValueExtractionCenter(i, j, freeCells, nCellsWidth, nCellsHeight, 
+                mapWidth, mapHeight, obstacles)));
+
+            }
+                
+                
+        }
+
     }
-    return res;
-}
-
-//Algoritmo Voraz para el centro (al devolver la mejor defensa para el centro de extr solo devuelve un objeto defensa)
-Defense* voraz_centro(int row, int col, List<Object*> obstacles, List<Defense*> defenses,
-    float mapHeight, float mapWidth,int nCellsWidth, int nCellsHeight){
-    std::list<defensa_valoracion> C = asignar_valoracion(defenses);//obtenemos la lista de 
-    std::list<Defense*> S; 
-    Defense* p;
-    //inicio del algoritmo
-    C.sort(); //ordena de menor a mayor por tanto obtenemos el frente
     
-    while(C.size()>0){//tendremos que vaciar la lista en todo caso para poder comprobar su factibilidad
-        p = C.front().d; 
-        C.pop_front(); //podamos el frente
+    //Ordenacion de las celdas valoradas aplicando los constructores de vector y lista 
+    
+    std::list<celda_valoracion>aux_lista(celdas_valoradas.begin(),celdas_valoradas.end());//Creo una lista con los elementos de celdas
+    aux_lista.sort();//Ordeno los elementos O(n) = n · log n
+    celdas_valoradas = std::vector<celda_valoracion>(aux_lista.begin(),aux_lista.end());//los copio a la lista
 
-        if(funcion_factibilidad(row,col,obstacles,defenses,mapHeight,
-        mapWidth,nCellsWidth,nCellsHeight,p)){
-            S.push_back(p);
-        }    
+
+    bool placed = false;
+    celda_valoracion solution;
+    List<Defense *>::iterator currentDefense = defenses.begin();
+
+    //Algoritmo devorador para centro de extraccion
+    while (!placed && !celdas_valoradas.empty())
+    {
+        solution = celdas_valoradas.back();
+        celdas_valoradas.pop_back();
+        if (funcion_factibilidad(defenses, *(*currentDefense), obstacles, mapHeight,
+                     cellWidth, cellHeight, mapWidth, solution.row, solution.col, freeCells))
+        {
+            placed = true;
+            freeCells[solution.row][solution.col] = false;
+            (*currentDefense)->position = cellCenterToPosition(solution.row, solution.col, cellWidth, cellHeight);
+        }
+        
     }
-    return S.front();//devuelve el frente ya que tiene la mejor posicion defensiva, es decir, el centro
-}
+    //Copia de los candidatos
 
+    std::vector<celda_valoracion> celdas_libres_aux;
+
+    //Insertamos las celdas aun libres en el vector 
+    for (i = 0; i < nCellsHeight; i++)
+        for (j = 0; j < nCellsWidth; j++)
+        {
+            if (freeCells[i][j])
+                celdas_libres_aux.push_back(celda_valoracion(i, j, defaultCellValue(i,j,freeCells,nCellsWidth,nCellsHeight,mapWidth,mapHeight,obstacles,defenses)));
+        }
+
+    //Ordenamos los elementos de forma similar a lo hecho con anterioridad
+    std::list<celda_valoracion>aux_lista2(celdas_libres_aux.begin(),celdas_libres_aux.end());//Creo una lista con los elementos de celdas
+    aux_lista2.sort();//Ordeno los elementos O(n) = n · log n
+    celdas_libres_aux = std::vector<celda_valoracion>(aux_lista2.begin(),aux_lista2.end());//los copio a la lista
+
+    //Copiamos el contenido a las celdas originales para la insercion en el mapa de las defensas
+    celdas_valoradas = celdas_libres_aux;
+
+    std::vector<celda_valoracion>::iterator it;
+    
+    currentDefense++;//pasamos al segundo elemento ya que el primero ya se ha colocado (centro de extraccion)
+
+    while (currentDefense != defenses.end())
+    {
+        
+        placed = false;
+        it = celdas_libres_aux.end();
+        while (!placed && !celdas_valoradas.empty())
+        {
+            
+            solution = celdas_valoradas.back();
+            celdas_valoradas.pop_back();
+            if (funcion_factibilidad(defenses, *(*currentDefense), obstacles, mapHeight, cellWidth, cellHeight, mapWidth, solution.row, solution.col, freeCells))
+            {
+                placed = true;
+                (*currentDefense)->position = cellCenterToPosition(solution.row, solution.col, cellWidth, cellHeight);
+                
+                    it--;
+                
+                celdas_libres_aux.erase(it);
+            }
+        }
+        celdas_valoradas.clear();
+        celdas_valoradas = celdas_libres_aux;
+        currentDefense++;
+    }
+}
 \end{lstlisting}

@@ -1,0 +1,629 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# This program built for i386-apple-darwin11.3.0
+
+# Make data base, printed on Sun Jul 17 10:56:48 2022
+
+# Variables
+
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# makefile (from `Makefile', line 15)
+GUION_P1 = guion-p1
+# makefile (from `Makefile', line 2)
+TAR_NAME = practicas-da
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# makefile (from `Makefile', line 28)
+FILES_TO_PACK_VISOR = ../$(BASE_DIR)/visor/bin/*
+# environment
+CPPFLAGS = -I/opt/homebrew/opt/openssl@3/include
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# makefile (from `Makefile', line 13)
+EXE = simulador/simulador
+# automatic
+@F = $(notdir $@)
+# makefile
+CURDIR := /Users/antonioroldanandrade/Documents/DA/practicas/Roldan_Andrade_Antonio
+# makefile
+SHELL = /bin/sh
+# makefile (from `Makefile', line 1)
+BASE_DIR = APELLIDO1_APELLIDO2_NOMBRE
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en","availableLanguages":{},"_languagePackSupport":true}
+# environment
+_ = /usr/bin/make
+# makefile (from `Makefile', line 10)
+CFLAGS = -O2 -fPIC -ffloat-store 
+# makefile (from `Makefile', line 18)
+GUION_P4 = guion-p4
+# makefile (from `Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# makefile (from `Makefile', line 16)
+GUION_P2 = guion-p2
+# environment
+__CFBundleIdentifier = com.microsoft.VSCode
+# environment
+INFOPATH = /opt/homebrew/share/info:
+# makefile (from `Makefile', line 20)
+BIN_SIMULADOR = ../$(BASE_DIR)/simulador/simulador
+# environment
+P9K_SSH = 0
+# makefile (from `Makefile', line 44)
+FILES_TO_PACK_P1_SOL = ../$(BASE_DIR)/p1/DefenseStrategy.cpp
+# environment
+VSCODE_CWD = /
+# environment
+PATH = /Library/Frameworks/Python.framework/Versions/3.10/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/Library/Apple/usr/bin
+# environment
+LSCOLORS = Gxfxcxdxbxegedabagacad
+# makefile (from `Makefile', line 54)
+SOURCES_SIMULADOR = ../$(BASE_DIR)/simulador/Makefile ../$(BASE_DIR)/simulador/*.cpp ../$(BASE_DIR)/simulador/*.h
+# makefile (from `Makefile', line 60)
+SOURCES_P0 = $(FILES_TO_PACK_P0) ../$(BASE_DIR)/p0/guion-p0.tex
+# makefile (from `Makefile', line 21)
+BIN_P1 = ../$(BASE_DIR)/p1/lib*.so
+# makefile (from `Makefile', line 50)
+FILES_TO_PACK_P4_SOL = ../$(BASE_DIR)/p4/PathFind.cpp
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# makefile (from `Makefile', line 11)
+LDFLAGS = -shared 
+# default
+.FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
+# makefile (from `Makefile', line 26)
+FILES_TO_PACK_SIMULADOR = ../$(BASE_DIR)/simulador/Asedio.h ../$(BASE_DIR)/simulador/Defense.h ../$(BASE_DIR)/simulador/Makefile ../$(BASE_DIR)/simulador/Vector3.h ../$(BASE_DIR)/simulador/ObjectsManager.h $(BIN_SIMULADOR)
+# environment
+sql_auth = pasWORD1
+# makefile (from `Makefile', line 32)
+FILES_TO_PACK_P0 = ../$(BASE_DIR)/autor.tex ../$(BASE_DIR)/p0/guion-p0.pdf
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.wZJ8PwmzK7/Listeners
+# makefile (from `Makefile', line 46)
+FILES_TO_PACK_P2_SOL = 
+# automatic
+%F = $(notdir $%)
+# makefile (from `Makefile', line 24)
+BIN_P4 = ../$(BASE_DIR)/p4/lib*.so 
+# environment
+PWD = /Users/antonioroldanandrade/Documents/DA/practicas/Roldan_Andrade_Antonio
+# environment
+HOMEBREW_CELLAR = /opt/homebrew/Cellar
+# makefile (from `Makefile', line 34)
+FILES_TO_PACK_P1 = ../$(BASE_DIR)/p1/DefenseStrategy.example.cpp ../$(BASE_DIR)/p1/e*.tex ../$(BASE_DIR)/p1/p1.tex ../$(BASE_DIR)/p1/guion-p1.pdf ../$(BASE_DIR)/p1/Makefile ../$(BASE_DIR)/p1/ppm.h $(BIN_P1)
+# makefile (from `Makefile', line 22)
+BIN_P2 = ../$(BASE_DIR)/p2/lib*.so
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# makefile (from `Makefile', line 68)
+SOURCES_P4 = $(FILES_TO_PACK_P4) $(FILES_TO_PACK_P4_SOL) ../$(BASE_DIR)/p4/guion-p4.tex
+# environment
+MANPATH = /opt/homebrew/share/man::
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /Users/antonioroldanandrade
+# makefile (from `Makefile', line 17)
+GUION_P3 = guion-p3
+# default
+MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
+# makefile (from `Makefile', line 62)
+SOURCES_P1 = $(FILES_TO_PACK_P1) $(FILES_TO_PACK_P1_SOL) ../$(BASE_DIR)/p1/guion-p1.tex ../$(BASE_DIR)/competicion/p1/competicion.sh ../$(BASE_DIR)/competicion/p1/resultados.xls ../$(BASE_DIR)/competicion/p1/copias.sh
+# environment
+VSCODE_CODE_CACHE_PATH = /Users/antonioroldanandrade/Library/Application Support/Code/CachedData/92d25e35d9bf1a6b16f7d0758f25d48ace11e5b9
+# environment
+LOGNAME = antonioroldanandrade
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+ZSH = /Users/antonioroldanandrade/.oh-my-zsh
+# makefile (from `Makefile', line 64)
+SOURCES_P2 = $(FILES_TO_PACK_P2) $(FILES_TO_PACK_P2_SOL) ../$(BASE_DIR)/p2/guion-p2.tex ../$(BASE_DIR)/p2/DefensesSelection.cpp ../$(BASE_DIR)/competicion/p2/competicion.sh ../$(BASE_DIR)/competicion/p2/resultados.xls ../$(BASE_DIR)/competicion/p2/copias.sh
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# makefile (from `Makefile', line 40)
+FILES_TO_PACK_P4 = ../$(BASE_DIR)/p4/PathFind.example.cpp ../$(BASE_DIR)/p4/e*.tex ../$(BASE_DIR)/p4/p4.tex ../$(BASE_DIR)/p4/guion-p4.pdf ../$(BASE_DIR)/p4/Makefile ../$(BASE_DIR)/p4/ppm.h $(BIN_P4)
+# makefile (from `Makefile', line 58)
+SOURCES_OTHERS = $(FILES_TO_PACK_OTHERS) ../$(BASE_DIR)/update.sh ../$(BASE_DIR)/sendupdate.sh 
+# environment
+XPC_FLAGS = 0x0
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 1
+# makefile (from `Makefile', line 9)
+CC = g++ 
+# default
+MAKE_VERSION := 3.81
+# environment
+USER = antonioroldanandrade
+# makefile (from `Makefile', line 36)
+FILES_TO_PACK_P2 = ../$(BASE_DIR)/p2/DefensesSelection.example.cpp ../$(BASE_DIR)/p2/e*.tex ../$(BASE_DIR)/p2/p2.tex ../$(BASE_DIR)/p2/guion-p2.pdf ../$(BASE_DIR)/p2/Makefile $(BIN_P2)
+# makefile
+.DEFAULT_GOAL := all
+# makefile (from `Makefile', line 30)
+FILES_TO_PACK_OTHERS = ../$(BASE_DIR)/Makefile
+# environment
+LESS = -R
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# default
+MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
+# default
+.VARIABLES := 
+# makefile (from `Makefile', line 48)
+FILES_TO_PACK_P3_SOL = ../$(BASE_DIR)/p3/DefenseStrategy.cpp
+# environment
+TMPDIR = /var/folders/lm/25ng1rbd36sdj_12ygf5_1_w0000gn/T/
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /Users/antonioroldanandrade/Library/Application Support/Code/1.69.0-main.sock
+# environment
+MallocNanoZone = 0
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+MFLAGS = -Rrqp
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.6995324.6995330
+# environment
+HOMEBREW_PREFIX = /opt/homebrew
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# makefile (from `Makefile', line 23)
+BIN_P3 = ../$(BASE_DIR)/p3/lib*.so
+# environment
+htm_auth = 2812
+# environment
+HOMEBREW_REPOSITORY = /opt/homebrew
+# environment
+__CF_USER_TEXT_ENCODING = 0x1F5:0x0:0x8
+# environment
+COMMAND_MODE = unix2003
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# makefile (from `Makefile', line 66)
+SOURCES_P3 = $(FILES_TO_PACK_P3) $(FILES_TO_PACK_P3_SOL) ../$(BASE_DIR)/p3/guion-p3.tex
+# environment
+PAGER = less
+# environment
+LC_ALL = C
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# makefile (from `Makefile', line 38)
+FILES_TO_PACK_P3 = ../$(BASE_DIR)/p3/cronometro.h ../$(BASE_DIR)/p3/data.txt ../$(BASE_DIR)/p3/DefenseStrategy.example.cpp ../$(BASE_DIR)/p3/e*.tex ../$(BASE_DIR)/p3/p3.tex ../$(BASE_DIR)/p3/guion-p3.pdf ../$(BASE_DIR)/p3/Makefile ../$(BASE_DIR)/p3/graphic.plot $(BIN_P3)
+# default
+.INCLUDE_DIRS = /usr/local/include
+# makefile (from `Makefile', line 14)
+GUION_P0 = guion-p0
+# environment
+MAKELEVEL := 0
+# environment
+LANG = C
+# makefile (from `Makefile', line 56)
+SOURCES_VISOR = 
+# environment
+VSCODE_PID = 85003
+ 
+make: *** No rule to make target `p0/guion-p0.tex', needed by `p0/guion-p0.pdf'.  Stop.
+
+# variable set hash-table stats:
+# Load=107/1024=10%, Rehash=0, Collisions=2/150=1%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 16777233, inode 7603998): 12 files, no impossibilities.
+
+# 12 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+p0/guion-p0.pdf: p0/guion-p0.tex
+#  Implicit rule search has not been done.
+#  Last modified 2022-07-17 10:48:21
+#  File has not been updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  commands to execute (from `Makefile', line 82):
+	cd p0; latex $(GUION_P0).tex && pdflatex $(GUION_P0).tex; cd ..
+	
+
+# Not a target:
+simulador/Game.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+p3/guion-p3.tex:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+all: p0 p1 p2 p3 p4 simulador/simulador
+#  Phony target (prerequisite of .PHONY).
+#  Command-line target.
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+bin:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 138):
+	rm $(TAR_NAME)-bin.tar.gz; tar -czvf $(TAR_NAME)-bin.tar.gz $(BIN_SIMULADOR) $(BIN_P1) $(BIN_P2) $(BIN_P3) $(BIN_P4)
+	
+
+to32:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 159):
+	sed -i.bak 's/asedio_player.x86_64$$/asedio_player.x86/g' simulador/Makefile ; sed -i.bak 's/asedio_player.x86_64$$/asedio_player.x86/g' p1/Makefile ; sed -i.bak 's/asedio_player.x86_64$$/asedio_player.x86/g' p2/Makefile ; sed -i.bak 's/asedio_player.x86_64$$/asedio_player.x86/g' p3/Makefile ; sed -i.bak 's/asedio_player.x86_64$$/asedio_player.x86/g' p4/Makefile
+	
+
+.PHONY: all
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+p0: p0/guion-p0.pdf
+#  Implicit rule search has been done.
+#  Last modified 2022-07-17 10:48:21
+#  File has not been updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+simulador/Game.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+p1/libDefenseStrategy.null.so:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 98):
+	cd p1; $(CC) $(CFLAGS) ${LDFLAGS} -DNULL_DEFENSE_STRATEGY -o libDefenseStrategy.null.so DefenseStrategy.cpp; cd ..
+	
+
+solutions:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 141):
+	rm $(TAR_NAME)-soluciones.tar.gz; tar -czvf $(TAR_NAME)-soluciones.tar.gz $(FILES_TO_PACK_P1_SOL) $(FILES_TO_PACK_P2_SOL) $(FILES_TO_PACK_P3_SOL) $(FILES_TO_PACK_P4_SOL)
+	
+
+p1/guion-p1.pdf: p1/guion-p1.tex
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 89):
+	cd p1; latex $(GUION_P1).tex && pdflatex $(GUION_P1).tex; cd ..
+	
+
+# Not a target:
+p2/guion-p2.tex:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+p1: p1/guion-p1.pdf p1/libDefenseStrategy.default.so p1/libDefenseStrategy.random.so p1/libDefenseStrategy.null.so
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-07-17 10:48:21
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+p4/guion-p4.pdf: p4/guion-p4.tex
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 125):
+	cd p4; latex $(GUION_P4).tex && pdflatex $(GUION_P4).tex; cd ..
+	
+
+update:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 147):
+	rm update.sh*
+	wget http://agsh.net/asedio/update.sh
+	chmod u+x update.sh
+	./update.sh
+	
+
+# Not a target:
+simulador/Asedio.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+simulador/Defense.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+simulador/ezOptionParser.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+p2: p2/guion-p2.pdf p2/libDefensesSelection.default.so
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+p3/guion-p3.pdf: p3/guion-p3.tex
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 115):
+	cd p3; latex $(GUION_P3).tex && pdflatex $(GUION_P3).tex; cd ..
+	
+
+# Not a target:
+simulador/Defense.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+p0/guion-p0.tex:
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+simulador/simulador: simulador/CodingManager.cpp simulador/ppm.cpp simulador/Defense.cpp simulador/Game.cpp simulador/Unit.cpp simulador/Map.cpp simulador/Asedio.h simulador/ObjectsManager.h simulador/CodingManager.h simulador/ppm.h simulador/Defense.h simulador/ezOptionParser.h simulador/Unit.h simulador/Game.h simulador/Vector3.h simulador/Map.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 77):
+	cd simulador; make; cd ..
+	
+
+# Not a target:
+simulador/CodingManager.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+publish:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 135):
+	rm $(TAR_NAME).tar.gz; tar -czvf $(TAR_NAME).tar.gz $(FILES_TO_PACK_SIMULADOR) $(FILES_TO_PACK_VISOR) $(FILES_TO_PACK_P0) $(FILES_TO_PACK_P1) $(FILES_TO_PACK_P2) $(FILES_TO_PACK_P3) $(FILES_TO_PACK_P4) $(FILES_TO_PACK_OTHERS)
+	
+
+# Not a target:
+simulador/ObjectsManager.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+p2/guion-p2.pdf: p2/guion-p2.tex
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 105):
+	cd p2; latex $(GUION_P2).tex && pdflatex $(GUION_P2).tex; cd ..
+	
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 163):
+	rm p*/*.so simulador/simulador
+	
+
+# Not a target:
+simulador/CodingManager.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+sendupdate:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 153):
+	./sendupdate.sh
+	
+
+p3/libDefenseStrategy3.null.so:
+ 
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 118):
+	cd p3; $(CC) $(CFLAGS) ${LDFLAGS} -o libDefenseStrategy3.null.so DefenseStrategy.cpp && cp libDefenseStrategy3.null.so libDefenseStrategy3.so ; cd ..
+	
+
+# Not a target:
+simulador/Unit.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+p4/libAttackStrategy.default.so:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 128):
+	cd p4; $(CC) $(CFLAGS) ${LDFLAGS} -o libAttackStrategy.default.so PathFind.cpp && cp libAttackStrategy.default.so libAttackStrategy.so; cd ..
+	
+
+# Not a target:
+p1/guion-p1.tex:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+p4: p4/guion-p4.pdf p4/libAttackStrategy.default.so
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+p1/libDefenseStrategy.default.so:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	cd p1; $(CC) $(CFLAGS) ${LDFLAGS} -DGREEDY_DEFENSE_STRATEGY -o libDefenseStrategy.default.so DefenseStrategy.cpp && cp libDefenseStrategy.default.so libDefenseStrategy.so; cd ..
+	
+
+sources:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 144):
+	rm $(TAR_NAME)-sources.tar.gz; tar -czvf $(TAR_NAME)-sources.tar.gz $(SOURCES_SIMULADOR) $(SOURCES_VISOR) $(SOURCES_OTHERS) $(SOURCES_P0) $(SOURCES_P1) $(SOURCES_P2) $(SOURCES_P3) $(SOURCES_P4)
+	
+
+# Not a target:
+simulador/ppm.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+to64:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 156):
+	sed -i.bak 's/asedio_player.x86$$/asedio_player.x86_64/g' simulador/Makefile ; sed -i.bak 's/asedio_player.x86$$/asedio_player.x86_64/g' p1/Makefile ; sed -i.bak 's/asedio_player.x86$$/asedio_player.x86_64/g' p2/Makefile ; sed -i.bak 's/asedio_player.x86$$/asedio_player.x86_64/g' p3/Makefile ; sed -i.bak 's/asedio_player.x86$$/asedio_player.x86_64/g' p4/Makefile
+	
+
+# Not a target:
+p4/guion-p4.tex:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+simulador/Unit.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+p1/libDefenseStrategy.random.so:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 95):
+	cd p1; $(CC) $(CFLAGS) ${LDFLAGS} -DRANDOM_DEFENSE_STRATEGY -o libDefenseStrategy.random.so DefenseStrategy.cpp; cd ..
+	
+
+# Not a target:
+simulador/ppm.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+simulador/Map.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+p3: p3/guion-p3.pdf p3/libDefenseStrategy3.null.so
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+simulador/Vector3.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+simulador/Map.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+p2/libDefensesSelection.default.so:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 108):
+	cd p2; $(CC) $(CFLAGS) ${LDFLAGS} -o libDefensesSelection.default.so DefensesSelection.cpp && cp libDefensesSelection.default.so libDefensesSelection.so; cd ..
+	
+
+# files hash-table stats:
+# Load=52/1024=5%, Rehash=0, Collisions=0/104=0%
+# VPATH Search Paths
+
+# No `vpath' search paths.
+
+# No general (`VPATH' variable) search path.
+
+# # of strings in strcache: 1
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
+
+# Finished Make data base on Sun Jul 17 10:56:48 2022
+
+ 

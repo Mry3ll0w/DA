@@ -5,7 +5,6 @@
 // #######################################
 
 #define BUILDING_DEF_STRATEGY_LIB 1
-
 #include "../simulador/Asedio.h"
 #include "../simulador/Defense.h"
 
@@ -203,10 +202,8 @@ float mapHeight, std::list<Object *> obstacles, std::list<Defense *> defenses)
     //Ordenamos los elementos de forma similar a lo hecho con anterioridad
     std::list<celda_valoracion>aux_lista2(celdas_libres_aux.begin(),celdas_libres_aux.end());//Creo una lista con los elementos de celdas
     aux_lista2.sort();//Ordeno los elementos O(n) = n · log n
-    celdas_libres_aux = std::vector<celda_valoracion>(aux_lista2.begin(),aux_lista2.end());//los copio a la lista
-
     //Copiamos el contenido a las celdas originales para la insercion en el mapa de las defensas
-    celdas_valoradas = celdas_libres_aux;
+    celdas_valoradas = std::vector<celda_valoracion>(aux_lista2.begin(),aux_lista2.end());;
 
     std::vector<celda_valoracion>::iterator it;
     

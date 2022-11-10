@@ -1,7 +1,8 @@
 version: "3.9" 
 services:
   cda: 
-    image: img_da 
+    image: img_da
+    working_dir: /Roldan_Andrade_Antonio 
     volumes:
       - .:/Roldan_Andrade_Antonio
     

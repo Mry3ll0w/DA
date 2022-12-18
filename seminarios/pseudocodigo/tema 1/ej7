@@ -1,0 +1,31 @@
+Ejercicio Septimo
+
+¿Qué ocurre exactamente al aplicar los algoritmos de Prim y Kruskal a un grafo no conexo? Si es necesario, adáptelos para calcular un bosque de expansión mínimo del grafo.
+
+a) Kruskal
+	
+	De forma inicial el algoritmo no funciona con grafos no conexos, para que este funcione de forma correcta se debe
+	modificar de la siguiente forma:
+
+	Kruskal : V, A => S
+
+		C <- A
+		S <- ø
+		n <- |V|
+
+		p <- particion_inicial(n)
+
+		mientras |S| != n - 1 y C != ø 
+
+			{i, j} <- extrae_primero(C)
+			e1 <- busqueda(p,n,i)
+			e2 <- busqueda(p,n,j)
+
+			si e1 != e2
+				union(p, n, e1, e2)
+				S <- {S U {i,j}}
+
+b) Prim 
+	
+	No funciona con grafos no conexos, puesto que al no encontrar vertices unidos simplemente entraria en un bucle infinito.
+

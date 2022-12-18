@@ -1,0 +1,36 @@
+ej2
+
+Un pintor dispone de varias latas de pintura de diferentes capacidades,expresadas en litros. Cada litro cubre 1 m2 de superficie. El pintor debe pintar una serie de habitaciones, cada una de ellas de diferente superficie. Diseñe un algoritmo que, siguiendo una estrate- gia devoradora, minimice el número de latas que sobran al finalizar el trabajo. Analice la complejidad del algoritmo. 
+Describa los elementos que lo identifican como perteneciente al esquema general de los algoritmos devoradores.
+
+a) Elementos de los algoritmos devoradores:
+	
+	Conjunto de candidatos: Latas de pintura, cada una de ellas esta identificada con el volumen de pintura, es decir c1 = 1L, c2 = 2 L, ...
+	
+	Funcion Solucion: Funcion que comprueba si es posible o no pintar esa seccion con la lata dada
+
+	Funcion Seleccion: Seleccion de la lata de mayor volumen, ya que se prentende minimizar el numero de latas usadas.
+
+	Funcion Factibilidad: Funcion/seccion de codigo que comprueba si el candidato dado puede ser usado en el conjunto solucion de la latas.
+
+	Objetivo: Minimizar el numero de latas usadas.
+
+b) Algoritmo
+
+	Latas: c, superfice => S
+
+		C <- c
+		ordernar(C) //Se ordena de mayor a menor (minimizar el numero de latas)
+		S <- 0
+
+		mientras (superficie > 0 && C != 0){
+
+			p <- extrae_primero(C)
+
+			//No sera necesario comprobar nada dentro del bucle, puesto que la lata se usara siempre que haya superficie por pintar
+			superficie -= p
+			S <- {S U p}
+
+		}
+
+		devolver S

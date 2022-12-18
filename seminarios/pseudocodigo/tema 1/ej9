@@ -1,0 +1,56 @@
+Ejercicio Noveno
+
+	
+Un camión ha de cubrir una ruta en la que existen m estaciones de
+servicio e1,...,em. El camionero desea parar en el mínimo número
+posible de estaciones de servicio, teniendo en cuenta que llena
+el depósito cada vez que para, lo que le permite recorrer 
+kilómetros. El camionero parte con el depósito lleno y conoce
+las distancias entre las distintas estaciones, su lugar de origen
+y su destino como se muestra en la figura.
+
+a) Desing a greedy algorythm
+b) Big O notation
+
+a)
+	Conjunto de Candidatos => Estaciones de Servicio, identificadas por el numero de KM que los separan
+
+	Funcion Solucion: Comprueba si podemos agregar a la estacion de servicio X al conjunto solucion.
+
+	Funcion Objetivo: Minimizar el numero de paradas.
+
+	Funcion de Factibilidad: Comprueba si es posible o no pasar de largo la estacion de servicio sin repostar/repostando o nos quedamos cortos para llegar a la siguiente.
+
+	greedyCamionero: E, iCapacidadTanque, iKMTotales-> S
+
+		C <- E // No podemos ordenar, el camino no puede cambiar
+		tanque <- iCapacidadTanque //Salimos con el tanque lleno
+		S <- ø
+
+		mientras C != ø && iKMTotales > 0
+
+			p <- extrae_primero(C)
+
+			Si tanque >= p
+
+				tanque <- tanque - p
+				iKMTotales <- iKMTotales + p
+
+			Si no
+
+				Si iCapacidadTanque >= p //Puede repostar
+
+					tanque <- iCapacidaTanque
+					iKMTotales <- iKMTotales + p
+
+				Si no //No llegamos a repostar por lo que paramos
+
+					C <- ø 
+
+b) Orden O(n), ya que solo tiene que comprobar que llegue a repostar o no.
+
+
+
+
+
+

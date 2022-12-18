@@ -5,4 +5,4 @@ services:
     working_dir: /Roldan_Andrade_Antonio 
     volumes:
       - .:/Roldan_Andrade_Antonio
-    
+    tty: true

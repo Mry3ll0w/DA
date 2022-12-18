@@ -1,0 +1,11 @@
+
+Ejercicio Sexto
+
+Se nos pide calcular los MST mediante el algoritmo de kruskal y prim.Tras esto, responda a las siguientes preguntas:
+
+	a)  Cuantos arboles de expansion minimo?
+	b) 	Donde se reflejan las distintas posibilidades en cada algoritmo?
+
+	a) Se pueden hallar n MST, siendo n el numero de aristas dentro del arbol.
+
+	b) En el numero de aristas del arbol.

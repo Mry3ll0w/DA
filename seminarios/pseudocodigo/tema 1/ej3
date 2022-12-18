@@ -1,0 +1,83 @@
+ej3
+
+ENUNCIADO:
+
+La versión entera (o 0/1) del problema de la mochila consiste en llenar una mochila con objetos indivisibles,maximizando su valor total.Se conocen los pesos,p1,...,pn,y valores, v1,...,vn, de los objetos disponibles. El peso total de los objetos seleccionados no ha de exceder la capacidad de la mochila, c.
+Demuestre, mediante contraejemplos apropiados, que ninguna de las siguientes estrate- gias devoradoras permiten, por sí mismas, resolver exactamente el problema:
+a) Primero los objetos más valiosos.
+b) Primero los objetos menos pesados.
+c) Primero los objetos de mayor relación valor-peso.
+Diseñe un algoritmo aproximado para resolver el problema basado en cada una de ellas. Intente primero obtener un algoritmo que realice O(n2) operaciones elementales y estu- die luego cómo podría mejorarse.
+
+Apartado Primero)
+	
+	Seleccionamos como mejor opcion la seleccion de una estrategia basada en determinar como mejor candidato a solucion aquellos que tengan
+	un mejor ratio valor peso.
+	Puesto que si seleccionamos primero los objetos mas valiosos esto puede llevarnos a por temas de capacidad elegir el objeto X mas valioso
+	haciendo que la mochila se quede sin espacio, puediendose dar el caso en el que el sumatorio de objetos menos valiosos conlleven a una 
+	mayor cantidad de beneficio.
+
+	Por ultimo descartamos la estrategia de elegir como mejores candidatos los objetos menos pesados debido a la posible existencia de elementos
+	con un mayor peso pero pueden anteponerse a aquellos con mayor peso y un mejor valor.
+
+Apartado Segundo)
+
+	Implementacion del algoritmo devorador.
+
+
+	mochilaDevoradora: C, capacidad => S {
+
+		S <- 0
+
+		mientras (capacidad > 0 && C != ø){
+
+			p <- extrae_mayor_ratio(C) // Sacamos el candidato con mejor ratio valor-peso (sin ordenar O(n))
+
+			si ( capacidad - p.peso > 0){
+
+				capacidad -= p.peso
+
+				S <- {S U p}
+
+			}
+
+		}
+
+		devolver S
+	}
+
+
+Apartado Tercero)
+	
+	Se pide mejorar el algoritmo anterior para tener una mayor eficiencia temporal, para esto simplemente realizaremos una preordenacion del 
+	conjunto de candidatos, usando como criterio de ordenacion la estrategia c, quedando de la siguiente forma:
+
+
+	mochilaDevoradora: C, capacidad => S {
+
+		S <- 0
+
+		ordena(C) //Usamos algun algoritmo de ordenacion de orden Logaritmico Qsort, MergeSort, siendo ahora el orden de ordenacion O(n log n)
+
+		mientras (capacidad > 0 && C != ø){
+
+			p <- extraePrimero(C) //O(1)
+
+			si ( capacidad - p.peso > 0){
+
+				capacidad -= p.peso
+
+				S <- {S U p}
+
+			}
+
+		}
+
+		devolver S
+	}
+
+	Pasando el algoritmo a ser de orden O( n log n)
+
+
+
+

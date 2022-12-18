@@ -1,0 +1,9 @@
+ej1
+
+En el esquema general de los algoritmos devoradores, no aparece explícitamente la función objetivo. ¿En qué parte del esquema es tenida en cuenta? ¿Cómo?
+	
+	a) Aparece de forma implicita, en la inclusion a los elementos del conjunto solucion.
+
+	b)Se tiene en cuenta en la union del elemento candidato, una vez este es procesado se une al conjunto de elementos solucion.
+
+

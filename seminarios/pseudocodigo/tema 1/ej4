@@ -1,0 +1,25 @@
+ej4
+
+ENUNCIADO
+
+Tenemos que almacenar n ficheros de tamaños t1,...,tn, respectivamente, en un disco de capacidad c. Desgraciadamente, no caben todos. Diga cuál sería la estrategia devoradora trivial que se seguiría en los siguientes supuestos:
+
+	a) Se desea maximizar el número de ficheros.
+	b) Se desea aprovechar al máximo la capacidad del disco.
+
+¿Es la estrategia devoradora del segundo supuesto óptima? Si lo es, demuéstrelo. Si no lo es, ponga un contraejemplo.
+
+Apartado Primero)
+
+	a) Ordenacion de los conjuntos de candidatos, ordenando los mismos de menor capacidad a mayor capacidad. Tras esto seleccionamos primero
+	para meter en el disco aquellos de menor peso, haciendo que se maximice el numero de ficheros guardados.
+
+	b) Ordenacion de los programas en funcion a su peso, esta vez de mayor a menor, maximizando la cantiad de espacio en disco usada.
+
+
+Apartado Segundo)
+	
+	No seria optima puesto que podemos dejar huecos de espacio mas grandes que la estrategia mencioanada en a), debido a que si almacenamos
+	en primera instancia un elemento que ocupe un gran espacio, no permitiendo que otros entren en el disco.
+
+

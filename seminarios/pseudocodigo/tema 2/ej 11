@@ -1,0 +1,89 @@
+ej 11
+
+Para modelar una red de comunicaciones utilizamos un grafo G = (V, A) orientado y ponderado, donde V es el conjunto de los vértices, A ⊆ V × V el conjunto de las aristas y
+p : V ×V → [0, 1] la función de ponderación.
+Los vértices representan equipos de comunicaciones y las aristas las líneas de comunicaciones que los unen. La función de ponderación es la fiabilidad de la línea que une dos equipos, es decir, la probabilidad de que la transmisión de una unidad de información
+desde un equipo a otro tenga éxito. Estas probabilidades se suponen independientes.
+Diseñe un algoritmo que calcule el camino más fiable para transmitir una unidad de información entre dos equipos dados y la probabilidad de error de la transmisión. Dicho
+algoritmo realizará, en el peor de los casos, un número de operaciones elementales perteneciente a O(n3)
+
+Datos Iniciales
+
+	TSP: Matriz bidimensional que representan los valores dados por la funcion de ponderacion a cada arista, dicha funcion asigna la fiablidad en base
+	a una probabilidad, por lo que cuanto mayor sea la probabilidad mejor conexion es.
+
+	Objetivo: Calcular el camino mas fiable, es decir, donde la fiabilidad sea mayor, cuanto mayor sea el peso de la arista mejor.
+
+Algoritmo:
+	
+	inicializamosCamino : P -> camino
+
+		//Inicializamos la matriz de caminos
+		camino <- matriz(n,n)
+
+		desde i <- 1 hasta n
+			desde j <- 1 hasta n
+				Si p[i,j] == INF
+					camino[i,j] <- -1
+				si no
+					camino[i,j] <- j
+
+	//Aplicamos Floyd Maximo para hallar todos los caminos entre cada par de nodos
+	FloydMaxCamino: P,camino -> P,camino
+
+		desde i<-1 hasta n 
+
+			P[i,i] <- 0
+
+		desde k <- 1 hasta n
+
+			desde i <- 1 hasta n
+
+				desde j <-1 hasta n
+
+					p[i,j] <- Max(p[i,j], p[i,k] * p[k,j]) //Al ser probabilidades no se puede sumar ya que supera a uno, las prob se multiplican
+					
+					Si p[i,j] <= p[i,k]*p[k,j]{ //En este caso es al reves, ya que fkoyd no busca el menor si no el mayor
+						camino[i,j] <- c[i,k]
+					}
+
+	//Hallamos el camino
+	AlgoritmoRed: o,d,P -> vCamino,probMejor
+
+		v <- array()
+		MCamino <- inicializaCamino(P)
+		{GF,MCamino} <-FloydMaximoCamino(P,Mcamino)
+		k <- 1
+		vCamino <- vCamino U {origen}
+		probMejor <- GF[o,d]
+
+		mientras o != d
+
+			origen <- MCamino[o,d]
+			vCamino <- camino U [origen]
+
+		devolve {probMejor, vCamino}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

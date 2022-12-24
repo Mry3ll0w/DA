@@ -1,0 +1,63 @@
+Ejercicio 10
+
+Enunciado:
+	
+	Un restaurante dispone de mesas para dos, cuatro y seis comensales. Su aforo es limitado
+	y no admite reservas. Cada mesa solo puede ser ocupada por un grupo durante todo el
+	turno. Cuando un grupo llega al restaurante, el camarero debe asignarle mesa inmediatamente. 
+	Diseñe un algoritmo devorador que se encargue de asignar las mesas de un determinado turno. Describa los elementos que lo identifican como perteneciente al esquema general de los algoritmos devoradores. ¿Es la estrategia devoradora diseñada óptima?
+
+a) Esquema Algoritmo Devorador
+
+	Conjunto de Candidatos: Personas que llegan al restaurante, mesas disponibles.
+
+	Funcion Objetivo: Sentar a los pacientes en las mesas disponibles
+
+	Funcion Factibilidad: Caben en la mesa el grupo dado?
+
+	Funcion Solucion: Quedan mesas libres ?
+
+	Funcion Seleccion: Mejor candidato sera aquel con mayor numero de espacios ocupados -> participantes/espacio mesa (siempre el mas cercano a 1)
+	
+	Objetivo: Maximizar el numero de mesas ocupadas.
+
+b) Algoritmo
+
+	greedyMesas: grupoPersonas, mesasDisponibles -> S
+
+		C <- mesasDisponibles
+
+		mientras mesasDisponibles != ø && personas != ø
+
+			grupo <- extrae_primero(grupoPersonas)//Simplemente saca al que le toca en la fila
+
+			mesaOptima <- extraeMejorMesa(mesasDisponibles)
+
+			Si grupo <= mesaOptima
+
+				S <- S U {grupo}
+			
+			si_no
+
+				mesasDisponibles <- mesasDisponibles U {mesaOptima} //Si no cabe no se ocupa
+
+c) La estrategia no es optima puesto que si solo hay mesas de gran tamanio disponibles pero hay grupos de pocas personas se dejan grandes huecos, 
+los cuales podrian ser ocupados por grupos mas grandes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

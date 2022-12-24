@@ -1,0 +1,79 @@
+Ejercicio Decimo
+
+Enunciado: 
+
+	Deseamos atravesar una autopista de m carriles en la que la policía ha establecido n puntos de control. En cada uno de ellos ha colocado puestos de control ocupando uno o más de los carriles, pero no todos.
+	Conocemos, para cada punto de control, en qué carriles están situados los puestos de control. Para atravesar la autopista sin ser interceptados debemos cruzar cada punto de control por un carril en el que no esté la policía. El problema es que debemos realizar el mínimo número posible de cambios de carril (un único cambio de carril puede implicar cruzar varios carriles) a fin de no levantar sospechas.
+	Diseñe un algoritmo que calcule el camino óptimo, es decir, que diga por qué carril hay que pasar en cada punto de control para minimizar el número de cambios de carril.
+	El algoritmo recibirá una matriz binaria de m filas y n columnas en la que cada elemento informará sobre la existencia de un puesto de control en un carril y un punto de control dados. Como resultado devolverá un vector de n elementos indicando el carril elegido en cada punto de control.
+
+a) Partes que lo identifican como algoritmo devorador
+	
+	Funcion Objetivo: S U { i, j }
+
+	Funcion Solucion: Comprobacion de si la casilla candidata es factible para moverse
+
+	Funcion Factibilidad= Comprueba si es posible o no realizar el cambio de carril a la casilla dada
+
+	Conjunto Candidatos: Casillas dentro de los carriles, representada por una matriz
+
+	Objetivo: Minimizar el numero de cambios de carril
+
+b) Algoritmo
+	
+	Funcion de ordenacion: Se mediran en todo momento el numero de cambios a realizar en el siguiente puesto de control, es decir, a cada posible siguiente casilla se le asigna un numero que indica cuantos cambios han de realizarse hasta llegar al final de la carretera.
+
+		ordenacion: puestoControl, matrizCarriles, m, n -> S
+
+			desde i <- 0 hasta iCarriles hacer 
+
+				S <- S U {0}
+
+			//De tal forma que se nos quede si el numero de carriles es 3 => S {0,0,0}
+
+			desde k <- 0 hasta m
+
+				desde i <- 0 hasta m 
+
+					desde j <- 0 hasta n
+
+						si (matrizCarriles[i + 1,j] == 'C')//Suponemos que lso controles policiales son representados con C
+							S [k] <- S[k] + 1;
+							sal_bucle; //Cambiamos de punto de control, ya que se cuenta igual el numero de movimientos de carril dentro de una fila
+
+			devolver S
+
+	greedyAutopista: matrizCarriles, m, n -> S
+
+		S <- ø 
+		carril <- 0
+
+		mientras carril < n hacer 
+
+			//Asignamos la puntuacion al carril que toca
+			Casillas <- ordenacion(carril, matrizCarriles, m,n)
+
+			mejorCasilla <- extrae_mejor(Casillas)//Devuelve el indice de la mejor casilla a seguir.
+
+			if (matrizCarriles[carril,mejorCasilla] != 'C'){ //Comprobamos que no existe un puesto alli
+				S <- S U {carril, mejorCasilla}
+			}
+
+		devolver S
+
+	t(n) = O(bucle * ordenacion) ==> O(n ^4)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

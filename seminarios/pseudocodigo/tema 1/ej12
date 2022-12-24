@@ -1,0 +1,42 @@
+Ejercicio 12
+
+Enunciado
+
+	A pesar de que el restaurante del ejercicio anterior es de alta cocina, lo cierto es que no va
+	nada bien. Sus responsables deciden pasar a un sistema de reserva obligatoria con fianza,
+	de modo que se conozca con antelación el número de grupos y su tamaño en cada turno.
+	Diseñe un nuevo algoritmo devorador. ¿Es la estrategia devoradora diseñada óptima?
+
+a) Algoritmo
+	
+	greedyMesas2: grupos, mesas -> S
+
+		ordena(grupos) //ordena las reservas de menor size a mayor 
+		ordena(mesa)// ordena las mesas de menor size a mayor
+
+		mientras grupos != ø && mesas != ø
+
+			g <- extrae_primero ( grupos )
+			m <- extrae_primero ( mesas )
+
+			si g <= m //El grupo cabe en la mesa
+
+				S <- S u {g,m}
+
+			si no //La mesa mas optima no es suficientemente grande
+
+				mesaMayor <- ø
+
+				//Buscamos si hay una mesa mas grande
+				desde i<- 1 hasta | mesas |
+
+					si mesas[i] >= g
+						mesaMayor = mesas[i]
+
+				si mesaMayor != ø //Existe hueco en el bar
+
+					mesas <- S U {m} //Metemos la mesa seleccionada previamente
+					mesas <- S - {mesaMayor} //Sacamos la mesa en la que cabe, en caso de que esta este vacia, no cabe por tanto el grupo es descartado
+					S <- S U {g, mesaMayor}
+
+		devolver S

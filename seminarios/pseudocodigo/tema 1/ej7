@@ -27,5 +27,71 @@ a) Kruskal
 
 b) Prim 
 	
-	No funciona con grafos no conexos, puesto que al no encontrar vertices unidos simplemente entraria en un bucle infinito.
+	No funciona con grafos no conexos, puesto que al no encontrar vertices unidos simplemente entraria en un bucle infinito, para que esto no ocurra deberemos modificar lo siguiente:
+
+	Prim: p, n -> S
+
+		C <- ø
+		S <- ø
+		procesados <- ø //Controla que nodos han sido procesados previamente
+
+		desde j<- 2 hasta n
+
+			C <- C U {j}
+			procesados <- procesados U {j}
+			C[j] <- 1
+			procesados[j] <- false
+			d[j] <- p[1,j] 
+
+		mientras C != ø
+
+			k <- selecciona_vertice (C,d)
+			C <- C - {k}
+			S <- S U {{C[k],K}}
+			procesado[k] = true //Se marca como procesado para evitar que se vuelva a seleccionar y se formen ciclos
+
+			para todo j perteneciente a C
+
+				Si p[k,j] < d[j]
+					C[j] <- k
+					d[j] <- p[k,j]
+
+	selecciona_vertice: C,d -> k
+
+		v <- INF
+		para todo j pertenciente a C 
+
+			Si d[j] <= v && procesado[j] == false
+				v <- d[j]
+				k <- j
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

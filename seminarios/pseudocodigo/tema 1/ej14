@@ -1,0 +1,25 @@
+Ejercicio 14
+
+Enunciado
+	
+	Un fontanero dispone de varios segmentos de tubo de distintas longitudes. Diseñe un algoritmo que, siguiendo una estrategia devoradora, 
+	minimice el número de uniones necesarias para construir una única tubería de longitud l. El fontanero puede realizar los
+	cortes en los tubos que considere oportunos. Analice la complejidad del algoritmo.
+
+Algoritmo
+	
+	Objetivo: Minimizar el numero de uniones, seleccionar las tuberias de mayor size
+
+	greedyTuberias: tuberias, longitud -> S
+
+		S <- ø 
+		C <- ordena(tuberias)//De mayor tama a menor
+
+		mientras l > 0 && C != ø
+
+			t <- extraePrimero(C)
+
+			//No hay que comprobar nada, puesto que en el momento que se supere la longitud hemos acabado
+
+			S <- S U {t}
+			l <- l - t

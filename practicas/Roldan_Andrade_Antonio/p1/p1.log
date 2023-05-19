@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.5.15)  19 MAY 2023 10:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.5.15)  19 MAY 2023 10:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**p2.tex
-(./p2.tex
+**p1.tex
+(./p1.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-01-21>
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -145,8 +145,8 @@ File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count273
 \l__pdf_internal_box=\box52
 )
-No file p2.aux.
-\openout1 = `p2.aux'.
+No file p1.aux.
+\openout1 = `p1.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
 LaTeX Font Info:    ... okay on input line 31.
@@ -229,79 +229,165 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 33.
 
 (../autor.tex) (./e1.tex
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 1.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 1.
 
+! LaTeX Error: File `./defenseValueCellsHead' not found.
 
-LaTeX Warning: Command \~ invalid in math mode on input line 1.
-
-! Please use \mathaccent for accents in math mode.
-\add@accent ... \let \ignorespaces \relax \accent 
-                                                  #1 #2\egroup \ifmmode \els...
-l.1 $$ f(dañ
-             o,alcance,salud,coste)(daño+salud+alcance)-coste=$$
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.13 ...th=0.7\linewidth]{./defenseValueCellsHead}
+                                                  
 ? 
-
-LaTeX Warning: Command \~ invalid in math mode on input line 1.
-
-! Please use \mathaccent for accents in math mode.
-\add@accent ... \let \ignorespaces \relax \accent 
-                                                  #1 #2\egroup \ifmmode \els...
-l.1 $$ f(daño,alcance,salud,coste)(dañ
-                                        o+salud+alcance)-coste=$$
-? 
-) (./e2.tex) (./e3.tex
+) (./e2.tex
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <8> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 4.
-) (./e4.tex [1
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 3.
+ [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]) (./e3.tex
 
-! LaTeX Error: Invalid UTF-8 byte sequence (�\expandafter).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.9 ...entro de extraccion), que ademas se añade 
-                                                  en cualquier caso
-? 
-
-! LaTeX Error: Invalid UTF-8 byte "B1.
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@).
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.9 ...entro de extraccion), que ademas se añade 
-                                                  en cualquier caso
+l.58 ...      // Ordeno los elementos O(n) = n · 
+                                                  log n
 ? 
-) [2] (./p2.aux
+
+! LaTeX Error: Invalid UTF-8 byte "B7.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.58 ...      // Ordeno los elementos O(n) = n · 
+                                                  log n
+? 
+[2]
+
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.92 ...      // Ordeno los elementos O(n) = n · 
+                                                  log n
+? 
+
+! LaTeX Error: Invalid UTF-8 byte "B7.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.92 ...      // Ordeno los elementos O(n) = n · 
+                                                  log n
+? 
+[3]) (./e4.tex) (./e5.tex
+
+! LaTeX Error: Invalid UTF-8 byte sequence (�\expandafter\lst@FillFixed@).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.38 ... 1/value; // implemente aqui la funci�n 
+                                                  que asigna valores a las c...
+
+? 
+
+! LaTeX Error: Invalid UTF-8 byte "BF.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.38 ... 1/value; // implemente aqui la funci�n 
+                                                  que asigna valores a las c...
+
+? 
+
+! LaTeX Error: Invalid UTF-8 byte "BD.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.38 ... 1/value; // implemente aqui la funci�n 
+                                                  que asigna valores a las c...
+
+? 
+) [4] (./e6.tex
+
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.36 ...      // Ordeno los elementos O(n) = n · 
+                                                  log n
+? 
+
+! LaTeX Error: Invalid UTF-8 byte "B7.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.36 ...      // Ordeno los elementos O(n) = n · 
+                                                  log n
+? 
+[5]
+
+! LaTeX Error: Invalid UTF-8 byte sequence (�\lst@FillFixed@).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.70 ...      // Ordeno los elementos O(n) = n · 
+                                                  log n
+? 
+
+! LaTeX Error: Invalid UTF-8 byte "B7.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.70 ...      // Ordeno los elementos O(n) = n · 
+                                                  log n
+? 
+) [6] (./p1.aux
 LaTeX Info: Redefining \. on input line 4.
 LaTeX Info: Redefining \% on input line 4.
-) ) 
+)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 5420 strings out of 480185
- 80297 string characters out of 5894213
- 795317 words of memory out of 5000000
- 23341 multiletter control sequences out of 15000+600000
- 472976 words of font info for 41 fonts, out of 8000000 for 9000
+ 5565 strings out of 480185
+ 82653 string characters out of 5894213
+ 1030317 words of memory out of 5000000
+ 23466 multiletter control sequences out of 15000+600000
+ 472965 words of font info for 41 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
- 55i,7n,69p,325b,1759s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/sh
+ 55i,7n,69p,583b,1854s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </root/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb></usr/sh
 are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmtt8.pfb>
-Output written on p2.pdf (2 pages, 99522 bytes).
+t/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
+Output written on p1.pdf (6 pages, 99300 bytes).
 PDF statistics:
- 51 PDF objects out of 1000 (max. 8388607)
- 30 compressed objects within 1 object stream
+ 53 PDF objects out of 1000 (max. 8388607)
+ 33 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

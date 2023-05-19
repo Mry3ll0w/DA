@@ -1,0 +1,10 @@
+Escriba aquí su respuesta al ejercicio 1.
+
+Construimos distintas rutas desde un punto inicial hasta encontrar alguna de estas que resulte en el nodo final.
+Así tenemos en cuenta las rutas que tienen la posibilidad de formar una solución. Para determinar cuáles son las rutas con mayor probabilidad de que esto ocurra, tenemos una fórmula que es la siguiente.
+F(n) = podemos verlo como costo total, g(n) = como valor del camino de un nodo a otro, h(n) = como valor de la heurística de un nodo a otro.
+Expandimos el primer nodo de nuestra lista de abiertos, si no es objetivo se calcula F(n) de sus descendientes, se insertan en la lista de abiertos y nuestro primer nodo se inserta en la lista de cerrados.
+Así se va paso por paso desde nuestro punto inicial hasta encontrar una solución, si un nodo que está en abiertos es igual a uno que está en cerrados se pasa a cerrados instantáneamente.
+
+Utilizamos una lista de abiertos para guardar los nodos pendientes de ser explorados, una lista de nodos cerrados para indicar que ya han sido visitados y una variable que almacena el nodo actual que estamos explorando.
+Para reducir el tiempo se ha utilizado la clase montículo porque esta nos permite extraer el menor valor de forma constante.

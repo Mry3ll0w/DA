@@ -1,0 +1,24 @@
+Escriba aquí su respuesta al ejercicio 5.
+
+1)Ordenación por fusión.
+
+La idea detrás del divide y vencerás, es como el mismo nombre lo indica, dividir en sub-problemas que más adelante resuelvan el problema final. 
+En el caso del Merge Sort, el lista será dividido en dos sub-listados, luego estos sub-listados serán nuevamente divididos
+y así sucesivamente, hasta que llega a un listado de dos elementos que puede ser fácilmente ordenado. Luego de llegar a estos sub-listados pequeños de 1 o 2 elementos,
+se comienzan a mezclar los sub-listados formando nuevos listados ordenados. Este proceso se repite hasta llegar al listados original que en última instancia, quedará ordenado.
+
+Todo este proceso, tiene una complejidad O(nlog2n) dado que la altura del árbol que se forma al dividir en
+sublistas el listado original es log2n donde n es la cantidad de elementos y en cada nivel del árbol 
+hay que iterar sobre todos los elementos, la complejidad es O(n*log2n) 
+
+ 2)Ordenación rápida.
+
+ Elegimos un elemento del conjunto de elementos a ordenar que llamaremos pivote.
+ Situamos los demás elementos de la lista a cada lado del pivote, a un lado los menos que él y al otro los mayores, los que
+ sean iguales se pueden colocar en cualquiera de los lados, ocupando así el pivote su lugar correspondiente.
+ La lista se queda separada en dos sublistas, este proceso se repite de forma recursiva, la eficiencia depende de la posición en la que
+ se termine el pivote elegido.
+
+ Mejor caso -> pivote termina en el centro de la lista, O(n*logn).
+ Peor caso -> pivote termina en un extremo de la lista, O(n^2).
+ Caso promedio -> O(n*logn).

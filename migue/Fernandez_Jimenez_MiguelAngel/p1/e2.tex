@@ -1,0 +1,39 @@
+Escriba aquí su respuesta al ejercicio 2.
+
+\begin{lstlisting}
+bool factible(List<Defense *> defenses, const Defense &currentDef, List<Object *> obstacles, float mapHeight,
+              float cellWidth, float cellHeight, float mapWidth, int row, int col, bool **freeCells)
+{
+    bool fact;
+
+    Vector3 posicion = cellCenterToPosition(row, col, cellWidth, cellHeight);
+
+    if (posicion.x + currentDef.radio > mapWidth ||  
+        posicion.x - currentDef.radio < 0 ||         
+        posicion.y + currentDef.radio > mapHeight || 
+        posicion.y - currentDef.radio < 0)           
+        fact = false;
+    else
+        fact = true;
+
+    List<Object *>::iterator i;
+
+    for (i = obstacles.begin(); i != obstacles.end(); i++)
+    {
+        //Si la distancia entre los centros es menor a la suma de los radios de la defensa y el obstáculo, colisionan
+        if (_distance(posicion, (*i)->position) < (currentDef.radio + (*i)->radio))
+            fact = false;
+    }
+
+    List<Defense *>::iterator j;
+
+    for (j = defenses.begin(); j != defenses.end(); j++)
+    {
+        //Si la distancia entre los centros es menor a la suma de los radios de la defensa actual y la que está colocada, colisionan
+        if (_distance(posicion, (*j)->position) < (currentDef.radio + (*j)->radio))
+            fact = false;
+    }
+
+    return fact;
+}
+\end{lstlisting}

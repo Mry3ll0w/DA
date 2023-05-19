@@ -1,0 +1,23 @@
+Escriba aquí su respuesta al ejercicio 5.
+
+Como se ha explicado en el ejercicio 1, la ponderación que he decidido asignar a las celdas del campo con alguna
+defensa asignada es del 25 por ciento.
+
+\begin{lstlisting}
+float cellValue(int row, int col, int exRow, int exCol, bool **freeCells, int nCellsWidth, int nCellsHeight, float mapWidth, float mapHeight, List<Object *> obstacles, List<Defense *> defenses)
+{
+
+    float cellWidth = mapWidth / nCellsWidth;
+    float cellHeight = mapHeight / nCellsHeight;
+    Vector3 posicion = cellCenterToPosition(row, col, cellWidth, cellHeight);
+    Vector3 bestPos = cellCenterToPosition(exRow, exCol, cellWidth, cellHeight);
+    float value;
+
+    value = bestPos.length() - _distance(posicion, bestPos);
+
+    if (_distance(bestPos, posicion) > 3 * (*(defenses.back())).radio)
+        value = value * 0.25;
+
+    return value;
+}
+\end{lstlisting}

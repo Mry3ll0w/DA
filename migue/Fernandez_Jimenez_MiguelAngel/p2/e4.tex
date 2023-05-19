@@ -1,0 +1,22 @@
+\begin{lstlisting}
+// sustituya este codigo por su respuesta
+void defensasOptimas(std::list<Defense*> defenses, unsigned int ases, std::list<int>& selectedIDs, const std::vector<std::vector<float>>& spTable)
+{
+    int i = defenses.size() - 2, j = ases - (*defenses.begin())->cost;
+    List<Defense*>::iterator it = defenses.end();
+
+    it--;
+    while(i > 0)
+    {
+        if(spTable[i][j] != spTable[i-1][j])
+        {
+            j = j - (*it)->cost;
+            selectedIDs.push_back((*it)->id);
+        }
+        i--;
+        it--;
+    }
+    if(spTable[0][j] != 0)
+        selectedIDs.push_back((*it)->id);
+}
+\end{lstlisting}

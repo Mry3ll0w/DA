@@ -1,0 +1,35 @@
+\begin{lstlisting}
+// sustituya este codigo por su respuesta
+void beneficioMaximo(std::vector<std::vector<float>>& spTable, std::list<Defense*> defenses, unsigned int ases)
+{
+    float values[defenses.size() - 1];
+    int costs[defenses.size() - 1];
+    List<Defense*>::iterator it = defenses.begin();
+    it++;
+    //Relleno los vectores
+    for(int i = 0; i < defenses.size()-1; i++)
+    {
+        costs[i] = (*it)->cost;
+        values[i] = valDefensa((**it));
+        it++;
+    }
+
+    ases = ases - (*defenses.begin())->cost;
+    for(int j = 0; j < ases+1; j++)
+    {
+        if (j < costs[0])
+            spTable[0][j] = 0;
+        else
+            spTable[0][j] = values[0];
+    }
+    for(int i = 1; i < defenses.size()-1; i++){
+        for(int j = 0; j < ases+1; j++)
+        {
+            if(j < costs[i])
+                spTable[i][j] = spTable[i-1][j];
+            else
+                spTable[i][j] = std::max(spTable[i-1][j], spTable [i-1][j-costs[i]] + values[i]);
+        }
+    }
+}
+\end{lstlisting}

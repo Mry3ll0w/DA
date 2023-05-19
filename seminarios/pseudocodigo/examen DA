@@ -1,0 +1,73 @@
+examen DA
+
+2 Un responsable de movilidad necesita conocer si es posible viajar en vehículo entre todas las
+intersecciones de las calles que hay en una determinada ciudad. En esa ciudad todas las calles tienen
+un único sentido de circulación, y entre cada par de intersecciones solo discurre una única calle.
+Desarrolla un algoritmo que obtenga la respuesta que busca el responsable (si o no). Especifica
+claramente la estructura de la tabla del subproblema resuelto, incluyendo los tipos de datos que
+almacenará, y analiza la complejidad espacial y temporal del algoritmo en el peor de los caso.
+
+
+a) TSP => Seria una matriz bidimensional de nXn casillas, donde n es el numero de calles de la ciudad.
+
+b) Forma de proceder
+	
+	1) Algoritmo para conocer que calles estan conectadas entre si, es decir, a donde podemos ir desde que calle.
+
+		Warshall: A, n -> A
+
+			desde i <- i hasta n
+				A[i,i] <- T
+
+			desde k <- 1 hasta n
+				desde i <- 1 hasta n
+					desde j <- 1 hasta n
+						A[i,j] <- A[i,j] OR (A[i,k] AND A[k,j])
+
+	2) Ya sabemos que esta conectado con que
+
+		todasConectadas: f, TSP, n -> true/false
+
+			bTodasConectadas <- true
+
+				desde i<-1 hasta n
+
+					si TSP[f,i] != true
+						bTodasConectadas <- false
+
+				devolvemos bTodasConectadas
+
+	3) Algoritmo general
+
+		Ciudad: TSP, n -> true/false
+
+			A <- Warshall(TSP,n)
+
+			bSolucion <- false
+
+			iFilas <- 0
+
+			mientras iFilas < n && bSolucion == false
+
+				bSolucion <- todasConectadas(iFilas,A,n)
+
+			devolver bSolucion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,30 @@
+Escriba aquí su respuesta al ejercicio 1. 
+
+Realizo una ponderación en caso de lo que considere de mayor valor o menor sobre un 100 por ciento, como
+podemos observar en las celdas correspondientes a los centros de extracción lo valoraremos en un 1 por ciento
+
+\begin{lstlisting}
+float cellValueExtr(int row, int col, bool **freeCells, int nCellsWidth, int nCellsHeight, float mapWidth, float mapHeight, List<Object *> obstacles)
+{
+    float cellWidth = mapWidth / nCellsWidth;
+    float cellHeight = mapHeight / nCellsHeight;
+    int bestRow = nCellsHeight / 2, bestCol = nCellsWidth / 2;
+    Vector3 posicion = cellCenterToPosition(row, col, cellWidth, cellHeight);
+    Vector3 bestPos = cellCenterToPosition(bestRow, bestCol, cellWidth, cellHeight);
+    float value;
+
+    value = bestPos.length() - _distance(posicion, bestPos);
+
+    if (row < 3 || row > nCellsHeight - 3 || col > nCellsWidth - 3 || col < 3)
+        value = value * 0.01;
+
+    return value;
+}
+\end{lstlisting}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{./defenseValueCellsHead} % no es necesario especificar la extensión del archivo que contiene la imagen
+\caption{Estrategia devoradora para la mina}
+\label{fig:defenseValueCellsHead}
+\end{figure}

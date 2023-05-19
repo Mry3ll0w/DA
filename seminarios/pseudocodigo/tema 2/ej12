@@ -1,0 +1,27 @@
+Dada una red de ordenadores y la probabilidad de fallo de cada uno de sus enlaces, disenia un algoritmo que para par de ordenadores indique si toda ruta entre ambos posee una probabilidad de fallo superior a F.Los fallos en enlaces distintos se suponen independientes.
+No olvide definir la TSP
+
+a) TSP esta formada por una matriz bidimensional de n filas y n columnas, siendo n el numero de ordenadores en la red
+
+b) Algoritmo
+	
+	Floyd : P,n -> P
+
+		desde i <- 1 hasta n 
+			P[i,i] <- 0
+
+		desde k <- 1 hasta n
+			desde i <- 1 hasta n
+				desde j <- 1 hasta n
+					P[i,j] <- min(P[i,j], P[i,k] * P[k,j])
+
+	Red: TSP, F , n, ordenador1, ordenador2 -> true/false
+
+		M <- Floyd(TSP,n)
+
+		//Toda ruta es la ruta de A -> B y de B -> A
+		si M[ordenador1, ordenador2] >= F && M[ordenador2, ordenador1] >= F
+			devolver true
+		si no
+			devolver false
+	

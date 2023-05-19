@@ -1,0 +1,107 @@
+\begin{lstlisting}
+    void DEF_LIB_EXPORTED placeDefenses(bool **freeCells, int nCellsWidth, int nCellsHeight, float mapWidth, float mapHeight, std::list<Object *> obstacles, std::list<Defense *> defenses)
+    {
+    
+        float cellWidth = mapWidth / nCellsWidth;
+        float cellHeight = mapHeight / nCellsHeight;
+    
+        int maxAttemps = 1000;
+        std::vector<Cell> Cells;
+        int i, j, k;
+        float aux;
+        Cell auxCell;
+    
+        //Algoritmo centro extracción
+        for (i = 0; i < nCellsHeight; i++)
+            for (j = 0; j < nCellsWidth; j++)
+            {
+                if (freeCells[i][j])
+                    Cells.push_back(Cell(i, j, cellValueExtr(i, j, freeCells, nCellsWidth, nCellsHeight, mapWidth, mapHeight, obstacles)));
+            }
+    
+        for (i = 0; i < Cells.size(); i++)
+            for (k = i + 1; k < Cells.size(); k++)
+            {
+                if (Cells[k].value < Cells[i].value)
+                {
+                    auxCell = Cells[i];
+                    Cells[i] = Cells[k];
+                    Cells[k] = auxCell;
+                }
+            }
+    
+        bool placed = false;
+        Cell solution;
+        List<Defense *>::iterator currentDefense = defenses.begin();
+    
+        //Algoritmo devorador para centro de extraccion
+        while (!placed && !Cells.empty())
+        {
+            solution = Cells.back();
+            Cells.pop_back();
+            if (factible(defenses, *(*currentDefense), obstacles, mapHeight,
+                         cellWidth, cellHeight, mapWidth, solution.row, solution.col, freeCells))
+            {
+                placed = true;
+                freeCells[solution.row][solution.col] = false;
+                (*currentDefense)->position = cellCenterToPosition(solution.row, solution.col, cellWidth, cellHeight);
+            }
+        }
+    
+        std::vector<Cell> AuxCells;
+    
+        for (i = 0; i < nCellsHeight; i++)
+            for (j = 0; j < nCellsWidth; j++)
+            {
+                if (freeCells[i][j])
+                    AuxCells.push_back(Cell(i, j, cellValue(i, j, solution.row, solution.col, freeCells, nCellsWidth, nCellsHeight, mapWidth, mapHeight, obstacles, defenses)));
+            }
+    
+        k = 0;
+    
+        for (i = 0; i < AuxCells.size(); i++)
+            for (k = i + 1; k < AuxCells.size(); k++)
+            {
+                if (AuxCells[k].value < AuxCells[i].value)
+                {
+                    auxCell = AuxCells[i];
+                    AuxCells[i] = AuxCells[k];
+                    AuxCells[k] = auxCell;
+                }
+            }
+    
+        Cells.clear();
+        Cells = AuxCells;
+    
+        std::vector<Cell>::iterator it;
+        int iterations;
+        currentDefense++;
+    
+        while (currentDefense != defenses.end())
+        {
+            iterations = 0;
+            placed = false;
+            it = AuxCells.end();
+            while (!placed && !Cells.empty())
+            {
+                iterations++;
+                solution = Cells.back();
+                Cells.pop_back();
+                if (factible(defenses, *(*currentDefense), obstacles, mapHeight, cellWidth, cellHeight, mapWidth, solution.row, solution.col, freeCells))
+                {
+                    placed = true;
+                    (*currentDefense)->position = cellCenterToPosition(solution.row, solution.col, cellWidth, cellHeight);
+                    while (iterations > 0)
+                    {
+                        it--;
+                        iterations--;
+                    }
+                    AuxCells.erase(it);
+                }
+            }
+            Cells.clear();
+            Cells = AuxCells;
+            currentDefense++;
+        }
+    }
+\end{lstlisting}

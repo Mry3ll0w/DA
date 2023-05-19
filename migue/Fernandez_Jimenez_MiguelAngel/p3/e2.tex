@@ -1,0 +1,59 @@
+Escriba aquí su respuesta al ejercicio 2.
+
+\begin{lslisting}
+void insertion_sort(std::vector<CellValue> &v, int first, int last)
+{
+    int i, j;
+    CellValue c;
+    for (i = first + 1; i <= last; i++)
+    {
+        c = v[i];
+        j = i - 1;
+        while (j >= first && v[j].value > c.value)
+        {
+            v[j + 1] = v[j];
+            j--;
+        }
+        v[j + 1] = c;
+    }
+}
+
+void fusion(std::vector<CellValue> &v, int i, int k, int j)
+{
+    int n = j - i + 1, p = i, q = k + 1, l;
+    std::vector<CellValue> c;
+    c.resize(v.size());
+
+    for (l = 0; l < n; l++)
+    {
+        if (p <= k && (q > j || v[p].value <= v[q].value))
+        {
+            c[l] = v[p];
+            p++;
+        }
+        else
+        {
+            c[l] = v[q];
+            q++;
+        }
+    }
+    for (l = 0; l < n; l++)
+        v[i + l] = c[l];
+}
+
+void fusionSort(std::vector<CellValue> &v, int i, int j)
+{
+    int n = j - i + 1;
+    int k;
+
+    if (n <= 3)
+        insertion_sort(v, i, j);
+    else
+    {
+        k = i - 1 + n / 2;
+        fusionSort(v, i, k);
+        fusionSort(v, k + 1, j);
+        fusion(v, i, k, j);
+    }
+}
+\end{lslisting}

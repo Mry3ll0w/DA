@@ -1,0 +1,52 @@
+Escriba aquí su respuesta al ejercicio 3.
+
+\begin{lslisting}
+void insertion_sort(std::vector<CellValue> &v, int first, int last)
+{
+    int i, j;
+    CellValue c;
+    for (i = first + 1; i <= last; i++)
+    {
+        c = v[i];
+        j = i - 1;
+        while (j >= first && v[j].value > c.value)
+        {
+            v[j + 1] = v[j];
+            j--;
+        }
+        v[j + 1] = c;
+    }
+}
+
+int pivot(std::vector<CellValue> &v, int i, int j)
+{
+    int n = i, k;
+    CellValue c = v[i];
+
+    for (k = i + 1; k <= j; k++)
+        if (v[k].value <= c.value)
+        {
+            n++;
+            std::swap(v[n], v[k]);
+        }
+    v[i] = v[n];
+    v[n] = c;
+
+    return n;
+}
+
+void quickSort(std::vector<CellValue> &v, int i, int j)
+{
+    int n = j - i + 1;
+    int p;
+
+    if (n <= 3)
+        insertion_sort(v, i, j);
+    else
+    {
+        p = pivot(v, i, j);
+        quickSort(v, i, p - 1);
+        quickSort(v, p + 1, j);
+    }
+}
+\end{lslisting}

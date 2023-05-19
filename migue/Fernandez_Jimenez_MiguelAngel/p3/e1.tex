@@ -1,0 +1,13 @@
+Escriba aquí su respuesta al ejercicio 1.
+
+EN la estructura almacenamos la fila y columna de cada celda y ambos son enteros.
+También almacenamos el valor que tiene la celda de tipo float.
+
+\begin{lslisting}
+struct CellValue
+{
+    int row, col;
+    float value;
+    CellValue(int r = 0, int c = 0, float v = 0) : row(r), col(c), value(v) {}
+};
+\end{lslisting}

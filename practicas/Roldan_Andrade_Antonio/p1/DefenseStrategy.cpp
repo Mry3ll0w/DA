@@ -74,26 +74,30 @@ float cellValueExtractionCenter(int row, int col, bool **freeCells, int nCellsWi
 
 bool funcion_factibilidad(const List<Defense *> &defenses, const Defense &d, const List<Object *> &obstacles, float mapHeight, float cellWidth, float cellHeight, float mapWidth, int row, int col, bool **freeCells)
 {
-    Vector3 p = cellCenterToPosition(row, col, cellWidth, cellHeight);
+    // definicion de variables
+    Vector3 p = cellCenterToPosition(row, col, cellWidth, cellHeight); // Creamos la posicion con los datos dados
     bool token = true;
 
+    // Primeiro comprobamos que la celda no esta en ninguna posicion limite
     if (p.x + d.radio > mapWidth || p.x - d.radio < 0 ||
         p.y + d.radio > mapHeight || p.y - d.radio < 0)
     {
-        return false;
+        return false; // si se cumple alguna condicion la defensa no cabe al alcanzar posiciones limite del mapa
     }
-
-    for (List<Object *>::const_iterator it = obstacles.begin(); it != obstacles.end(); ++it)
+    // Comprobaremos que no colisionan con las defensas/obstaculos que ya estan colocadas
+    for (auto i : obstacles)
     {
-        if (_distance(p, (*it)->position) < (d.radio + (*it)->radio))
+        // Colisionara en caso de que las distancias entre puntos centrales de los obstaculos
+        // sea menor que los radios de la defensa a colocar y el obstaculo
+        if (_distance(p, i->position) < (d.radio + i->radio))
             token = false;
     }
-
     if (token)
     {
-        for (List<Defense *>::const_iterator it = defenses.begin(); it != defenses.end(); ++it)
+        // Se comprobara de forma similar a los obstaculos con las defensas
+        for (auto i : defenses)
         {
-            if (_distance(p, (*it)->position) < (d.radio + (*it)->radio))
+            if (_distance(p, i->position) < (d.radio + i->radio))
                 token = false;
         }
     }

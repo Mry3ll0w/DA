@@ -27,7 +27,8 @@ $(TARGET_LIB): $(SRCS)
 	$(CC) $(CFLAGS) ${LDFLAGS} -o $@ $^
 
 test: $(EXE)
-	./$< -l $(LEVEL) -v
+#./$< -l $(LEVEL) -v
+	./$< -l 3324 -v
 
 savereplay: $(EXE)
 	./$< -l $(LEVEL) -v -replay $(REPLAYFILE)
